@@ -1,5 +1,6 @@
 package com.example.group.tedxtv16;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -35,6 +36,9 @@ public class MainActivity extends AppCompatActivity {
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
+
+        AsyncTask mytask = new AsyncTaskListView();
+        mytask.execute("http://www.tedxtorvergatau.com/index.php/it/news");
     }
 
     private void setupViewPager(ViewPager viewPager) {
