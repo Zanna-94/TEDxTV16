@@ -17,30 +17,36 @@ public class AsyncTaskListView extends AsyncTask<String, Void, Void> {
     @Override
     protected Void doInBackground(String... strings) {
 
-        StringBuffer buffer = new StringBuffer();
-
         try {
             Log.v(TAG, "Connecting to [" + strings[0] + "]");
             Document doc = Jsoup.connect(strings[0]).get();
 
-            Log.v("JSwa", "Connected to [" + strings[0] + "]");
+            Log.v(TAG, "Connected to [" + strings[0] + "]");
 
-            Log.v("JSwa", "Selecting articles");
+            Log.v(TAG, "Selecting articles...");
             Elements articles = doc.select("article");
+            Log.v(TAG, "Selected articles: " + articles.toString());
 
             for (Element article : articles) {
+                Log.v(TAG, "ARTICLE");
+                Log.v(TAG, "Selected article: " + article.toString());
 
-                Element name = article.select("li.item__info_item item__info_item--title").first();
+                Element name = article.select("li").first();
+
+                Element image = article.select("img").first();
+
+
 
                 //return name of card
-                String text = name.text();
-                System.out.println(text);
-            }
+                String articleName = name.text();
+                Log.v(TAG, "Article name: " + articleName);
+
+                String articleImage = image.attr("src");
+                Log.v(TAG, "Article image link: " + articleImage);}
 
         } catch (Throwable t) {
             t.printStackTrace();
         }
-
         return null;
     }
 }

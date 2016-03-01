@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 
-        AsyncTask mytask = new AsyncTaskListView();
+        AsyncTaskListView mytask = new AsyncTaskListView();
         mytask.execute("http://www.tedxtorvergatau.com/index.php/it/news");
     }
 
