@@ -9,10 +9,10 @@ import android.view.ViewGroup;
 import com.example.group.tedxtv16.R;
 
 
-public class TwoFragment extends Fragment {
+public class ContactUsFragment extends Fragment {
 
 
-    public TwoFragment() {
+    public ContactUsFragment() {
         // Required empty public constructor
     }
 
@@ -25,7 +25,7 @@ public class TwoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_two, container, false);
+        return inflater.inflate(R.layout.fragment_contact_us, container, false);
     }
 
 }
