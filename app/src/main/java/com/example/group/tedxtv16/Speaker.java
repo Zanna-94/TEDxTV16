@@ -7,13 +7,24 @@ import android.graphics.Bitmap;
  */
 public class Speaker {
 
+    private int speaker_id;
     private String name;
     private Bitmap photo;
     private String desctiption;
 
+
+
     public Speaker (String name, String description){
         this.name = name;
         this.desctiption = description;
+    }
+
+    public int getSpeaker_id() {
+        return speaker_id;
+    }
+
+    public void setSpeaker_id(int speaker_id) {
+        this.speaker_id = speaker_id;
     }
 
     public String getName() {

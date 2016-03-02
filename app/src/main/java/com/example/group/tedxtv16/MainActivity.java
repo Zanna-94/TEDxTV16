@@ -1,5 +1,7 @@
 package com.example.group.tedxtv16;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -12,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.group.tedxtv16.db.SpeakerDAO;
 import com.example.group.tedxtv16.fragment.*;
 
 public class MainActivity extends AppCompatActivity {
@@ -35,6 +38,15 @@ public class MainActivity extends AppCompatActivity {
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
+
+/*        Bitmap photo = BitmapFactory.decodeResource(getApplicationContext().getResources(),R.mipmap.ic_launcher);
+        Speaker speaker = new Speaker("Ovi", " Bello");
+        speaker.setPhoto(photo);*/
+
+        SpeakerDAO speakerDAO = new SpeakerDAO(getApplicationContext());
+        Speaker ovi = speakerDAO.findSpeakerByID(1);
+        System.out.println(ovi.getPhoto());
+
     }
 
     private void setupViewPager(ViewPager viewPager) {
