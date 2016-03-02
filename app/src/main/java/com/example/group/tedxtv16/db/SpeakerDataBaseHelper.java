@@ -21,8 +21,7 @@ public class SpeakerDataBaseHelper extends SQLiteOpenHelper {
     private static final String CREATE_STATEMENT = "CREATE TABLE `Speakers` (\n" +
             "\t`_id`\tINTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,\n" +
             "\t`name`\tTEXT NOT NULL,\n" +
-            "\t`photo`\tTEXT,\n" +
-            "\t`description`\tTEXT NOT NULL\n" +
+            "\t`photo`\tTEXT\n"+
             ")";
 
 

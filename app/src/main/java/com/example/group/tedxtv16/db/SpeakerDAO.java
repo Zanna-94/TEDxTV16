@@ -8,7 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
 
-import com.example.group.tedxtv16.Speaker;
+import com.example.group.tedxtv16.SpeakerItem;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -27,22 +27,22 @@ public class SpeakerDAO {
     private final String ID_COLUMN = "_id";
     private final String NAME_COLUMN = "name";
     private final String PHOTO_COLUMN = "photo";
-    private final String DESCRIPTION_COLUMN = "description";
+    //private final String DESCRIPTION_COLUMN = "description";
 
     public SpeakerDAO(Context context) {
         this.context = context;
     }
 
     // write a speaker to the Speakers Table
-    public void insertSpeaker(Speaker speaker){
+    public void insertSpeaker(SpeakerItem speaker){
 
         SpeakerDataBaseHelper dataBaseHelper = new SpeakerDataBaseHelper(this.context);
 
-        Bitmap speakerPhoto = speaker.getPhoto();
+        Bitmap speakerPhoto = speaker.getBitmap();
 
         ContentValues contentValues = new ContentValues();
-        contentValues.put(NAME_COLUMN,speaker.getName());
-        contentValues.put(DESCRIPTION_COLUMN,speaker.getDesctiption());
+        contentValues.put(NAME_COLUMN,speaker.getSpeaker());
+        //contentValues.put(DESCRIPTION_COLUMN,speaker.getDesctiption());
         contentValues.put(PHOTO_COLUMN, encodeBitmapToBase64(speakerPhoto,100));
 
         SQLiteDatabase database = dataBaseHelper.getWritableDatabase();
@@ -52,28 +52,27 @@ public class SpeakerDAO {
         database.close();
     }
 
-    public Speaker findSpeakerByID(int id){
+    public SpeakerItem findSpeakerByID(int id){
         SpeakerDataBaseHelper dataBaseHelper = new SpeakerDataBaseHelper(this.context);
 
         SQLiteDatabase database = dataBaseHelper.getReadableDatabase();
 
-        String[] projections = {ID_COLUMN,NAME_COLUMN,PHOTO_COLUMN,DESCRIPTION_COLUMN};
+        String[] projections = {ID_COLUMN,NAME_COLUMN,PHOTO_COLUMN};
         String[] whereArgs = {String.valueOf(id)};
 
         Cursor c = database.query(SPEAKER_TABLE,projections,"_id = ?", whereArgs,null,null,null);
 
-        Speaker speaker = null;
+        SpeakerItem speaker = null;
 
         if(c.moveToFirst()){
             do {
 
                 String name = c.getString(1);
-                String description = c.getString(3);
+                //String description = c.getString(3);
                 String encodedBase64Bitmap = c.getString(2);
 
-                speaker = new Speaker(name,description);
-                speaker.setPhoto(decodeBitmapFromBase64(encodedBase64Bitmap))
-                ;
+                speaker = new SpeakerItem(id,decodeBitmapFromBase64(encodedBase64Bitmap),name);
+
             } while (c.moveToNext());
         }
 
