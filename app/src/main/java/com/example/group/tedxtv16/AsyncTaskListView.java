@@ -90,7 +90,4 @@ public class AsyncTaskListView extends AsyncTask< Object, Void, Void> {
         this.context = context;
     }
 
-    public void setPager(ViewPager pager) {
-        this.pager = pager;
-    }
 }
