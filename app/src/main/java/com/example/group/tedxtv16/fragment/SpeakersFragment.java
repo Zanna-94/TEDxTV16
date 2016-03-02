@@ -7,16 +7,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import com.example.group.tedxtv16.MainActivity;
 import com.example.group.tedxtv16.R;
 import com.example.group.tedxtv16.SpeakerItem;
 import com.example.group.tedxtv16.SpeakersAdapter;
 
 import java.util.ArrayList;
 
-public class SpeakersFragment extends ListFragment{
+public class SpeakersFragment extends ListFragment {
 
     private ListView myListView;
-    private ArrayList<SpeakerItem> adapter = new ArrayList<SpeakerItem>();
+
+    private ArrayList<SpeakerItem> speakers;
 
     public SpeakersFragment() {
         // Required empty public constructor
@@ -24,7 +26,15 @@ public class SpeakersFragment extends ListFragment{
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+
+        speakers = MainActivity.getSpeakers();
+
+        myListView = (ListView) this.getActivity().findViewById(R.id.list);
+
+        SpeakersAdapter speakAdapter = new SpeakersAdapter(getActivity(), speakers);
+        myListView.setAdapter(speakAdapter);
     }
 
     @Override
@@ -38,14 +48,6 @@ public class SpeakersFragment extends ListFragment{
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        for (int i = 0; i < 10; i++){
-            adapter.add(new SpeakerItem(String.valueOf(i), String.valueOf(i+1)));
-        }
-
-        SpeakersAdapter speakersAdapter = new SpeakersAdapter(getActivity(), R.layout.speaker_layout, adapter);
-
-        myListView = (ListView) getActivity().findViewById(android.R.id.list);
-        myListView.setAdapter(speakersAdapter);
     }
 
 

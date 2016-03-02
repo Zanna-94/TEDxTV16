@@ -14,18 +14,15 @@ import java.util.ArrayList;
 /**
  * Created by simone_mancini on 13/02/16.
  */
-
-
 public class SpeakersAdapter extends BaseAdapter {
-    private Activity activity;
+
     private ArrayList list;
     private static LayoutInflater inflater = null;
 
     //Constructor.
-    public SpeakersAdapter(Activity activity, ArrayList list) {
-        this.activity = activity;
+    public SpeakersAdapter(Context context, ArrayList list) {
         this.list = list;
-        inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
@@ -51,22 +48,27 @@ public class SpeakersAdapter extends BaseAdapter {
             view = inflater.inflate(R.layout.fragment_speaker_sample_layout, null);
 
         ImageView photo = (ImageView) view.findViewById(R.id.photo);
-        TextView author = (TextView) view.findViewById(R.id.speaker);
-        SpeakerItem speakerItem = (SpeakerItem) list.get(position);
+        TextView speaker = (TextView) view.findViewById(R.id.speaker);
 
-        if (speakerItem.getBitmap() != null) {
-            if (speakerItem.getSpeaker() != null)
-                author.setText(/*this.activity.getResources().getString(R.string.author) +*/ " " + speakerItem.getSpeaker());
-            else {author.setVisibility(View.GONE);}
+        if (list != null) {
+            if (!list.isEmpty()) {
+                SpeakerItem speakerItem = (SpeakerItem) list.get(position);
 
-        } else {
-            if (speakerItem.getSpeaker() == " ") {
-                author.setText("this.activity.getResources().getString(R.string.notFound)");
+                if (speakerItem != null) {
+                    if (speakerItem.getSpeaker() != null)
+                        speaker.setText(speakerItem.getSpeaker());
+                    else {
+                        speaker.setText("NON DISPONIBILE");
+                    }
+                    if (speakerItem.getBitmap()!=null)
+                        photo.setImageBitmap(speakerItem.getBitmap());
+                }
+
             }
         }
-        photo.setImageBitmap(speakerItem.getBitmap());
-        return view;
 
+        return view;
     }
+
 }
 
