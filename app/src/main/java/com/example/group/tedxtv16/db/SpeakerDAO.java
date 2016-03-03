@@ -12,6 +12,8 @@ import com.example.group.tedxtv16.SpeakerItem;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -79,6 +81,38 @@ public class SpeakerDAO {
         database.close();
 
         return speaker;
+    }
+
+    public List<SpeakerItem> getAllSpeakers(){
+        SpeakerDataBaseHelper dataBaseHelper = new SpeakerDataBaseHelper(this.context);
+
+        SQLiteDatabase database = dataBaseHelper.getReadableDatabase();
+
+        String[] columns = {ID_COLUMN,NAME_COLUMN,PHOTO_COLUMN};
+
+        Cursor c = database.query(SPEAKER_TABLE,columns,null,null,null,null,null);
+
+        List<SpeakerItem> list = new ArrayList<>();
+        SpeakerItem speakerItem;
+
+
+        if(c.moveToFirst()){
+            do {
+                int id = c.getInt(0);
+                String name = c.getString(1);
+
+                String encodedBase64Bitmap = c.getString(2);
+
+                speakerItem = new SpeakerItem(id,decodeBitmapFromBase64(encodedBase64Bitmap),name);
+
+                list.add(speakerItem);
+
+            }while (c.moveToNext());
+        }
+
+        database.close();
+
+        return list;
     }
 
     /**
