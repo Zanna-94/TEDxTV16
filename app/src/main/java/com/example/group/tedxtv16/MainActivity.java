@@ -32,9 +32,9 @@ public class MainActivity extends AppCompatActivity {
 
     private ProgressDialog waitingDialog;
 
-    private static ArrayList<SpeakerItem> speakers;
-    private static ArrayList<NewsItem> news;
-    private static ArrayList<TeamItem> team;
+    private static ArrayList<SpeakerItem> speakers = new ArrayList<>();
+    private static ArrayList<NewsItem> news = new ArrayList<>();
+    private static ArrayList<TeamItem> team = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
 
         if(isNetworkAvailable()){
-            waitingDialog();
+            //waitingDialog();
         }
 
         AsyncTaskListView mytask = new AsyncTaskListView();
@@ -71,6 +71,8 @@ public class MainActivity extends AppCompatActivity {
         adapter.addFragment(new TeamFragment(), "TEAM");
         adapter.addFragment(new ContactUsFragment(), "CONTACT US");
         adapter.addFragment(new NewsFragment(), "NEWS");
+
+        viewPager.setAdapter(adapter);
     }
 
     /**

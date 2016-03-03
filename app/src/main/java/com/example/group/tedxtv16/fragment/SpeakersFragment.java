@@ -2,6 +2,7 @@ package com.example.group.tedxtv16.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,20 +29,20 @@ public class SpeakersFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-
-        speakers = MainActivity.getSpeakers();
-
-        myListView = (ListView) this.getActivity().findViewById(R.id.list);
-
-        SpeakersAdapter speakAdapter = new SpeakersAdapter(getActivity(), speakers);
-        myListView.setAdapter(speakAdapter);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_speakers, container, false);
+        View v = inflater.inflate(R.layout.fragment_speakers, container, false);
+        speakers = MainActivity.getSpeakers();
+        myListView = (ListView) v.findViewById(android.R.id.list);
+
+        SpeakersAdapter speakAdapter = new SpeakersAdapter(getActivity(), speakers);
+        myListView.setAdapter(speakAdapter);
+
+        return v;
 
     }
 
