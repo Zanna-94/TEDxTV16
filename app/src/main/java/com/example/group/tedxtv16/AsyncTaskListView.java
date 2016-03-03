@@ -35,9 +35,9 @@ public class AsyncTaskListView extends AsyncTask< Object, Void, Void> {
     private final String[] SPEAKER_IDS = {};
     private final String[] TEAM_IDS = {};
 
-    private ArrayList<SpeakerItem> speakers;
-    private ArrayList<NewsItem> news;
-    private ArrayList<TeamItem> team;
+    private ArrayList<Item> speakers;
+    private ArrayList<Item> news;
+    private ArrayList<Item> team;
 
     private ViewPager pager;
     private Activity context;
@@ -82,7 +82,8 @@ public class AsyncTaskListView extends AsyncTask< Object, Void, Void> {
                 Log.v(TAG, "Image created!");
                 switch (link) {
                     case NEWSURL:
-                        SpeakerItem speakerItem = new SpeakerItem(articleName, articleBitmap);
+                        Item speakerItem = new SpeakerItem(SpeakerItem.maxID + 1,articleName, articleBitmap,null,null);
+                        SpeakerItem.incrementMaxID();
                         speakers.add(speakerItem);
                         break;
                     case SPEAKERURL:
@@ -113,15 +114,15 @@ public class AsyncTaskListView extends AsyncTask< Object, Void, Void> {
         }
     }
 
-    public void setSpeakers(ArrayList<SpeakerItem> speakers) {
+    public void setSpeakers(ArrayList<Item> speakers) {
         this.speakers = speakers;
     }
 
-    public void setNews(ArrayList<NewsItem> news) {
+    public void setNews(ArrayList<Item> news) {
         this.news = news;
     }
 
-    public void setTeam(ArrayList<TeamItem> team) {
+    public void setTeam(ArrayList<Item> team) {
         this.team = team;
     }
 

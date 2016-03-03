@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import com.example.group.tedxtv16.Item;
 import com.example.group.tedxtv16.MainActivity;
 import com.example.group.tedxtv16.R;
 import com.example.group.tedxtv16.SpeakerItem;
@@ -19,7 +20,7 @@ public class SpeakersFragment extends ListFragment {
 
     private ListView myListView;
 
-    private ArrayList<SpeakerItem> speakers;
+    private ArrayList<Item> speakers;
 
     public SpeakersFragment() {
         // Required empty public constructor

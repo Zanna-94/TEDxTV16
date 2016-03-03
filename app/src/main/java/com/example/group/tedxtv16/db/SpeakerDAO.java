@@ -61,6 +61,8 @@ public class SpeakerDAO {
 
         database.insert(SPEAKER_TABLE, null, contentValues);
 
+        SpeakerItem.incrementMaxID();
+
         database.close();
     }
 
@@ -118,6 +120,8 @@ public class SpeakerDAO {
 
         List<SpeakerItem> list = new ArrayList<>();
         SpeakerItem speakerItem;
+
+        SpeakerItem.setMaxID(c.getCount());
 
 
         if(c.moveToFirst()){

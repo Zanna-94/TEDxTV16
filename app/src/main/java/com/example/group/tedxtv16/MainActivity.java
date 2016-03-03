@@ -32,9 +32,9 @@ public class MainActivity extends AppCompatActivity {
 
     private ProgressDialog waitingDialog;
 
-    private static ArrayList<SpeakerItem> speakers = new ArrayList<>();
-    private static ArrayList<NewsItem> news = new ArrayList<>();
-    private static ArrayList<TeamItem> team = new ArrayList<>();
+    private static ArrayList<Item> speakers = new ArrayList<>();
+    private static ArrayList<Item> news = new ArrayList<>();
+    private static ArrayList<Item> team = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,15 +135,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public static ArrayList<TeamItem> getTeam() {
+    public static ArrayList<Item> getTeam() {
         return team;
     }
 
-    public static ArrayList<SpeakerItem> getSpeakers() {
+    public static ArrayList<Item> getSpeakers() {
         return speakers;
     }
 
-    public static ArrayList<NewsItem> getNews() {
+    public static ArrayList<Item> getNews() {
         return news;
     }
 

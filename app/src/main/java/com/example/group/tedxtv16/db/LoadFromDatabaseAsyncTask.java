@@ -2,6 +2,7 @@ package com.example.group.tedxtv16.db;
 
 import android.os.AsyncTask;
 
+import com.example.group.tedxtv16.Item;
 import com.example.group.tedxtv16.NewsItem;
 import com.example.group.tedxtv16.SpeakerItem;
 import com.example.group.tedxtv16.TeamItem;
@@ -15,8 +16,8 @@ import java.util.List;
 public class LoadFromDatabaseAsyncTask extends AsyncTask<Void,Void,Void> {
 
     private List<SpeakerItem> speakerItemList;
-    private List<NewsItem> newsItemList;
-    private List<TeamItem> teamItemList;
+    private List<Item> newsItemList;
+    private List<Item> teamItemList;
 
     public LoadFromDatabaseAsyncTask() {
 
