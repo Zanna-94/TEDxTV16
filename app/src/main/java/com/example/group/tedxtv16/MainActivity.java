@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -19,66 +18,70 @@ import android.support.v7.widget.Toolbar;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import com.example.group.tedxtv16.fragment.*;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final String WebSiteUrl = "http://www.tedxtorvergatau.com";
-
     private Toolbar toolbar;
     private TabLayout tabLayout;
     private ViewPager viewPager;
 
+    /**
+     * Progress dialog refered to be dismessed from different method
+     * {@link #waitingDialog()}
+     * {@link #createFragment()}
+     */
     private ProgressDialog waitingDialog;
 
+    /**
+     * Static because they are passed to AsyncTask that set them with download datas.
+     * {@link Item}
+     */
     private static ArrayList<Item> speakers = new ArrayList<>();
     private static ArrayList<Item> news = new ArrayList<>();
     private static ArrayList<Item> team = new ArrayList<>();
+
+    /**
+     * Current Instance of MainActivity that is passed to AsyncTask to inform  when it finishes.
+     * {@link AsyncTaskListView#onPostExecute(Void)}
+     */
+    public static Activity activity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        activity = this;
+
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        viewPager = (ViewPager) findViewById(R.id.viewpager);
-        setupViewPager(viewPager);
+        //check connection
+        if (!isNetworkAvailable())
+            finish();
 
-        tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(viewPager);
+        //show progress dialog
+        waitingDialog();
 
-        if(isNetworkAvailable()){
-            waitingDialog();
-        }
-
-        AsyncTaskListView mytask = new AsyncTaskListView();
+        // start asyncTask to download datas from the web site
+        AsyncTaskListView mytask = new AsyncTaskListView(this);
         mytask.setSpeakers(speakers);
         mytask.setNews(news);
         mytask.setTeam(team);
-        mytask.setContext(this);
 
         mytask.execute();
 
-        try {
-            mytask.get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-            finish();
-        }
-
-
-        waitingDialog.dismiss();
-
     }
 
+    /**
+     * Create Fragment and set Adapter for viewPager
+     *
+     * @param viewPager: to be set
+     */
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new SpeakersFragment(), "SPEAKERS");
@@ -90,7 +93,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
+     * Call {@link #setupViewPager(ViewPager)} and set TabLayout after that {@link AsyncTaskListView}
+     * has finished and {@link AsyncTaskListView#onPostExecute(Void)} is called
+     */
+    public void createFragment() {
+        waitingDialog.dismiss();
+
+        viewPager = (ViewPager) findViewById(R.id.viewpager);
+        setupViewPager(viewPager);
+
+        tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(viewPager);
+    }
+
+    /**
      * Check if connection to internet is available
+     *
      * @return true if the device if connected to internet
      */
     private boolean isNetworkAvailable() {
@@ -106,20 +124,23 @@ public class MainActivity extends AppCompatActivity {
     private void waitingDialog() {
         waitingDialog = new ProgressDialog(this);
 
-        waitingDialog.setMessage("Waiting");
-        waitingDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Wait connection",
+        waitingDialog.setMessage("Waiting to connect");
+        waitingDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Exit",
                 new DialogInterface.OnClickListener() {
 
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-                finish();
-            }
-        });
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        finish();
+                    }
+                });
 
         waitingDialog.show();
     }
 
+    /**
+     * Adapter for the ViewPager
+     */
     class ViewPagerAdapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<String> mFragmentTitleList = new ArrayList<>();
@@ -149,6 +170,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
+    /**
+     * Called from Fragment to obtain ArrayList of Items and pass them to Adapter that create the
+     * custom view
+     *
+     * @return
+     */
     public static ArrayList<Item> getTeam() {
         return team;
     }

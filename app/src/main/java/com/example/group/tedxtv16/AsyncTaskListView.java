@@ -1,13 +1,9 @@
 package com.example.group.tedxtv16;
 
-import android.app.Activity;
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
-import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.widget.ListView;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -22,14 +18,17 @@ import java.util.ArrayList;
 
 /**
  * AsyncTask to populate ListView connecting and download html pages from tedxTV site.
+ * On finish it call MainActivit method to create Fragment views
+ *
+ * @see MainActivity#createFragment()
  */
-public class AsyncTaskListView extends AsyncTask< Object, Void, Void> {
+public class AsyncTaskListView extends AsyncTask<Object, Void, Void> {
 
     final String TAG = "JSwa";
 
-    private  final String NEWSURL= "http://www.tedxtorvergatau.com/index.php/it/news";
-    private  final String TEAMURL= "http://www.tedxtorvergatau.com/index.php/it/team";
-    private  final String SPEAKERURL= "http://www.tedxtorvergatau.com/index.php/it/speakers";
+    private final String NEWSURL = "http://www.tedxtorvergatau.com/index.php/it/news";
+    private final String TEAMURL = "http://www.tedxtorvergatau.com/index.php/it/team";
+    private final String SPEAKERURL = "http://www.tedxtorvergatau.com/index.php/it/speakers";
 
     private final String[] NEWS_IDS = {"#ted__item", "#ted__itemTitle", "#ted__itemIntroImage"};
     private final String[] SPEAKER_IDS = {};
@@ -39,8 +38,11 @@ public class AsyncTaskListView extends AsyncTask< Object, Void, Void> {
     private ArrayList<Item> news;
     private ArrayList<Item> team;
 
-    private ViewPager pager;
-    private Activity context;
+    private MainActivity activity;
+
+    public AsyncTaskListView(MainActivity activity) {
+        this.activity = activity;
+    }
 
     @Override
     protected Void doInBackground(Object... obj) {
@@ -49,6 +51,12 @@ public class AsyncTaskListView extends AsyncTask< Object, Void, Void> {
 
 
         return null;
+    }
+
+    @Override
+    protected void onPostExecute(Void aVoid) {
+        super.onPostExecute(aVoid);
+        activity.createFragment();
     }
 
     private void configureListView(String link, String[] ids) {
@@ -82,7 +90,7 @@ public class AsyncTaskListView extends AsyncTask< Object, Void, Void> {
                 Log.v(TAG, "Image created!");
                 switch (link) {
                     case NEWSURL:
-                        Item speakerItem = new SpeakerItem(SpeakerItem.maxID + 1,articleName, articleBitmap,null,null);
+                        Item speakerItem = new SpeakerItem(SpeakerItem.maxID + 1, articleName, articleBitmap, null, null);
                         SpeakerItem.incrementMaxID();
                         speakers.add(speakerItem);
                         break;
@@ -124,10 +132,6 @@ public class AsyncTaskListView extends AsyncTask< Object, Void, Void> {
 
     public void setTeam(ArrayList<Item> team) {
         this.team = team;
-    }
-
-    public void setContext(Activity context) {
-        this.context = context;
     }
 
 }

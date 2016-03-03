@@ -37,6 +37,7 @@ public class SpeakersFragment extends ListFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_speakers, container, false);
+
         speakers = MainActivity.getSpeakers();
         myListView = (ListView) v.findViewById(android.R.id.list);
 
