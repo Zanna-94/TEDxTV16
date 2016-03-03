@@ -52,16 +52,16 @@ public class SpeakersAdapter extends BaseAdapter {
 
         if (list != null) {
             if (!list.isEmpty()) {
-                SpeakerItem speakerItem = (SpeakerItem) list.get(position);
+                Item speakerItem = (SpeakerItem) list.get(position);
 
                 if (speakerItem != null) {
-                    if (speakerItem.getSpeaker() != null)
-                        speaker.setText(speakerItem.getSpeaker());
+                    if (speakerItem.getName() != null)
+                        speaker.setText(speakerItem.getName());
                     else {
                         speaker.setText("NON DISPONIBILE");
                     }
-                    if (speakerItem.getBitmap()!=null)
-                        photo.setImageBitmap(speakerItem.getBitmap());
+                    if (speakerItem.getPhoto()!=null)
+                        photo.setImageBitmap(speakerItem.getPhoto());
                 }
 
             }

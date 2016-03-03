@@ -18,10 +18,28 @@ public class SpeakerDataBaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "TEDxTV16.db";
 
     // SQL create Speakers Table (if first time)
-    private static final String CREATE_STATEMENT = "CREATE TABLE `Speakers` (\n" +
+    private static final String SPEAKERS_TABLE_CREATE_STATEMENT = "CREATE TABLE `Speakers` (\n" +
             "\t`_id`\tINTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,\n" +
             "\t`name`\tTEXT NOT NULL,\n" +
-            "\t`photo`\tTEXT\n"+
+            "\t`photo`\tTEXT NOT NULL,\n" +
+            "\t`description`\tTEXT,\n" +
+            "\t`url`\tTEXT NOT NULL\n" +
+            ")";
+
+    private static final String NEWS_TABLE_CREATE_STATEMENT = "CREATE TABLE `News` (\n" +
+            "\t`_id`\tINTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,\n" +
+            "\t`name`\tTEXT NOT NULL,\n" +
+            "\t`photo`\tTEXT NOT NULL,\n" +
+            "\t`description`\tTEXT,\n" +
+            "\t`url`\tTEXT NOT NULL\n" +
+            ")";
+
+    private static final String TEAM_TABLE_CREATE_STATEMENT = "CREATE TABLE `Team` (\n" +
+            "\t`_id`\tINTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,\n" +
+            "\t`name`\tTEXT NOT NULL,\n" +
+            "\t`photo`\tTEXT NOT NULL,\n" +
+            "\t`description`\tTEXT,\n" +
+            "\t`url`\tTEXT NOT NULL\n" +
             ")";
 
 
@@ -35,7 +53,9 @@ public class SpeakerDataBaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
 
-        sqLiteDatabase.execSQL(CREATE_STATEMENT);
+        sqLiteDatabase.execSQL(SPEAKERS_TABLE_CREATE_STATEMENT);
+        sqLiteDatabase.execSQL(NEWS_TABLE_CREATE_STATEMENT);
+        sqLiteDatabase.execSQL(TEAM_TABLE_CREATE_STATEMENT);
     }
 
     // needed for future upgrades
