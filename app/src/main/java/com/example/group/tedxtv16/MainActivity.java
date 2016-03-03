@@ -19,6 +19,7 @@ import android.support.v7.widget.Toolbar;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import com.example.group.tedxtv16.fragment.*;
 
@@ -53,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
 
         if(isNetworkAvailable()){
-            //waitingDialog();
+            waitingDialog();
         }
 
         AsyncTaskListView mytask = new AsyncTaskListView();
@@ -63,6 +64,19 @@ public class MainActivity extends AppCompatActivity {
         mytask.setContext(this);
 
         mytask.execute();
+
+        try {
+            mytask.get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+            finish();
+        }
+
+
+        waitingDialog.dismiss();
+
     }
 
     private void setupViewPager(ViewPager viewPager) {
