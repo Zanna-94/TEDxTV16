@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.group.tedxtv16.item.Item;
 import com.example.group.tedxtv16.MainActivity;
@@ -36,11 +37,19 @@ public class SpeakersFragment extends ListFragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_speakers, container, false);
 
-        speakers = MainActivity.getSpeakers();
-        myListView = (ListView) v.findViewById(android.R.id.list);
+        TextView content = (TextView) v.findViewById(R.id.textView);
+        content.setVisibility(View.INVISIBLE);
 
-        SpeakersAdapter speakAdapter = new SpeakersAdapter(getActivity(), speakers);
-        myListView.setAdapter(speakAdapter);
+        speakers = MainActivity.getSpeakers();
+
+        if (speakers.size() == 0) {
+            content.setVisibility(View.VISIBLE);
+        } else {
+            myListView = (ListView) v.findViewById(android.R.id.list);
+            SpeakersAdapter speakAdapter = new SpeakersAdapter(getActivity(), speakers);
+            myListView.setAdapter(speakAdapter);
+        }
+
 
         return v;
 

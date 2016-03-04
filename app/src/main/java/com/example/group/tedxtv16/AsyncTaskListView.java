@@ -19,6 +19,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  * AsyncTask to populate ListView connecting and download html pages from tedxTV site.
@@ -30,9 +31,13 @@ public class AsyncTaskListView extends AsyncTask<Object, Void, Void> {
 
     final String TAG = "JSwa";
 
-    private final String NEWSURL = "http://www.tedxtorvergatau.com/index.php/it/news";
-    private final String TEAMURL = "http://www.tedxtorvergatau.com/index.php/it/team";
-    private final String SPEAKERURL = "http://www.tedxtorvergatau.com/index.php/it/speakers";
+    private final String NEWSURL_ITA = "http://www.tedxtorvergatau.com/index.php/it/news";
+    private final String TEAMURL_ITA = "http://www.tedxtorvergatau.com/index.php/it/team";
+    private final String SPEAKERURL_ITA = "http://www.tedxtorvergatau.com/index.php/it/speakers";
+
+    private final String NEWSURL_ENG = "http://www.tedxtorvergatau.com/index.php/en/news";
+    private final String TEAMURL_ENG = "http://www.tedxtorvergatau.com/index.php/en/team";
+    private final String SPEAKERURL_ENG = "http://www.tedxtorvergatau.com/index.php/en/speakers";
 
     private final String[] NEWS_IDS = {"#ted__item", "#ted__itemTitle", "#ted__itemIntroImage"};
     private final String[] SPEAKER_IDS = {};
@@ -44,6 +49,8 @@ public class AsyncTaskListView extends AsyncTask<Object, Void, Void> {
 
     private MainActivity activity;
 
+    String language;
+
     public AsyncTaskListView(MainActivity activity) {
         this.activity = activity;
     }
@@ -51,8 +58,17 @@ public class AsyncTaskListView extends AsyncTask<Object, Void, Void> {
     @Override
     protected Void doInBackground(Object... obj) {
 
-        configureListView(NEWSURL, NEWS_IDS);
+        language = Locale.getDefault().getLanguage();
 
+        if (language.equals("it")) {
+            configureListView(NEWSURL_ITA, NEWS_IDS);
+            configureListView(SPEAKERURL_ITA, SPEAKER_IDS);
+            configureListView(TEAMURL_ITA, TEAM_IDS);
+        } else {
+            configureListView(NEWSURL_ENG, NEWS_IDS);
+            configureListView(SPEAKERURL_ENG, SPEAKER_IDS);
+            configureListView(TEAMURL_ENG, TEAM_IDS);
+        }
 
         return null;
     }
@@ -93,17 +109,20 @@ public class AsyncTaskListView extends AsyncTask<Object, Void, Void> {
                 Bitmap articleBitmap = getBitmapFromURL("http://www.tedxtorvergatau.com" + articleImageLink);
                 Log.v(TAG, "Image created!");
                 switch (link) {
-                    case NEWSURL:
+                    case NEWSURL_ITA:
+                    case NEWSURL_ENG:
                         Item newsItem = new NewsItem(SpeakerItem.maxID + 1, articleName, articleBitmap, null, null);
                         NewsItem.incrementMaxID();
                         news.add(newsItem);
                         break;
-                    case SPEAKERURL:
+                    case SPEAKERURL_ITA:
+                    case SPEAKERURL_ENG:
 //                        Item speakerItem = new SpeakerItem(SpeakerItem.maxID + 1, articleName, articleBitmap, null, null);
 //                        SpeakerItem.incrementMaxID();
 //                        speakers.add(speakerItem);
                         break;
-                    case TEAMURL:
+                    case TEAMURL_ITA:
+                    case TEAMURL_ENG:
                         break;
                 }
             }
@@ -122,6 +141,7 @@ public class AsyncTaskListView extends AsyncTask<Object, Void, Void> {
             connection.connect();
             InputStream input = connection.getInputStream();
             Bitmap myBitmap = BitmapFactory.decodeStream(input);
+
             return myBitmap;
         } catch (IOException e) {
             e.printStackTrace();

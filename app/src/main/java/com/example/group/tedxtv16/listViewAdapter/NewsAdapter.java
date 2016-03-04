@@ -1,6 +1,7 @@
 package com.example.group.tedxtv16.listViewAdapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,8 +63,11 @@ public class NewsAdapter extends BaseAdapter {
                     else {
                         newsText.setText("NON DISPONIBILE");
                     }
-                    if (newsItem.getPhoto() != null)
-                        photo.setImageBitmap(newsItem.getPhoto());
+                    if (newsItem.getPhoto() != null) {
+                        photo.setImageBitmap(Bitmap.createScaledBitmap(newsItem.getPhoto(), 300, 300, false));
+
+                    }
+
                 }
             }
         }

@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         activity = this;
-        news= new ArrayList<>();
+        news = new ArrayList<>();
         speakers = new ArrayList<>();
         team = new ArrayList<>();
 
@@ -64,22 +64,40 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        //check connection
-        if (!isNetworkAvailable())
-            finish();
+        if (savedInstanceState == null) {
 
-        //show progress dialog
-        waitingDialog();
+            //check connection
+            if (!isNetworkAvailable())
+                finish();
 
-        // start asyncTask to download datas from the web site
-        AsyncTaskListView mytask = new AsyncTaskListView(this);
-        mytask.setSpeakers(speakers);
-        mytask.setNews(news);
-        mytask.setTeam(team);
+            //show progress dialog
+            waitingDialog();
 
-        mytask.execute();
+            // start asyncTask to download datas from the web site
+            AsyncTaskListView mytask = new AsyncTaskListView(this);
+            mytask.setSpeakers(speakers);
+            mytask.setNews(news);
+            mytask.setTeam(team);
+
+            mytask.execute();
+        } else {
+            news = savedInstanceState.getParcelableArrayList("NEWS");
+            speakers = savedInstanceState.getParcelableArrayList("SPEAKER");
+            team = savedInstanceState.getParcelableArrayList("TEAM");
+
+            createFragment();
+        }
 
     }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putParcelableArrayList("NEWS", news);
+        outState.putParcelableArrayList("TEAM", team);
+        outState.putParcelableArrayList("SPEAKER", speakers);
+        super.onSaveInstanceState(outState);
+    }
+
 
     @Override
     protected void onResume() {
@@ -111,7 +129,9 @@ public class MainActivity extends AppCompatActivity {
      * has finished and {@link AsyncTaskListView#onPostExecute(Void)} is called
      */
     public void createFragment() {
-        waitingDialog.dismiss();
+
+        if (waitingDialog != null)
+            waitingDialog.dismiss();
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);

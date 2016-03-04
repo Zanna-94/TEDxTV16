@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.group.tedxtv16.MainActivity;
 import com.example.group.tedxtv16.R;
@@ -35,13 +36,20 @@ public class NewsFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
-        View v =  inflater.inflate(R.layout.fragment_news, container, false);
+        View v = inflater.inflate(R.layout.fragment_news, container, false);
+        TextView content = (TextView) v.findViewById(R.id.textView);
+        content.setVisibility(View.INVISIBLE);
 
         news = MainActivity.getNews();
-        myListView = (ListView) v.findViewById(android.R.id.list);
 
-        NewsAdapter newsAdapter = new NewsAdapter(getActivity(), news);
-        myListView.setAdapter(newsAdapter);
+        if (news.size() == 0) {
+            content.setVisibility(View.VISIBLE);
+        } else {
+
+            myListView = (ListView) v.findViewById(android.R.id.list);
+            NewsAdapter newsAdapter = new NewsAdapter(getActivity(), news);
+            myListView.setAdapter(newsAdapter);
+        }
 
         return v;
     }
