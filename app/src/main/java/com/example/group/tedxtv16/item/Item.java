@@ -1,13 +1,14 @@
-package com.example.group.tedxtv16;
+package com.example.group.tedxtv16.item;
 
 import android.graphics.Bitmap;
 
 /**
  * Created by ovidiudanielbarba on 03/03/16.
  */
-
 public abstract class Item {
 
+    // initially equal to 1; when getAllItems(ItemType ) is called,it initializes it right
+    public static int maxID = 1;
     private int id;
     private String name;
     private Bitmap photo;

@@ -1,4 +1,4 @@
-package com.example.group.tedxtv16;
+package com.example.group.tedxtv16.item;
 
 /**
  * Created by ovidiudanielbarba on 03/03/16.

@@ -5,6 +5,10 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.example.group.tedxtv16.item.Item;
+import com.example.group.tedxtv16.item.NewsItem;
+import com.example.group.tedxtv16.item.SpeakerItem;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -90,11 +94,14 @@ public class AsyncTaskListView extends AsyncTask<Object, Void, Void> {
                 Log.v(TAG, "Image created!");
                 switch (link) {
                     case NEWSURL:
-                        Item speakerItem = new SpeakerItem(SpeakerItem.maxID + 1, articleName, articleBitmap, null, null);
-                        SpeakerItem.incrementMaxID();
-                        speakers.add(speakerItem);
+                        Item newsItem = new NewsItem(SpeakerItem.maxID + 1, articleName, articleBitmap, null, null);
+                        NewsItem.incrementMaxID();
+                        news.add(newsItem);
                         break;
                     case SPEAKERURL:
+//                        Item speakerItem = new SpeakerItem(SpeakerItem.maxID + 1, articleName, articleBitmap, null, null);
+//                        SpeakerItem.incrementMaxID();
+//                        speakers.add(speakerItem);
                         break;
                     case TEAMURL:
                         break;

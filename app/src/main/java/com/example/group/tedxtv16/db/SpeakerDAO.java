@@ -8,9 +8,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
 
-import com.example.group.tedxtv16.ItemType;
-import com.example.group.tedxtv16.SpeakerItem;
-import com.example.group.tedxtv16.Item;
+import com.example.group.tedxtv16.item.ItemType;
+import com.example.group.tedxtv16.item.SpeakerItem;
+import com.example.group.tedxtv16.item.Item;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

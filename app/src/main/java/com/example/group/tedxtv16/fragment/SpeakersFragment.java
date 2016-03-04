@@ -2,17 +2,15 @@ package com.example.group.tedxtv16.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import com.example.group.tedxtv16.Item;
+import com.example.group.tedxtv16.item.Item;
 import com.example.group.tedxtv16.MainActivity;
 import com.example.group.tedxtv16.R;
-import com.example.group.tedxtv16.SpeakerItem;
-import com.example.group.tedxtv16.SpeakersAdapter;
+import com.example.group.tedxtv16.listViewAdapter.SpeakersAdapter;
 
 import java.util.ArrayList;
 

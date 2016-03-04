@@ -1,6 +1,5 @@
-package com.example.group.tedxtv16;
+package com.example.group.tedxtv16.listViewAdapter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,18 +8,21 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.group.tedxtv16.R;
+import com.example.group.tedxtv16.item.Item;
+
 import java.util.ArrayList;
 
 /**
- * Created by simone_mancini on 13/02/16.
+ * Created by emanuele on 04/03/16.
  */
-public class SpeakersAdapter extends BaseAdapter {
+public class NewsAdapter extends BaseAdapter {
 
     private ArrayList list;
     private static LayoutInflater inflater = null;
 
     //Constructor.
-    public SpeakersAdapter(Context context, ArrayList list) {
+    public NewsAdapter(Context context, ArrayList list) {
         this.list = list;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
@@ -45,25 +47,24 @@ public class SpeakersAdapter extends BaseAdapter {
         View view = convertView;
 
         if (convertView == null)
-            view = inflater.inflate(R.layout.fragment_speaker_sample_layout, null);
+            view = inflater.inflate(R.layout.fragment_news_sample_layout, null);
 
         ImageView photo = (ImageView) view.findViewById(R.id.photo);
-        TextView speaker = (TextView) view.findViewById(R.id.speaker);
+        TextView newsText = (TextView) view.findViewById(R.id.speaker);
 
         if (list != null) {
             if (!list.isEmpty()) {
-                Item speakerItem = (SpeakerItem) list.get(position);
+                Item newsItem = (Item) list.get(position);
 
-                if (speakerItem != null) {
-                    if (speakerItem.getName() != null)
-                        speaker.setText(speakerItem.getName());
+                if (newsItem != null) {
+                    if (newsItem.getName() != null)
+                        newsText.setText(newsItem.getName());
                     else {
-                        speaker.setText("NON DISPONIBILE");
+                        newsText.setText("NON DISPONIBILE");
                     }
-                    if (speakerItem.getPhoto()!=null)
-                        photo.setImageBitmap(speakerItem.getPhoto());
+                    if (newsItem.getPhoto() != null)
+                        photo.setImageBitmap(newsItem.getPhoto());
                 }
-
             }
         }
 
@@ -71,4 +72,3 @@ public class SpeakersAdapter extends BaseAdapter {
     }
 
 }
-

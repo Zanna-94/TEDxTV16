@@ -2,10 +2,8 @@ package com.example.group.tedxtv16.db;
 
 import android.os.AsyncTask;
 
-import com.example.group.tedxtv16.Item;
-import com.example.group.tedxtv16.NewsItem;
-import com.example.group.tedxtv16.SpeakerItem;
-import com.example.group.tedxtv16.TeamItem;
+import com.example.group.tedxtv16.item.Item;
+import com.example.group.tedxtv16.item.SpeakerItem;
 
 import java.util.ArrayList;
 import java.util.List;

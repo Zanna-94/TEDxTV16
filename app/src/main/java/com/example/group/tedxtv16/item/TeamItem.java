@@ -1,4 +1,4 @@
-package com.example.group.tedxtv16;
+package com.example.group.tedxtv16.item;
 
 
 import android.graphics.Bitmap;

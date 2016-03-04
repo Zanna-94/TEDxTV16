@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.group.tedxtv16.fragment.*;
+import com.example.group.tedxtv16.item.Item;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -38,9 +39,9 @@ public class MainActivity extends AppCompatActivity {
      * Static because they are passed to AsyncTask that set them with download datas.
      * {@link Item}
      */
-    private static ArrayList<Item> speakers = new ArrayList<>();
-    private static ArrayList<Item> news = new ArrayList<>();
-    private static ArrayList<Item> team = new ArrayList<>();
+    private static ArrayList<Item> speakers;
+    private static ArrayList<Item> news;
+    private static ArrayList<Item> team;
 
     /**
      * Current Instance of MainActivity that is passed to AsyncTask to inform  when it finishes.
@@ -54,6 +55,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         activity = this;
+        news= new ArrayList<>();
+        speakers = new ArrayList<>();
+        team = new ArrayList<>();
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -75,6 +79,16 @@ public class MainActivity extends AppCompatActivity {
 
         mytask.execute();
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
     }
 
     /**
