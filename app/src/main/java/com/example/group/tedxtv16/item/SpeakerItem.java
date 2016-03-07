@@ -3,9 +3,6 @@ package com.example.group.tedxtv16.item;
 import android.graphics.Bitmap;
 import android.os.Parcel;
 
-/**
- * Created by Francesco on 01/03/16.
- */
 public class SpeakerItem extends Item {
 
     public SpeakerItem(int id, String name, Bitmap photo, String description, String url) {

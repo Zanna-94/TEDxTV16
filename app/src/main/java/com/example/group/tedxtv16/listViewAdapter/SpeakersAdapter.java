@@ -1,6 +1,7 @@
 package com.example.group.tedxtv16.listViewAdapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,7 +65,7 @@ public class SpeakersAdapter extends BaseAdapter {
                         speaker.setText("NON DISPONIBILE");
                     }
                     if (speakerItem.getPhoto()!=null)
-                        photo.setImageBitmap(speakerItem.getPhoto());
+                        photo.setImageBitmap(Bitmap.createScaledBitmap(speakerItem.getPhoto(), 300, 300, false));
                 }
             }
         }

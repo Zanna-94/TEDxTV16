@@ -11,6 +11,18 @@ public class TeamItem extends Item {
         setType(ItemType.TEAM);
     }
 
+    public static void incrementMaxID(){
+        maxID++;
+    }
+
+    public static void setMaxID(int maxID) {
+        TeamItem.maxID = maxID;
+    }
+
+    public static int getMaxID() {
+        return maxID;
+    }
+
     @Override
     public int describeContents() {
         return 0;

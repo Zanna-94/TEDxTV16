@@ -39,7 +39,7 @@ public class AsyncTaskListView extends AsyncTask<Object, Void, Void> {
     private final String TEAMURL_ENG = "http://www.tedxtorvergatau.com/index.php/en/team";
     private final String SPEAKERURL_ENG = "http://www.tedxtorvergatau.com/index.php/en/speakers";
 
-    private final String[] NEWS_IDS = {"#ted__item", "#ted__itemTitle", "#ted__itemIntroImage"};
+    private final String[] NEWS_IDS = {"#ted__item", "#ted__itemTitle", "#ted__itemIntroImage" , "#ted__itemSummary"};
     private final String[] SPEAKER_IDS = {};
     private final String[] TEAM_IDS = {};
 
@@ -88,42 +88,55 @@ public class AsyncTaskListView extends AsyncTask<Object, Void, Void> {
 
             Log.v(TAG, "Selecting articles...");
             Elements articles = doc.select(ids[0]);
-            Log.v(TAG, "Selected articles: " + articles.toString());
+            //Log.v(TAG, "Selected articles: " + articles.toString());
 
-            for (Element article : articles) {
-                Log.v(TAG, "ARTICLE");
-                Log.v(TAG, "Selected article: " + article.toString());
+            if (articles.size() != 0) {
 
-                Element name = article.select(ids[1]).first();
+                for (Element article : articles) {
+                    Log.v(TAG, "ARTICLE");
+                    Log.v(TAG, "Selected article: " + article.toString());
 
-                Element image = article.select(ids[2]).first();
+                    Element name = article.select(ids[1]).first();
 
-                //return name of card
-                String articleName = name.text();
-                Log.v(TAG, "Article name: " + articleName);
+                    Element image = article.select(ids[2]).first();
 
-                String articleImageLink = image.attr("src");
-                Log.v(TAG, "Article image link: " + articleImageLink);
+                    Element description = article.select(ids[3]).first();
 
-                Log.v(TAG, "Creating bitmap...");
-                Bitmap articleBitmap = getBitmapFromURL("http://www.tedxtorvergatau.com" + articleImageLink);
-                Log.v(TAG, "Image created!");
-                switch (link) {
-                    case NEWSURL_ITA:
-                    case NEWSURL_ENG:
-                        Item newsItem = new NewsItem(SpeakerItem.maxID + 1, articleName, articleBitmap, null, null);
-                        NewsItem.incrementMaxID();
-                        news.add(newsItem);
-                        break;
-                    case SPEAKERURL_ITA:
-                    case SPEAKERURL_ENG:
-//                        Item speakerItem = new SpeakerItem(SpeakerItem.maxID + 1, articleName, articleBitmap, null, null);
-//                        SpeakerItem.incrementMaxID();
-//                        speakers.add(speakerItem);
-                        break;
-                    case TEAMURL_ITA:
-                    case TEAMURL_ENG:
-                        break;
+                    //return name of card
+                    String articleName = name.text();
+                    Log.v(TAG, "Article name: " + articleName);
+
+                    String articleLink = "http://www.tedxtorvergatau.com" + name.attr("href");
+                    Log.v(TAG, "Article link: " + articleLink);
+
+                    String articleImageLink = image.attr("src");
+                    Log.v(TAG, "Article image link: " + articleImageLink);
+
+                    Log.v(TAG, "Creating bitmap...");
+                    Bitmap articleBitmap = getBitmapFromURL("http://www.tedxtorvergatau.com" + articleImageLink);
+                    Log.v(TAG, "Image created!");
+
+                    String articleDescription = description.text().substring(0, description.text().length()-3) + "...";
+                    Log.v(TAG, articleDescription);
+
+
+                    switch (link) {
+                        case NEWSURL_ITA:
+                        case NEWSURL_ENG:
+                            Item newsItem = new NewsItem(SpeakerItem.maxID + 1, articleName, articleBitmap, articleDescription, articleLink);
+                            NewsItem.incrementMaxID();
+                            news.add(newsItem);
+                            break;
+                        case SPEAKERURL_ITA:
+                        case SPEAKERURL_ENG:
+                        Item speakerItem = new SpeakerItem(SpeakerItem.maxID + 1, articleName, articleBitmap, null, null);
+                        SpeakerItem.incrementMaxID();
+                        speakers.add(speakerItem);
+                            break;
+                        case TEAMURL_ITA:
+                        case TEAMURL_ENG:
+                            break;
+                    }
                 }
             }
 

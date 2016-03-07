@@ -116,10 +116,10 @@ public class MainActivity extends AppCompatActivity {
      */
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter.addFragment(new NewsFragment(), "NEWS");
         adapter.addFragment(new SpeakersFragment(), "SPEAKERS");
         adapter.addFragment(new TeamFragment(), "TEAM");
         adapter.addFragment(new ContactUsFragment(), "CONTACT US");
-        adapter.addFragment(new NewsFragment(), "NEWS");
 
         viewPager.setAdapter(adapter);
     }

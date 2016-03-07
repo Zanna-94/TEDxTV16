@@ -2,9 +2,6 @@ package com.example.group.tedxtv16.listViewAdapter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,15 +15,15 @@ import com.example.group.tedxtv16.item.Item;
 import java.util.ArrayList;
 
 /**
- * Created by emanuele on 04/03/16.
+ * Created by simone_mancini on 04/03/16.
  */
-public class NewsAdapter extends BaseAdapter {
+public class TeamAdapter extends BaseAdapter {
 
     private ArrayList list;
     private static LayoutInflater inflater = null;
 
     //Constructor.
-    public NewsAdapter(Context context, ArrayList list) {
+    public TeamAdapter(Context context, ArrayList list) {
         this.list = list;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
@@ -51,35 +48,30 @@ public class NewsAdapter extends BaseAdapter {
         View view = convertView;
 
         if (convertView == null)
-            view = inflater.inflate(R.layout.fragment_news_sample_layout, null);
+            view = inflater.inflate(R.layout.fragment_team_sample_layout, null);
 
         ImageView photo = (ImageView) view.findViewById(R.id.photo);
-        TextView newsText = (TextView) view.findViewById(R.id.speaker);
-        TextView description = (TextView) view.findViewById(R.id.tvNewsDescription);
+        TextView teamText = (TextView) view.findViewById(R.id.speaker);
 
         if (list != null) {
             if (!list.isEmpty()) {
-                Item newsItem = (Item) list.get(position);
+                Item teamItem = (Item) list.get(position);
 
-                if (newsItem != null) {
-                    if (newsItem.getName() != null)
-                        newsText.setText(newsItem.getName());
+                if (teamItem != null) {
+                    if (teamItem.getName() != null)
+                        teamText.setText(teamItem.getName());
                     else {
-                        newsText.setText("NON DISPONIBILE");
+                        teamText.setText("NON DISPONIBILE");
                     }
-                    if (newsItem.getPhoto() != null)
-                        photo.setImageBitmap(Bitmap.createScaledBitmap(newsItem.getPhoto(), 300, 300, false));
-                    else{photo.setImageBitmap(Bitmap.createScaledBitmap(BitmapFactory.decodeFile("/res/drawable/no_image_available.png"), 300, 300, false));}
-                    if (newsItem.getDescription() != null)
-                        description.setText(newsItem.getDescription());
-                    else{
-                        description.setText("NON DISPONIBILE");
+                    if (teamItem.getPhoto() != null) {
+                        photo.setImageBitmap(Bitmap.createScaledBitmap(teamItem.getPhoto(), 300, 300, false));
+
                     }
+
                 }
             }
         }
 
         return view;
     }
-
 }
