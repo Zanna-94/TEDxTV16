@@ -29,35 +29,28 @@ public class ArticleActivity extends AppCompatActivity {
 //        myArticle.setContext(this);
 //        myArticle.execute(url);
 
-        webview.getSettings().setJavaScriptEnabled(true);
-        webview.addJavascriptInterface(new MyJavaScriptInterface(this), "HtmlViewer");
+        WebViewClient yourWebClient = new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                return false;
+            }
 
-        webview.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageFinished(WebView view, String url) {
-                webview.loadUrl("javascript:window.HtmlViewer.showHTML" +
-                        "(document.select('.'+'subpage post'))[0].innerHTML);");
+                String javascript = "javascript: var form = document.getElementsByClassName('site__content');"
+                        + "var body = document.getElementsByTagName('body');"
+                        + "body[0].innerHTML = form[0].innerHTML;";
+
+                view.getSettings().setDefaultFontSize(30);
+                view.loadUrl(javascript);
             }
-        });
-
-        webview.loadUrl("http://www.tedxtorvergatau.com/index.php/it/news/24-opening-night-ted2016-opening-night");
-
+        };
+        webview.getSettings().setJavaScriptEnabled(true);
+        webview.getSettings().setSupportZoom(true);
+        webview.getSettings().setBuiltInZoomControls(true);
+        webview.setWebViewClient(yourWebClient);
+        webview.getSettings().setLoadWithOverviewMode(true);
+        webview.getSettings().setUseWideViewPort(true);
+        webview.loadUrl(url);
     }
-
-    class MyJavaScriptInterface {
-
-        private Context ctx;
-
-        MyJavaScriptInterface(Context ctx) {
-            this.ctx = ctx;
-        }
-
-        public void showHTML(String html) {
-            Toast.makeText(getApplicationContext(), html, Toast.LENGTH_LONG).show();
-            new AlertDialog.Builder(ctx).setTitle("HTML Code").setMessage(html)
-                    .setPositiveButton(android.R.string.ok, null).setCancelable(false).create().show();
-        }
-    }
-
-
 }
