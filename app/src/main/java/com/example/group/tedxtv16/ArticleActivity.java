@@ -1,56 +1,76 @@
 package com.example.group.tedxtv16;
 
 import android.content.Context;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.method.ScrollingMovementMethod;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import org.w3c.dom.Text;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
+
+import java.io.IOException;
+
 
 public class ArticleActivity extends AppCompatActivity {
+
+    private String url;
+    private WebView webview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_article);
 
-        String url = getIntent().getStringExtra("articleLink");
+        url = getIntent().getStringExtra("articleLink");
 
-        final WebView webview = (WebView) findViewById(R.id.textView);
-//        text.setMovementMethod(new ScrollingMovementMethod());
+        webview = (WebView) findViewById(R.id.textView);
 
-//        AsyncTaskArticle myArticle = new AsyncTaskArticle();
-//        myArticle.setText(text);
-//        myArticle.setContext(this);
-//        myArticle.execute(url);
+        AsyncTaskArticle myas = new AsyncTaskArticle();
+        myas.execute();
 
-        WebViewClient yourWebClient = new WebViewClient() {
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                return false;
+
+    }
+
+    protected class AsyncTaskArticle extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            try {
+                Document doc = Jsoup.connect(url).get();
+
+                Elements body = doc.body().select(".site__content");
+                String html = body.html();
+
+                return html;
+
+            } catch (IOException e) {
+                e.printStackTrace();
             }
 
-            @Override
-            public void onPageFinished(WebView view, String url) {
-                String javascript = "javascript: var form = document.getElementsByClassName('site__content');"
-                        + "var body = document.getElementsByTagName('body');"
-                        + "body[0].innerHTML = form[0].innerHTML;";
+            return null;
+        }
 
-                view.getSettings().setDefaultFontSize(30);
-                view.loadUrl(javascript);
+        @Override
+        protected void onPostExecute(String html) {
+            super.onPostExecute(html);
+
+            webview.getSettings().setLoadWithOverviewMode(true);
+            webview.getSettings().setUseWideViewPort(true);
+            webview.getSettings().setBuiltInZoomControls(true);
+            webview.getSettings().setBuiltInZoomControls(true);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                webview.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING);
             }
-        };
-        webview.getSettings().setJavaScriptEnabled(true);
-        webview.getSettings().setSupportZoom(true);
-        webview.getSettings().setBuiltInZoomControls(true);
-        webview.setWebViewClient(yourWebClient);
-        webview.getSettings().setLoadWithOverviewMode(true);
-        webview.getSettings().setUseWideViewPort(true);
-        webview.loadUrl(url);
+            webview.loadDataWithBaseURL("http://www.tedxtorvergatau.com", "<html><head><style type='text/css'>html,body {margin: 0;padding: 0;width: 100%;height: 100%;}html {display: table;}body {display: table-cell;vertical-align: middle;text-align: center;}</style></head><body><p>"+html+"</p></body></html>", "text/html", "utf-8",null);
+
+        }
+
     }
 }
