@@ -53,20 +53,6 @@ public class NewsFragment extends ListFragment  {
             myListView = (ListView) v.findViewById(android.R.id.list);
             NewsAdapter newsAdapter = new NewsAdapter(getActivity(), news);
             myListView.setAdapter(newsAdapter);
-
-//            myListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//                @Override
-//                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//
-//                    Log.v("TAG", "entered onItemClick of ListView in position: "+position);
-//                    Intent articleIntent = new Intent(getActivity(), ArticleActivity.class);
-////                    Bundle bundle = new Bundle();
-////                    bundle.putString("articleLink", news.get(position).getUrl());
-////                    articleIntent.putExtras(bundle);
-//                    articleIntent.putExtra("articleLink", news.get(position).getUrl());
-//                    startActivity(articleIntent);
-//                }
-//            });
         }
 
         return v;
@@ -82,9 +68,6 @@ public class NewsFragment extends ListFragment  {
 
         Log.v("TAG", "entered onItemClick of ListView in position: "+position);
         Intent articleIntent = new Intent(getActivity(), ArticleActivity.class);
-//                    Bundle bundle = new Bundle();
-//                    bundle.putString("articleLink", news.get(position).getUrl());
-//                    articleIntent.putExtras(bundle);
         articleIntent.putExtra("articleLink", news.get(position).getUrl());
         startActivity(articleIntent);
 
