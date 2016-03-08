@@ -29,7 +29,7 @@
         android:clickable="false"
         android:focusable="false"
         android:orientation="vertical"
-        android:padding="10dp">
+        android:paddingLeft="10dp">
 
         <TextView
             android:id="@+id/speaker"
