@@ -21,8 +21,10 @@ import android.support.v7.widget.Toolbar;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.group.tedxtv16.db.ItemDAO;
 import com.example.group.tedxtv16.fragment.*;
 import com.example.group.tedxtv16.item.Item;
+import com.example.group.tedxtv16.item.ItemType;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -69,19 +71,29 @@ public class MainActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
 
             //check connection
-            if (!isNetworkAvailable())
-                finish();
+            if (!isNetworkAvailable()) {
+                ItemDAO itemDAO = new ItemDAO(this);
 
-            //show progress dialog
-            waitingDialog();
+                speakers = (ArrayList) itemDAO.getAllItems(ItemType.SPEAKER);
+                news = (ArrayList) itemDAO.getAllItems(ItemType.NEWS);
+                team = (ArrayList) itemDAO.getAllItems(ItemType.TEAM);
 
-            // start asyncTask to download datas from the web site
-            AsyncTaskListView mytask = new AsyncTaskListView(this);
-            mytask.setSpeakers(speakers);
-            mytask.setNews(news);
-            mytask.setTeam(team);
+                createFragment();
 
-            mytask.execute();
+            } else {
+
+                //show progress dialog
+                waitingDialog();
+
+                // start asyncTask to download datas from the web site
+                AsyncTaskListView mytask = new AsyncTaskListView(this);
+                mytask.setSpeakers(speakers);
+                mytask.setNews(news);
+                mytask.setTeam(team);
+
+                mytask.execute();
+            }
+
         } else {
             news = savedInstanceState.getParcelableArrayList("NEWS");
             speakers = savedInstanceState.getParcelableArrayList("SPEAKER");

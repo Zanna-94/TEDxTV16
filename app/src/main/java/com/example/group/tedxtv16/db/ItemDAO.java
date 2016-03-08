@@ -48,7 +48,7 @@ public class ItemDAO {
         this.context = context;
     }
 
-    public void clearTable(ItemType itemType){
+    public void clearTable(ItemType itemType) {
 
         SpeakerDataBaseHelper dataBaseHelper = new SpeakerDataBaseHelper(this.context);
 
@@ -75,44 +75,44 @@ public class ItemDAO {
 
     /**
      * Insert itemlist into DB. FIRST CLEARS ALL entries and then INSERTS the new ones
+     *
      * @param itemList itemList to overwrite in DB (speakers,news)..
      */
-    public void overWriteItemList(List<Item> itemList){
+    public void overWriteItemList(List<Item> itemList) {
 
         ItemType itemType;
-        if(itemList.size() > 0) {
+        if (itemList.size() > 0) {
             // FIRST clears all the entries
             itemType = itemList.get(0).getType();
             clearTable(itemType);
-        } else {
-            throw new IllegalArgumentException("List must not be empty!!!");
+
+            SpeakerDataBaseHelper dataBaseHelper = new SpeakerDataBaseHelper(this.context);
+            SQLiteDatabase database = dataBaseHelper.getWritableDatabase();
+
+            Bitmap speakerPhoto;
+            ContentValues contentValues = new ContentValues();
+            String tableName = getTableName(itemType);
+            for (Item item : itemList) {
+                speakerPhoto = item.getPhoto();
+                contentValues.put(NAME_COLUMN, item.getName());
+                contentValues.put(DESCRIPTION_COLUMN, item.getDescription());
+                contentValues.put(PHOTO_COLUMN, encodeBitmapToBase64(speakerPhoto, 100));
+                contentValues.put(URL_COLUMN, item.getUrl());
+
+                database.insert(tableName, null, contentValues);
+            }
+
+            database.close();
         }
-
-        SpeakerDataBaseHelper dataBaseHelper = new SpeakerDataBaseHelper(this.context);
-        SQLiteDatabase database = dataBaseHelper.getWritableDatabase();
-
-        Bitmap speakerPhoto ;
-        ContentValues contentValues = new ContentValues();
-        String tableName = getTableName(itemType);
-        for(Item item : itemList){
-            speakerPhoto = item.getPhoto();
-            contentValues.put(NAME_COLUMN, item.getName());
-            contentValues.put(DESCRIPTION_COLUMN,item.getDescription());
-            contentValues.put(PHOTO_COLUMN, encodeBitmapToBase64(speakerPhoto, 100));
-            contentValues.put(URL_COLUMN, item.getUrl());
-
-            database.insert(tableName,null,contentValues);
-        }
-
-        database.close();
     }
 
 
     /**
      * Inserts item to DB table depending on the item type (automatically identified)
+     *
      * @param item Item to be inserted
      */
-    public void insertItem(Item item){
+    public void insertItem(Item item) {
 
         SpeakerDataBaseHelper dataBaseHelper = new SpeakerDataBaseHelper(this.context);
 
@@ -120,7 +120,7 @@ public class ItemDAO {
 
         ContentValues contentValues = new ContentValues();
         contentValues.put(NAME_COLUMN, item.getName());
-        contentValues.put(DESCRIPTION_COLUMN,item.getDescription());
+        contentValues.put(DESCRIPTION_COLUMN, item.getDescription());
         contentValues.put(PHOTO_COLUMN, encodeBitmapToBase64(speakerPhoto, 100));
         contentValues.put(URL_COLUMN, item.getUrl());
 
@@ -138,7 +138,7 @@ public class ItemDAO {
 
         String tableName = null;
 
-        switch (itemType.getTypeID()){
+        switch (itemType.getTypeID()) {
             case 1:
                 tableName = SPEAKER_TABLE;
                 break;
@@ -158,19 +158,20 @@ public class ItemDAO {
     /**
      * Returns from the DB (if exists) ALL the itemTypes you specify( News,Speaker,Team) and loads it into a List of Items
      * ex: if you want all the speakers, call getAllItems(ItemType.SPEAKER)
+     *
      * @param itemType itemType to load
      * @return List<Item> in the DB
      */
-    public List<Item> getAllItems(ItemType itemType){
+    public List<Item> getAllItems(ItemType itemType) {
         SpeakerDataBaseHelper dataBaseHelper = new SpeakerDataBaseHelper(this.context);
 
         SQLiteDatabase database = dataBaseHelper.getReadableDatabase();
 
         String tableName = getTableName(itemType);
 
-        String[] columns = {ID_COLUMN,NAME_COLUMN,PHOTO_COLUMN,DESCRIPTION_COLUMN,URL_COLUMN};
+        String[] columns = {ID_COLUMN, NAME_COLUMN, PHOTO_COLUMN, DESCRIPTION_COLUMN, URL_COLUMN};
 
-        Cursor c = database.query(tableName,columns,null,null,null,null,null);
+        Cursor c = database.query(tableName, columns, null, null, null, null, null);
 
         List<Item> list = new ArrayList<>();
         Item item = null;
@@ -178,7 +179,7 @@ public class ItemDAO {
         SpeakerItem.setMaxID(c.getCount());
 
 
-        if(c.moveToFirst()){
+        if (c.moveToFirst()) {
             do {
                 int id = c.getInt(0);
                 String name = c.getString(1);
@@ -186,21 +187,21 @@ public class ItemDAO {
                 String description = c.getString(3);
                 String url = c.getString(4);
 
-                switch (itemType.getTypeID()){
+                switch (itemType.getTypeID()) {
                     case 1:
-                        item = new SpeakerItem(id,name,decodeBitmapFromBase64(encodedBase64Bitmap),description,url);
+                        item = new SpeakerItem(id, name, decodeBitmapFromBase64(encodedBase64Bitmap), description, url);
                         break;
                     case 2:
-                        item = new NewsItem(id,name,decodeBitmapFromBase64(encodedBase64Bitmap),description,url);
+                        item = new NewsItem(id, name, decodeBitmapFromBase64(encodedBase64Bitmap), description, url);
                         break;
                     case 3:
-                        item = new TeamItem(id,name,decodeBitmapFromBase64(encodedBase64Bitmap),description,url);
+                        item = new TeamItem(id, name, decodeBitmapFromBase64(encodedBase64Bitmap), description, url);
                 }
 
 
                 list.add(item);
 
-            }while (c.moveToNext());
+            } while (c.moveToNext());
         }
 
         database.close();
@@ -211,7 +212,8 @@ public class ItemDAO {
     /**
      * Encode a Bitmap into Base64
      * Visit http://freeonlinetools24.com/base64-image to test if it's correctly converted
-     * @param bitmap Bitmap
+     *
+     * @param bitmap   Bitmap
      * @param compress int, compression quality, from 0 to 100
      * @return String
      */
@@ -222,7 +224,8 @@ public class ItemDAO {
 
     /**
      * Compress Bitmap in PNG format and choose quality
-     * @param bitmap Bitmap to convert
+     *
+     * @param bitmap   Bitmap to convert
      * @param compress int, from 0 to 100, compression quality
      * @return byte[] of the compressed bitMap
      */
@@ -244,6 +247,7 @@ public class ItemDAO {
 
     /**
      * Decode a Bitmap from Base64
+     *
      * @param encoded String
      * @return Bitmap
      */

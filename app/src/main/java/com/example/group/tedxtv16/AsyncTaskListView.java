@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.example.group.tedxtv16.db.ItemDAO;
 import com.example.group.tedxtv16.item.Item;
 import com.example.group.tedxtv16.item.NewsItem;
 import com.example.group.tedxtv16.item.SpeakerItem;
@@ -77,6 +78,12 @@ public class AsyncTaskListView extends AsyncTask<Object, Void, Void> {
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
         activity.createFragment();
+
+        ItemDAO dao = new ItemDAO(activity);
+        dao.clearAllTables();
+        dao.overWriteItemList(news);
+        dao.overWriteItemList(speakers);
+        dao.overWriteItemList(team);
     }
 
     private void configureListView(String link, String[] ids) {
