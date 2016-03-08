@@ -2,6 +2,7 @@ package com.example.group.tedxtv16.listViewAdapter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,6 +53,7 @@ public class TeamAdapter extends BaseAdapter {
 
         ImageView photo = (ImageView) view.findViewById(R.id.photo);
         TextView teamText = (TextView) view.findViewById(R.id.speaker);
+        TextView description = (TextView) view.findViewById(R.id.tvNewsDescription);
 
         if (list != null) {
             if (!list.isEmpty()) {
@@ -66,6 +68,13 @@ public class TeamAdapter extends BaseAdapter {
                     if (teamItem.getPhoto() != null) {
                         photo.setImageBitmap(Bitmap.createScaledBitmap(teamItem.getPhoto(), 300, 300, false));
 
+                    } else {
+                        photo.setImageBitmap(Bitmap.createScaledBitmap(BitmapFactory.decodeFile("/res/drawable/no_image_available.png"), 300, 300, false));
+                    }
+                    if (teamItem.getDescription() != null)
+                        description.setText(teamItem.getDescription());
+                    else {
+                        description.setText("NON DISPONIBILE");
                     }
 
                 }

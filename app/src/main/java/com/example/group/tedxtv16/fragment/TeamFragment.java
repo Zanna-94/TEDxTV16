@@ -1,23 +1,24 @@
 package com.example.group.tedxtv16.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.group.tedxtv16.ArticleActivity;
 import com.example.group.tedxtv16.MainActivity;
 import com.example.group.tedxtv16.R;
 import com.example.group.tedxtv16.item.Item;
-import com.example.group.tedxtv16.listViewAdapter.NewsAdapter;
 import com.example.group.tedxtv16.listViewAdapter.TeamAdapter;
 
 import java.util.ArrayList;
 
 
-public class TeamFragment extends Fragment {
+public class TeamFragment extends ListFragment {
 
     private ListView myListView;
 
@@ -58,6 +59,15 @@ public class TeamFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+    }
+
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+
+        Intent articleIntent = new Intent(getActivity(), ArticleActivity.class);
+        articleIntent.putExtra("articleLink", team.get(position).getUrl());
+        startActivity(articleIntent);
+
     }
 
 }

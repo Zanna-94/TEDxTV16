@@ -1,5 +1,6 @@
 package com.example.group.tedxtv16.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.group.tedxtv16.ArticleActivity;
 import com.example.group.tedxtv16.item.Item;
 import com.example.group.tedxtv16.MainActivity;
 import com.example.group.tedxtv16.R;
@@ -55,6 +57,13 @@ public class SpeakersFragment extends ListFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+    }
+
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        Intent articleIntent = new Intent(getActivity(), ArticleActivity.class);
+        articleIntent.putExtra("articleLink", speakers.get(position).getUrl());
+        startActivity(articleIntent);
     }
 
 

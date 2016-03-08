@@ -2,6 +2,7 @@ package com.example.group.tedxtv16.listViewAdapter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,6 +54,7 @@ public class SpeakersAdapter extends BaseAdapter {
 
         ImageView photo = (ImageView) view.findViewById(R.id.photo);
         TextView speaker = (TextView) view.findViewById(R.id.speaker);
+        TextView description = (TextView) view.findViewById(R.id.tvNewsDescription);
 
         if (list != null) {
             if (!list.isEmpty()) {
@@ -64,8 +66,15 @@ public class SpeakersAdapter extends BaseAdapter {
                     else {
                         speaker.setText("NON DISPONIBILE");
                     }
-                    if (speakerItem.getPhoto()!=null)
+                    if (speakerItem.getPhoto() != null)
                         photo.setImageBitmap(Bitmap.createScaledBitmap(speakerItem.getPhoto(), 300, 300, false));
+                } else {
+                    photo.setImageBitmap(Bitmap.createScaledBitmap(BitmapFactory.decodeFile("/res/drawable/no_image_available.png"), 300, 300, false));
+                }
+                if (speakerItem.getDescription() != null)
+                    description.setText(speakerItem.getDescription());
+                else {
+                    description.setText("NON DISPONIBILE");
                 }
             }
         }
