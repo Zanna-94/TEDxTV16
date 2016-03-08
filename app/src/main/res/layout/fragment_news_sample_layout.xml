@@ -24,7 +24,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_weight="0.3"
         android:clickable="false"
         android:focusable="false"
@@ -34,20 +34,20 @@
         <TextView
             android:id="@+id/speaker"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.3"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
             android:clickable="false"
             android:focusable="false"
             android:text="nome"
             android:textColor="#000000"
             android:textSize="20sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/tvNewsDescription"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.3"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
             android:clickable="false"
             android:focusable="false"
             android:text="description"

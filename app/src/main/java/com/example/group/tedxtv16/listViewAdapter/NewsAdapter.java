@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,7 +69,7 @@ public class NewsAdapter extends BaseAdapter {
                         newsText.setText("NON DISPONIBILE");
                     }
                     if (newsItem.getPhoto() != null)
-                        photo.setImageBitmap(Bitmap.createScaledBitmap(newsItem.getPhoto(), 300, 300, false));
+                        photo.setImageBitmap(Bitmap.createScaledBitmap(newsItem.getPhoto(), 450, 500, false));
                     else{photo.setImageBitmap(Bitmap.createScaledBitmap(BitmapFactory.decodeFile("/res/drawable/no_image_available.png"), 300, 300, false));}
                     if (newsItem.getDescription() != null)
                         description.setText(newsItem.getDescription());

@@ -4,12 +4,74 @@
     android:layout_height="match_parent"
     tools:context="info.androidhive.materialtabs.fragments.ContactUsFragment">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="three"
-        android:textSize="40dp"
-        android:textStyle="bold"
-        android:layout_centerInParent="true"/>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:weightSum="1">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="2simonemancini5@gmail.com"
+            android:id="@+id/tvEmail"
+            android:layout_gravity="center_horizontal"
+            android:textColor="#000000"
+            android:textStyle="bold"
+            android:textSize="25dp" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Subject: "
+                android:id="@+id/textView3"
+                android:textSize="20dp"
+                android:textColor="#000000" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/etSubject"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Corpo"
+                android:id="@+id/textView2"
+                android:layout_gravity="center_horizontal"
+                android:textColor="#000000"
+                android:textSize="20dp" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/etBody" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Invia"
+                android:id="@+id/btnSend"
+                android:layout_gravity="center_horizontal" />
+        </LinearLayout>
+
+    </LinearLayout>
 </RelativeLayout>
