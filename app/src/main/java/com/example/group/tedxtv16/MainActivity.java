@@ -9,6 +9,7 @@ import android.graphics.ColorFilter;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -70,17 +71,19 @@ public class MainActivity extends AppCompatActivity {
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
 
-        Drawable logo = getDrawable(R.drawable.logo_dark);
-        toolbar.setLogo(logo);
-        for (int i = 0; i < toolbar.getChildCount(); i++) {
-            View child = toolbar.getChildAt(i);
-            if (child != null)
-                if (child.getClass() == ImageView.class) {
-                    ImageView iv2 = (ImageView) child;
-                    if ( iv2.getDrawable() == logo ) {
-                        iv2.setAdjustViewBounds(true);
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            Drawable logo = getDrawable(R.drawable.logo_dark);
+            toolbar.setLogo(logo);
+            for (int i = 0; i < toolbar.getChildCount(); i++) {
+                View child = toolbar.getChildAt(i);
+                if (child != null)
+                    if (child.getClass() == ImageView.class) {
+                        ImageView iv2 = (ImageView) child;
+                        if ( iv2.getDrawable() == logo ) {
+                            iv2.setAdjustViewBounds(true);
+                        }
                     }
-                }
+            }
         }
         setSupportActionBar(toolbar);
 
@@ -170,7 +173,9 @@ public class MainActivity extends AppCompatActivity {
         setupViewPager(viewPager);
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setTabTextColors(getColorStateList(R.color.rossoTED));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            tabLayout.setTabTextColors(getColorStateList(R.color.rossoTED));
+        }
         tabLayout.setupWithViewPager(viewPager);
     }
 
