@@ -1,9 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#ff3535</color>
-    <color name="colorPrimaryDark">#ff2020</color>
+    <color name="colorPrimary">#ffffff</color>
+    <color name="colorPrimaryDark">#e62b1e</color>
     <color name="textColorPrimary">#FFFFFF</color>
     <color name="windowBackground">#FFFFFF</color>
     <color name="navigationBarColor">#000000</color>
-    <color name="colorAccent">#c8e8ff</color>
+    <color name="colorAccent">#e62b1e</color>
+    <color name="primary_text_material_dark">#000000</color>
+    <color name="primary_text_material_light">#d10000</color>
+    <color name="secondary_text_material_light">#000000</color>
+    <color name="secondary_text_material_dark">#000000</color>
+    <color name="primary_text_material_light_1">#ee6622</color>
+    <color name="primary_material_dark">#ffffff</color>
+    <color name="rossoTED">#e62b1e</color>
+    <color name="accent_material_dark_1">#80cbc4</color>
+    <color name="accent_material_light">#e62b1e</color>
+    <color name="black">#ff0000</color>
+    <color name="transparent">#e62b1e</color>
 </resources>

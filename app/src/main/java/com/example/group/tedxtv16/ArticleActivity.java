@@ -50,7 +50,7 @@ public class ArticleActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_article);
-        
+
         toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         Drawable logo = getDrawable(R.drawable.logo_dark);
