@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
@@ -172,9 +173,7 @@ public class MainActivity extends AppCompatActivity {
         setupViewPager(viewPager);
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            tabLayout.setTabTextColors(getColorStateList(R.color.rossoTED));
-        }
+        tabLayout.setTabTextColors(Color.parseColor("#e62b1e"), Color.parseColor("#e62b1e"));
         tabLayout.setupWithViewPager(viewPager);
     }
 
