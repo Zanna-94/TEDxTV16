@@ -16,6 +16,7 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -71,20 +72,19 @@ public class MainActivity extends AppCompatActivity {
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
 
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-            Drawable logo = getDrawable(R.drawable.logo_dark);
-            toolbar.setLogo(logo);
-            for (int i = 0; i < toolbar.getChildCount(); i++) {
-                View child = toolbar.getChildAt(i);
-                if (child != null)
-                    if (child.getClass() == ImageView.class) {
-                        ImageView iv2 = (ImageView) child;
-                        if ( iv2.getDrawable() == logo ) {
-                            iv2.setAdjustViewBounds(true);
-                        }
+        Drawable logo = ContextCompat.getDrawable(this, R.drawable.logo_dark);
+        toolbar.setLogo(logo);
+        for (int i = 0; i < toolbar.getChildCount(); i++) {
+            View child = toolbar.getChildAt(i);
+            if (child != null)
+                if (child.getClass() == ImageView.class) {
+                    ImageView iv2 = (ImageView) child;
+                    if (iv2.getDrawable() == logo) {
+                        iv2.setAdjustViewBounds(true);
                     }
-            }
+                }
         }
+
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
@@ -122,7 +122,6 @@ public class MainActivity extends AppCompatActivity {
 
             createFragment();
         }
-
 
     }
 

@@ -10,6 +10,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -45,7 +46,6 @@ public class ArticleActivity extends AppCompatActivity {
     private ProgressDialog waitingDialog;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,19 +54,17 @@ public class ArticleActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
 
 
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-            Drawable logo = getDrawable(R.drawable.logo_dark);
-            toolbar.setLogo(logo);
-            for (int i = 0; i < toolbar.getChildCount(); i++) {
-                View child = toolbar.getChildAt(i);
-                if (child != null)
-                    if (child.getClass() == ImageView.class) {
-                        ImageView iv2 = (ImageView) child;
-                        if ( iv2.getDrawable() == logo ) {
-                            iv2.setAdjustViewBounds(true);
-                        }
+        Drawable logo = ContextCompat.getDrawable(this, R.drawable.logo_dark);
+        toolbar.setLogo(logo);
+        for (int i = 0; i < toolbar.getChildCount(); i++) {
+            View child = toolbar.getChildAt(i);
+            if (child != null)
+                if (child.getClass() == ImageView.class) {
+                    ImageView iv2 = (ImageView) child;
+                    if (iv2.getDrawable() == logo) {
+                        iv2.setAdjustViewBounds(true);
                     }
-            }
+                }
         }
 
         setSupportActionBar(toolbar);
@@ -90,26 +88,26 @@ public class ArticleActivity extends AppCompatActivity {
 
         waitingDialog();
 
-        if(!isNetworkAvailable()){
+        if (!isNetworkAvailable()) {
 
             SharedPreferences sharedPreferences = getSharedPreferences("preferenze",
                     Activity.MODE_PRIVATE);
 
-            String article = sharedPreferences.getString(url,null);
+            String article = sharedPreferences.getString(url, null);
 
-            if(article!=null) {
+            if (article != null) {
                 webview.loadDataWithBaseURL("http://www.tedxtorvergatau.com", article,
                         "text/html", "utf-8", null);
-            }else{
+            } else {
                 TextView textView = (TextView) findViewById(R.id.textView);
                 textView.setText("Nessun contenuto disponibile");
                 textView.setVisibility(View.VISIBLE);
             }
-            
+
             waitingDialog.dismiss();
 
 
-        }else {
+        } else {
             AsyncTaskArticle myAsyncTask = new AsyncTaskArticle();
             myAsyncTask.execute();
         }
@@ -176,7 +174,7 @@ public class ArticleActivity extends AppCompatActivity {
             // set margin and the padding of the page.
             String formattedHtlm =
                     "<html><head><style type='text/css'>html,body {margin: 0;padding: 0;width: 100%;height: 100%;}html {display: table;}body {display: table-cell;vertical-align: middle;text-align: center;}</style>" +
-                            "</head><body><p>"+html+"</p></body></html>";
+                            "</head><body><p>" + html + "</p></body></html>";
 
             webview.loadDataWithBaseURL("http://www.tedxtorvergatau.com", formattedHtlm,
                     "text/html", "utf-8", null);
