@@ -69,11 +69,13 @@ public class NewsAdapter extends BaseAdapter {
                         newsText.setText("NON DISPONIBILE");
                     }
                     if (newsItem.getPhoto() != null)
-                        photo.setImageBitmap(Bitmap.createScaledBitmap(newsItem.getPhoto(), 450, 500, false));
-                    else{photo.setImageBitmap(Bitmap.createScaledBitmap(BitmapFactory.decodeFile("/res/drawable/no_image_available.png"), 300, 300, false));}
+                        photo.setImageBitmap(Bitmap.createScaledBitmap(newsItem.getPhoto(), 300, 350, false));
+                    else {
+                        photo.setImageBitmap(Bitmap.createScaledBitmap(BitmapFactory.decodeFile("/res/drawable/no_image_available.png"), 300, 300, false));
+                    }
                     if (newsItem.getDescription() != null)
                         description.setText(newsItem.getDescription());
-                    else{
+                    else {
                         description.setText("NON DISPONIBILE");
                     }
                 }
