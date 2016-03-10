@@ -4,16 +4,12 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.ColorFilter;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -21,7 +17,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.graphics.drawable.DrawerArrowDrawable;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
@@ -54,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
     private static ArrayList<Item> speakers;
     private static ArrayList<Item> news;
     private static ArrayList<Item> team;
-
+    private static ArrayList<Item> about;
     /**
      * Current Instance of MainActivity that is passed to AsyncTask to inform  when it finishes.
      * {@link AsyncTaskListView#onPostExecute(Void)}
@@ -67,9 +62,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         activity = this;
+
         news = new ArrayList<>();
         speakers = new ArrayList<>();
         team = new ArrayList<>();
+        about = new ArrayList<>();
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
 
@@ -90,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
+        //else branch never get because the application is in portrait mode
         if (savedInstanceState == null) {
 
             //check connection
@@ -99,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
                 speakers = (ArrayList) itemDAO.getAllItems(ItemType.SPEAKER);
                 news = (ArrayList) itemDAO.getAllItems(ItemType.NEWS);
                 team = (ArrayList) itemDAO.getAllItems(ItemType.TEAM);
+                //TODO modify itemDao to manage about
 
                 createFragment();
 
@@ -112,6 +111,7 @@ public class MainActivity extends AppCompatActivity {
                 mytask.setSpeakers(speakers);
                 mytask.setNews(news);
                 mytask.setTeam(team);
+                mytask.setAbout(about);
 
                 mytask.execute();
             }
@@ -120,17 +120,25 @@ public class MainActivity extends AppCompatActivity {
             news = savedInstanceState.getParcelableArrayList("NEWS");
             speakers = savedInstanceState.getParcelableArrayList("SPEAKER");
             team = savedInstanceState.getParcelableArrayList("TEAM");
+            about = savedInstanceState.getParcelableArrayList("ABOUT");
+
 
             createFragment();
         }
 
     }
 
+    /**
+     * Never user because application is always in portrait mode
+     * @param outState
+     */
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         outState.putParcelableArrayList("NEWS", news);
         outState.putParcelableArrayList("TEAM", team);
         outState.putParcelableArrayList("SPEAKER", speakers);
+        outState.putParcelableArrayList("ABOUT", about);
+
         super.onSaveInstanceState(outState);
     }
 
@@ -156,6 +164,7 @@ public class MainActivity extends AppCompatActivity {
         adapter.addFragment(new SpeakersFragment(), "SPEAKERS");
         adapter.addFragment(new TeamFragment(), "TEAM");
         adapter.addFragment(new ContactUsFragment(), "CONTACT US");
+        adapter.addFragment(new AboutFragment(), "ABOUT");
 
         viewPager.setAdapter(adapter);
     }
@@ -260,4 +269,7 @@ public class MainActivity extends AppCompatActivity {
         return news;
     }
 
+    public static ArrayList<Item> getAbout() {
+        return about;
+    }
 }

@@ -6,9 +6,11 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.example.group.tedxtv16.db.ItemDAO;
+import com.example.group.tedxtv16.item.AboutItem;
 import com.example.group.tedxtv16.item.Item;
 import com.example.group.tedxtv16.item.NewsItem;
 import com.example.group.tedxtv16.item.SpeakerItem;
+import com.example.group.tedxtv16.item.TeamItem;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -35,18 +37,24 @@ public class AsyncTaskListView extends AsyncTask<Object, Void, Void> {
     private final String NEWSURL_ITA = "http://www.tedxtorvergatau.com/index.php/it/news";
     private final String TEAMURL_ITA = "http://www.tedxtorvergatau.com/index.php/it/team";
     private final String SPEAKERURL_ITA = "http://www.tedxtorvergatau.com/index.php/it/speakers";
+    private final String ABOUTURL_ITA = "http://www.tedxtorvergatau.com/index.php/it/about";
+
 
     private final String NEWSURL_ENG = "http://www.tedxtorvergatau.com/index.php/en/news";
     private final String TEAMURL_ENG = "http://www.tedxtorvergatau.com/index.php/en/team";
     private final String SPEAKERURL_ENG = "http://www.tedxtorvergatau.com/index.php/en/speakers";
+    private final String ABOUTURL_ENG = "http://www.tedxtorvergatau.com/index.php/en/about";
+
 
     private final String[] NEWS_IDS = {"#ted__item", "#ted__itemTitle", "#ted__itemIntroImage" , "#ted__itemSummary"};
     private final String[] SPEAKER_IDS = {};
     private final String[] TEAM_IDS = {};
+    private final String[] ABOUT_IDS = {"#ted__item", "#ted__itemTitle", "#ted__itemIntroImage" , "#ted__itemSummary" };
 
     private ArrayList<Item> speakers;
     private ArrayList<Item> news;
     private ArrayList<Item> team;
+    private ArrayList<Item> about;
 
     private MainActivity activity;
 
@@ -65,10 +73,12 @@ public class AsyncTaskListView extends AsyncTask<Object, Void, Void> {
             configureListView(NEWSURL_ITA, NEWS_IDS);
             configureListView(SPEAKERURL_ITA, SPEAKER_IDS);
             configureListView(TEAMURL_ITA, TEAM_IDS);
+            configureListView(ABOUTURL_ITA, ABOUT_IDS);
         } else {
             configureListView(NEWSURL_ENG, NEWS_IDS);
             configureListView(SPEAKERURL_ENG, SPEAKER_IDS);
             configureListView(TEAMURL_ENG, TEAM_IDS);
+            configureListView(ABOUTURL_ENG, ABOUT_IDS);
         }
 
         return null;
@@ -84,6 +94,7 @@ public class AsyncTaskListView extends AsyncTask<Object, Void, Void> {
         dao.overWriteItemList(news);
         dao.overWriteItemList(speakers);
         dao.overWriteItemList(team);
+        //TODO about not managed
     }
 
     private void configureListView(String link, String[] ids) {
@@ -130,18 +141,27 @@ public class AsyncTaskListView extends AsyncTask<Object, Void, Void> {
                     switch (link) {
                         case NEWSURL_ITA:
                         case NEWSURL_ENG:
-                            Item newsItem = new NewsItem(SpeakerItem.maxID + 1, articleName, articleBitmap, articleDescription, articleLink);
+                            Item newsItem = new NewsItem(NewsItem.maxID + 1, articleName, articleBitmap, articleDescription, articleLink);
                             NewsItem.incrementMaxID();
                             news.add(newsItem);
                             break;
                         case SPEAKERURL_ITA:
                         case SPEAKERURL_ENG:
-                        Item speakerItem = new SpeakerItem(SpeakerItem.maxID + 1, articleName, articleBitmap, null, null);
+                        Item speakerItem = new SpeakerItem(SpeakerItem.maxID + 1, articleName, articleBitmap, articleDescription, articleLink);
                         SpeakerItem.incrementMaxID();
                         speakers.add(speakerItem);
                             break;
                         case TEAMURL_ITA:
                         case TEAMURL_ENG:
+                            Item teamItem = new TeamItem(TeamItem.maxID + 1, articleName, articleBitmap, articleDescription, articleLink);
+                            SpeakerItem.incrementMaxID();
+                            team.add(teamItem);
+                            break;
+                        case ABOUTURL_ITA:
+                        case ABOUTURL_ENG:
+                            Item aboutItem = new AboutItem(AboutItem.maxID + 1, articleName, articleBitmap, articleDescription, articleLink);
+                            AboutItem.incrementMaxID();
+                            about.add(aboutItem);
                             break;
                     }
                 }
@@ -181,4 +201,7 @@ public class AsyncTaskListView extends AsyncTask<Object, Void, Void> {
         this.team = team;
     }
 
+    public void setAbout(ArrayList<Item> about) {
+        this.about = about;
+    }
 }

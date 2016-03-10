@@ -35,3 +35,6 @@ repositories {
 dependencies {
     compile 'com.makeramen:roundedimageview:2.2.1'
 }
+dependencies {
+    compile 'com.android.support:support-v4:23.+'
+}

@@ -52,7 +52,7 @@ public class TeamAdapter extends BaseAdapter {
             view = inflater.inflate(R.layout.fragment_team_sample_layout, null);
 
         ImageView photo = (ImageView) view.findViewById(R.id.photo);
-        TextView teamText = (TextView) view.findViewById(R.id.speaker);
+        TextView teamText = (TextView) view.findViewById(R.id.titolo);
         TextView description = (TextView) view.findViewById(R.id.tvNewsDescription);
 
         if (list != null) {

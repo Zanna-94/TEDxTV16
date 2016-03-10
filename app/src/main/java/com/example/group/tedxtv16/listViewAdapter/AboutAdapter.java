@@ -21,13 +21,13 @@ import java.util.ArrayList;
 /**
  * Created by emanuele on 04/03/16.
  */
-public class NewsAdapter extends BaseAdapter {
+public class AboutAdapter extends BaseAdapter {
 
     private ArrayList list;
     private static LayoutInflater inflater = null;
 
     //Constructor.
-    public NewsAdapter(Context context, ArrayList list) {
+    public AboutAdapter(Context context, ArrayList list) {
         this.list = list;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
@@ -52,29 +52,29 @@ public class NewsAdapter extends BaseAdapter {
         View view = convertView;
 
         if (convertView == null)
-            view = inflater.inflate(R.layout.fragment_news_sample_layout, null);
+            view = inflater.inflate(R.layout.fragment_about_sample_layout, null);
 
         ImageView photo = (ImageView) view.findViewById(R.id.photo);
-        TextView newsText = (TextView) view.findViewById(R.id.titolo);
+        TextView aboutText = (TextView) view.findViewById(R.id.titolo);
         TextView description = (TextView) view.findViewById(R.id.tvNewsDescription);
 
         if (list != null) {
             if (!list.isEmpty()) {
-                Item newsItem = (Item) list.get(position);
+                Item aboutItem = (Item) list.get(position);
 
-                if (newsItem != null) {
-                    if (newsItem.getName() != null)
-                        newsText.setText(newsItem.getName());
+                if (aboutItem != null) {
+                    if (aboutItem.getName() != null)
+                        aboutText.setText(aboutItem.getName());
                     else {
-                        newsText.setText("NON DISPONIBILE");
+                        aboutText.setText("NON DISPONIBILE");
                     }
-                    if (newsItem.getPhoto() != null)
-                        photo.setImageBitmap(Bitmap.createScaledBitmap(newsItem.getPhoto(), 300, 350, false));
+                    if (aboutItem.getPhoto() != null)
+                        photo.setImageBitmap(Bitmap.createScaledBitmap(aboutItem.getPhoto(), 300, 350, false));
                     else {
                         photo.setImageBitmap(Bitmap.createScaledBitmap(BitmapFactory.decodeFile("/res/drawable/no_image_available.png"), 300, 300, false));
                     }
-                    if (newsItem.getDescription() != null)
-                        description.setText(newsItem.getDescription());
+                    if (aboutItem.getDescription() != null)
+                        description.setText(aboutItem.getDescription());
                     else {
                         description.setText("NON DISPONIBILE");
                     }

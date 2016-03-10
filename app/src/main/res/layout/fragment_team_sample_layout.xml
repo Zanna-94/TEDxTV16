@@ -33,7 +33,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="nome"
-                android:id="@+id/speaker"
+                android:id="@+id/titolo"
                 android:layout_weight="0.3"
                 android:textColor="#000000"
                 android:textSize="20dp"
