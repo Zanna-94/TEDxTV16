@@ -64,7 +64,7 @@ public class SpeakersAdapter extends BaseAdapter {
                     if (speakerItem.getName() != null)
                         speaker.setText(speakerItem.getName());
                     else {
-                        speaker.setText("NON DISPONIBILE");
+                        speaker.setText(view.getResources().getString(R.string.notAvailable));
                     }
                     if (speakerItem.getPhoto() != null)
                         photo.setImageBitmap(Bitmap.createScaledBitmap(speakerItem.getPhoto(), 300, 300, false));
@@ -74,7 +74,7 @@ public class SpeakersAdapter extends BaseAdapter {
                 if (speakerItem.getDescription() != null)
                     description.setText(speakerItem.getDescription());
                 else {
-                    description.setText("NON DISPONIBILE");
+                    description.setText(view.getResources().getString(R.string.notAvailable));
                 }
             }
         }

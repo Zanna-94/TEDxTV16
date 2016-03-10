@@ -63,7 +63,7 @@ public class TeamAdapter extends BaseAdapter {
                     if (teamItem.getName() != null)
                         teamText.setText(teamItem.getName());
                     else {
-                        teamText.setText("NON DISPONIBILE");
+                        teamText.setText(view.getResources().getString(R.string.notAvailable));
                     }
                     if (teamItem.getPhoto() != null) {
                         photo.setImageBitmap(Bitmap.createScaledBitmap(teamItem.getPhoto(), 300, 300, false));
@@ -74,7 +74,7 @@ public class TeamAdapter extends BaseAdapter {
                     if (teamItem.getDescription() != null)
                         description.setText(teamItem.getDescription());
                     else {
-                        description.setText("NON DISPONIBILE");
+                        description.setText(view.getResources().getString(R.string.notAvailable));
                     }
 
                 }

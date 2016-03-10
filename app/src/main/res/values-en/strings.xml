@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">TEDxTV16</string>
+    <string name="noContent">No content to show</string>
+    <string name="notAvailable">Not available</string>
+</resources>

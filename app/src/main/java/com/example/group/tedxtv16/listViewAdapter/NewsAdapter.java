@@ -66,7 +66,7 @@ public class NewsAdapter extends BaseAdapter {
                     if (newsItem.getName() != null)
                         newsText.setText(newsItem.getName());
                     else {
-                        newsText.setText("NON DISPONIBILE");
+                        newsText.setText(view.getResources().getString(R.string.notAvailable));
                     }
                     if (newsItem.getPhoto() != null)
                         photo.setImageBitmap(Bitmap.createScaledBitmap(newsItem.getPhoto(), 300, 350, false));
@@ -76,7 +76,7 @@ public class NewsAdapter extends BaseAdapter {
                     if (newsItem.getDescription() != null)
                         description.setText(newsItem.getDescription());
                     else {
-                        description.setText("NON DISPONIBILE");
+                        description.setText(view.getResources().getString(R.string.notAvailable));
                     }
                 }
             }

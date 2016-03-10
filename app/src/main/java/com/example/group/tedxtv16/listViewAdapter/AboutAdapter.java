@@ -66,7 +66,7 @@ public class AboutAdapter extends BaseAdapter {
                     if (aboutItem.getName() != null)
                         aboutText.setText(aboutItem.getName());
                     else {
-                        aboutText.setText("NON DISPONIBILE");
+                        aboutText.setText(view.getResources().getString(R.string.notAvailable));
                     }
                     if (aboutItem.getPhoto() != null)
                         photo.setImageBitmap(Bitmap.createScaledBitmap(aboutItem.getPhoto(), 300, 350, false));
@@ -76,7 +76,7 @@ public class AboutAdapter extends BaseAdapter {
                     if (aboutItem.getDescription() != null)
                         description.setText(aboutItem.getDescription());
                     else {
-                        description.setText("NON DISPONIBILE");
+                        description.setText(view.getResources().getString(R.string.notAvailable));
                     }
                 }
             }
