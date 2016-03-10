@@ -53,7 +53,7 @@ public class SpeakersAdapter extends BaseAdapter {
             view = inflater.inflate(R.layout.fragment_speaker_sample_layout, null);
 
         ImageView photo = (ImageView) view.findViewById(R.id.photo);
-        TextView speaker = (TextView) view.findViewById(R.id.speaker);
+        TextView speaker = (TextView) view.findViewById(R.id.titolo);
         TextView description = (TextView) view.findViewById(R.id.tvNewsDescription);
 
         if (list != null) {
@@ -67,7 +67,7 @@ public class SpeakersAdapter extends BaseAdapter {
                         speaker.setText(view.getResources().getString(R.string.notAvailable));
                     }
                     if (speakerItem.getPhoto() != null)
-                        photo.setImageBitmap(Bitmap.createScaledBitmap(speakerItem.getPhoto(), 300, 300, false));
+                        photo.setImageBitmap(Bitmap.createScaledBitmap(speakerItem.getPhoto(), 200, 250, false));
                 } else {
                     photo.setImageBitmap(Bitmap.createScaledBitmap(BitmapFactory.decodeFile("/res/drawable/no_image_available.png"), 300, 300, false));
                 }

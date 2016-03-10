@@ -66,7 +66,7 @@ public class TeamAdapter extends BaseAdapter {
                         teamText.setText(view.getResources().getString(R.string.notAvailable));
                     }
                     if (teamItem.getPhoto() != null) {
-                        photo.setImageBitmap(Bitmap.createScaledBitmap(teamItem.getPhoto(), 300, 300, false));
+                        photo.setImageBitmap(Bitmap.createScaledBitmap(teamItem.getPhoto(), 200, 250, false));
 
                     } else {
                         photo.setImageBitmap(Bitmap.createScaledBitmap(BitmapFactory.decodeFile("/res/drawable/no_image_available.png"), 300, 300, false));
