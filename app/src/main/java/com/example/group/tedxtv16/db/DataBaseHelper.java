@@ -4,13 +4,10 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-/**
- * Created by ovidiudanielbarba on 01/03/16.
- */
 // class that helps to create a new database TEDxTV16.db if it doesn't exist, loads it if it's already created
 // and lets you read and write on that database
 
-public class SpeakerDataBaseHelper extends SQLiteOpenHelper {
+public class DataBaseHelper extends SQLiteOpenHelper {
 
     // database version. helps to upgrade to new version
     private static final int DATABASE_VERSION = 1;
@@ -42,9 +39,17 @@ public class SpeakerDataBaseHelper extends SQLiteOpenHelper {
             "\t`url`\tTEXT NOT NULL\n" +
             ")";
 
+    private static final String ABOUT_TABLE_CREATE_STATEMENT = "CREATE TABLE `About` (\n" +
+            "\t`_id`\tINTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,\n" +
+            "\t`name`\tTEXT NOT NULL,\n" +
+            "\t`photo`\tTEXT NOT NULL,\n" +
+            "\t`description`\tTEXT,\n" +
+            "\t`url`\tTEXT NOT NULL\n" +
+            ")";
+
 
     // constructor. it needs the context of the activity to create
-    public SpeakerDataBaseHelper(Context context) {
+    public DataBaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
@@ -56,11 +61,12 @@ public class SpeakerDataBaseHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(SPEAKERS_TABLE_CREATE_STATEMENT);
         sqLiteDatabase.execSQL(NEWS_TABLE_CREATE_STATEMENT);
         sqLiteDatabase.execSQL(TEAM_TABLE_CREATE_STATEMENT);
+        sqLiteDatabase.execSQL(ABOUT_TABLE_CREATE_STATEMENT);
     }
 
     // needed for future upgrades
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-
     }
+
 }

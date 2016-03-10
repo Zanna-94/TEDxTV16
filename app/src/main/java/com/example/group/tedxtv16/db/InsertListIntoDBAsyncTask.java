@@ -7,9 +7,6 @@ import com.example.group.tedxtv16.item.Item;
 
 import java.util.List;
 
-/**
- * Created by ovidiudanielbarba on 07/03/16.
- */
 public class InsertListIntoDBAsyncTask extends AsyncTask<List<Item>,Void,Void>{
     Context context;
 
@@ -23,9 +20,16 @@ public class InsertListIntoDBAsyncTask extends AsyncTask<List<Item>,Void,Void>{
             throw new IllegalArgumentException("Must specify list of items.");
         }
         List<Item> speakerList = lists[0];
+        List<Item> teamList = lists[1];
+        List<Item> newsList = lists[2];
+        List<Item> aboutList = lists[3];
 
         ItemDAO itemDAO = new ItemDAO(context);
         itemDAO.overWriteItemList(speakerList);
+        itemDAO.overWriteItemList(teamList);
+        itemDAO.overWriteItemList(newsList);
+        itemDAO.overWriteItemList(aboutList);
+
 
         return null;
     }

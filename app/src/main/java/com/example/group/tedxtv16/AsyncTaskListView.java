@@ -94,7 +94,7 @@ public class AsyncTaskListView extends AsyncTask<Object, Void, Void> {
         dao.overWriteItemList(news);
         dao.overWriteItemList(speakers);
         dao.overWriteItemList(team);
-        //TODO about not managed
+        dao.overWriteItemList(about);
     }
 
     private void configureListView(String link, String[] ids) {

@@ -9,6 +9,7 @@ import android.graphics.BitmapFactory;
 import android.util.Base64;
 
 
+import com.example.group.tedxtv16.item.AboutItem;
 import com.example.group.tedxtv16.item.Item;
 import com.example.group.tedxtv16.item.ItemType;
 import com.example.group.tedxtv16.item.NewsItem;
@@ -20,11 +21,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-
-/**
- * Created by ovidiudanielbarba on 01/03/16.
- */
-
 public class ItemDAO {
 
     // it needs the context of the activity to create the SpeakerDataBaseHelper which fetches the db and reads and writes to it
@@ -34,6 +30,7 @@ public class ItemDAO {
     private final String SPEAKER_TABLE = "Speakers";
     private final String NEWS_TABLE = "News";
     private final String TEAM_TABLE = "Team";
+    private final String ABOUT_TABLE = "About";
 
     // column names
     private final String ID_COLUMN = "_id";
@@ -50,7 +47,7 @@ public class ItemDAO {
 
     public void clearTable(ItemType itemType) {
 
-        SpeakerDataBaseHelper dataBaseHelper = new SpeakerDataBaseHelper(this.context);
+        DataBaseHelper dataBaseHelper = new DataBaseHelper(this.context);
 
         SQLiteDatabase database = dataBaseHelper.getWritableDatabase();
 
@@ -61,13 +58,14 @@ public class ItemDAO {
     }
 
     public void clearAllTables() {
-        SpeakerDataBaseHelper dataBaseHelper = new SpeakerDataBaseHelper(this.context);
+        DataBaseHelper dataBaseHelper = new DataBaseHelper(this.context);
 
         SQLiteDatabase database = dataBaseHelper.getWritableDatabase();
 
         database.execSQL("DELETE FROM " + SPEAKER_TABLE);
         database.execSQL("DELETE FROM " + NEWS_TABLE);
         database.execSQL("DELETE FROM " + TEAM_TABLE);
+        database.execSQL("DELETE FROM " + ABOUT_TABLE);
 
         database.close();
 
@@ -86,17 +84,17 @@ public class ItemDAO {
             itemType = itemList.get(0).getType();
             clearTable(itemType);
 
-            SpeakerDataBaseHelper dataBaseHelper = new SpeakerDataBaseHelper(this.context);
+            DataBaseHelper dataBaseHelper = new DataBaseHelper(this.context);
             SQLiteDatabase database = dataBaseHelper.getWritableDatabase();
 
-            Bitmap speakerPhoto;
+            Bitmap photo;
             ContentValues contentValues = new ContentValues();
             String tableName = getTableName(itemType);
             for (Item item : itemList) {
-                speakerPhoto = item.getPhoto();
+                photo = item.getPhoto();
                 contentValues.put(NAME_COLUMN, item.getName());
                 contentValues.put(DESCRIPTION_COLUMN, item.getDescription());
-                contentValues.put(PHOTO_COLUMN, encodeBitmapToBase64(speakerPhoto, 100));
+                contentValues.put(PHOTO_COLUMN, encodeBitmapToBase64(photo, 100));
                 contentValues.put(URL_COLUMN, item.getUrl());
 
                 database.insert(tableName, null, contentValues);
@@ -114,7 +112,7 @@ public class ItemDAO {
      */
     public void insertItem(Item item) {
 
-        SpeakerDataBaseHelper dataBaseHelper = new SpeakerDataBaseHelper(this.context);
+        DataBaseHelper dataBaseHelper = new DataBaseHelper(this.context);
 
         Bitmap speakerPhoto = item.getPhoto();
 
@@ -148,6 +146,9 @@ public class ItemDAO {
             case 3:
                 tableName = TEAM_TABLE;
                 break;
+            case 4:
+                tableName = ABOUT_TABLE;
+                break;
         }
 
 
@@ -163,7 +164,7 @@ public class ItemDAO {
      * @return List<Item> in the DB
      */
     public List<Item> getAllItems(ItemType itemType) {
-        SpeakerDataBaseHelper dataBaseHelper = new SpeakerDataBaseHelper(this.context);
+        DataBaseHelper dataBaseHelper = new DataBaseHelper(this.context);
 
         SQLiteDatabase database = dataBaseHelper.getReadableDatabase();
 
@@ -196,8 +197,11 @@ public class ItemDAO {
                         break;
                     case 3:
                         item = new TeamItem(id, name, decodeBitmapFromBase64(encodedBase64Bitmap), description, url);
+                        break;
+                    case 4:
+                        item = new AboutItem(id, name, decodeBitmapFromBase64(encodedBase64Bitmap), description, url);
+                        break;
                 }
-
 
                 list.add(item);
 

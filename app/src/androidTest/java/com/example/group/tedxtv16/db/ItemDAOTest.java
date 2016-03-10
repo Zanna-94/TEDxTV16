@@ -10,24 +10,15 @@ import com.example.group.tedxtv16.item.Item;
 import com.example.group.tedxtv16.item.ItemType;
 import com.example.group.tedxtv16.item.SpeakerItem;
 
-import junit.framework.TestCase;
-
-import org.junit.Before;
-import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-/**
- * Created by ovidiudanielbarba on 05/03/16.
- */
-
-@SmallTest
 public class ItemDAOTest extends InstrumentationTestCase {
 
 
-    @Before
+
     public void setUp() throws Exception {
         super.setUp();
         System.out.println("Starting test");
@@ -37,7 +28,6 @@ public class ItemDAOTest extends InstrumentationTestCase {
     public void tearDown() throws Exception {
 
     }
-    @Test
     public void testInsertItem() throws Exception {
 
         ItemDAO itemDAO = new ItemDAO(this.getInstrumentation().getTargetContext().getApplicationContext());
@@ -53,7 +43,6 @@ public class ItemDAOTest extends InstrumentationTestCase {
 
     }
 
-    @Test
     public void testInsertItem1() throws Exception {
 
         ItemDAO itemDAO = new ItemDAO(this.getInstrumentation().getTargetContext().getApplicationContext());
@@ -72,7 +61,6 @@ public class ItemDAOTest extends InstrumentationTestCase {
 
     }
 
-    @Test
     public void testOverWriteItemList(){
         ItemDAO itemDAO = new ItemDAO(this.getInstrumentation().getTargetContext().getApplicationContext());
         Bitmap bitmap = BitmapFactory.decodeResource(this.getInstrumentation().getTargetContext().getResources(), R.mipmap.ic_launcher);

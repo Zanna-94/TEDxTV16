@@ -31,10 +31,6 @@ import com.example.group.tedxtv16.item.ItemType;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Toolbar toolbar;
-    private TabLayout tabLayout;
-    private ViewPager viewPager;
-
     /**
      * Progress dialog refered to be dismessed from different method
      * {@link #waitingDialog()}
@@ -68,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
         team = new ArrayList<>();
         about = new ArrayList<>();
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         Drawable logo = ContextCompat.getDrawable(this, R.drawable.logo_dark);
         toolbar.setLogo(logo);
@@ -88,40 +84,35 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
         //else branch never get because the application is in portrait mode
-        if (savedInstanceState == null) {
+        //check connection
+        if (savedInstanceState == null) if (!isNetworkAvailable()) {
+            ItemDAO itemDAO = new ItemDAO(this);
 
-            //check connection
-            if (!isNetworkAvailable()) {
-                ItemDAO itemDAO = new ItemDAO(this);
-
-                speakers = (ArrayList) itemDAO.getAllItems(ItemType.SPEAKER);
-                news = (ArrayList) itemDAO.getAllItems(ItemType.NEWS);
-                team = (ArrayList) itemDAO.getAllItems(ItemType.TEAM);
-                //TODO modify itemDao to manage about
-
-                createFragment();
-
-            } else {
-
-                //show progress dialog
-                waitingDialog();
-
-                // start asyncTask to download datas from the web site
-                AsyncTaskListView mytask = new AsyncTaskListView(this);
-                mytask.setSpeakers(speakers);
-                mytask.setNews(news);
-                mytask.setTeam(team);
-                mytask.setAbout(about);
-
-                mytask.execute();
-            }
+            speakers = (ArrayList<Item>) itemDAO.getAllItems(ItemType.SPEAKER);
+            news = (ArrayList<Item>) itemDAO.getAllItems(ItemType.NEWS);
+            team = (ArrayList<Item>) itemDAO.getAllItems(ItemType.TEAM);
+            about = (ArrayList<Item>) itemDAO.getAllItems(ItemType.ABOUT);
+            createFragment();
 
         } else {
+
+            //show progress dialog
+            waitingDialog();
+
+            // start asyncTask to download datas from the web site
+            AsyncTaskListView mytask = new AsyncTaskListView(this);
+            mytask.setSpeakers(speakers);
+            mytask.setNews(news);
+            mytask.setTeam(team);
+            mytask.setAbout(about);
+
+            mytask.execute();
+        }
+        else {
             news = savedInstanceState.getParcelableArrayList("NEWS");
             speakers = savedInstanceState.getParcelableArrayList("SPEAKER");
             team = savedInstanceState.getParcelableArrayList("TEAM");
             about = savedInstanceState.getParcelableArrayList("ABOUT");
-
 
             createFragment();
         }
@@ -130,7 +121,8 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Never user because application is always in portrait mode
-     * @param outState
+     *
+     * @param outState: Contains information to keeo while screen rotation
      */
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -178,10 +170,10 @@ public class MainActivity extends AppCompatActivity {
         if (waitingDialog != null)
             waitingDialog.dismiss();
 
-        viewPager = (ViewPager) findViewById(R.id.viewpager);
+        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);
 
-        tabLayout = (TabLayout) findViewById(R.id.tabs);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setTabTextColors(Color.parseColor("#e62b1e"), Color.parseColor("#e62b1e"));
         tabLayout.setupWithViewPager(viewPager);
     }
@@ -250,13 +242,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
-    /**
-     * Called from Fragment to obtain ArrayList of Items and pass them to Adapter that create the
-     * custom view
-     *
-     * @return
-     */
     public static ArrayList<Item> getTeam() {
         return team;
     }

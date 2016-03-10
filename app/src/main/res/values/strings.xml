@@ -1,8 +1,6 @@
 <resources>
     <string name="app_name" translatable="false">TEDxTV16</string>
     <string name="action_settings" translatable="false">Settings</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
     <string name="noContent">Nessun contenuto da mostrare</string>
     <string name="notAvailable">Non disponibile</string>

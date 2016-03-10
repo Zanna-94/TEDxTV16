@@ -3,9 +3,6 @@ package com.example.group.tedxtv16.listViewAdapter;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,9 +15,6 @@ import com.example.group.tedxtv16.item.Item;
 
 import java.util.ArrayList;
 
-/**
- * Created by emanuele on 04/03/16.
- */
 public class AboutAdapter extends BaseAdapter {
 
     private ArrayList list;

@@ -22,8 +22,6 @@ import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.group.tedxtv16.item.Item;
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;

@@ -10,14 +10,12 @@ import com.example.group.tedxtv16.item.SpeakerItem;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by ovidiudanielbarba on 03/03/16.
- */
 public class LoadFromDatabaseAsyncTask extends AsyncTask<Void,Void,Void> {
 
     private List<Item> speakerItemList;
     private List<Item> newsItemList;
     private List<Item> teamItemList;
+    private List<Item> aboutItemList;
     private Context context;
 
     public LoadFromDatabaseAsyncTask(Context context) {
@@ -25,6 +23,7 @@ public class LoadFromDatabaseAsyncTask extends AsyncTask<Void,Void,Void> {
         speakerItemList = new ArrayList<>();
         newsItemList = new ArrayList<>();
         teamItemList = new ArrayList<>();
+        aboutItemList = new ArrayList<>();
         this.context = context;
     }
 
@@ -35,6 +34,7 @@ public class LoadFromDatabaseAsyncTask extends AsyncTask<Void,Void,Void> {
         speakerItemList = itemDAO.getAllItems(ItemType.SPEAKER);
         newsItemList = itemDAO.getAllItems(ItemType.NEWS);
         teamItemList = itemDAO.getAllItems(ItemType.TEAM);
+        aboutItemList = itemDAO.getAllItems(ItemType.ABOUT);
         return null;
     }
 
