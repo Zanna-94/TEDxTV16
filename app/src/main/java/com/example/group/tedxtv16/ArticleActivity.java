@@ -27,6 +27,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.util.Objects;
 
 /**
  * Class create the Activity for visualize the articles inserted in the web site.
@@ -93,12 +94,12 @@ public class ArticleActivity extends AppCompatActivity {
 
             String article = sharedPreferences.getString(url, null);
 
-            if (article != null) {
+            if (article != null && !article.equals("")) {
                 webview.loadDataWithBaseURL("http://www.tedxtorvergatau.com", article,
                         "text/html", "utf-8", null);
             } else {
                 TextView textView = (TextView) findViewById(R.id.textView);
-                textView.setText("Nessun contenuto disponibile");
+                textView.setText(getResources().getText(R.string.noContent));
                 textView.setVisibility(View.VISIBLE);
             }
 
