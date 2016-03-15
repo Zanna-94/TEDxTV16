@@ -19,6 +19,8 @@ public class ContactUsFragment extends Fragment {
     private FloatingActionButton btnSend;
 
 
+
+
     public ContactUsFragment() {
         // Required empty public constructor
     }
@@ -36,12 +38,13 @@ public class ContactUsFragment extends Fragment {
 
         etBody = (MailMessage) v.findViewById(R.id.etBody);
 
+
         btnSend = (FloatingActionButton) v.findViewById(R.id.fabSend);
 
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!etBody.getText().equals("")){
+                if (etBody.getText().equals("")) {
                     send();
                 }
             }
