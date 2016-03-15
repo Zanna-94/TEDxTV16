@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">TEDxTorVergataU</string>
+    <string name="noContent">Nessun contenuto da mostrare</string>
+    <string name="notAvailable">Non disponibile</string>
+    <string name="sendUsAMail">Inviaci una mail per qualsiasi informazione o suggerimento!</string>
+    <string name="Object">Oggetto</string>
+    <string name="Body">Corpo</string>
+</resources>

@@ -8,14 +8,14 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
-import com.example.group.tedxtv16.MailMessage;
 import com.example.group.tedxtv16.R;
 
 
 public class ContactUsFragment extends Fragment {
 
-    private MailMessage etBody;
+    private EditText etBody;
     private FloatingActionButton btnSend;
 
 
@@ -36,7 +36,7 @@ public class ContactUsFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_contact_us, container, false);
 
-        etBody = (MailMessage) v.findViewById(R.id.etBody);
+        etBody = (EditText) v.findViewById(R.id.etBody);
 
 
         btnSend = (FloatingActionButton) v.findViewById(R.id.fabSend);

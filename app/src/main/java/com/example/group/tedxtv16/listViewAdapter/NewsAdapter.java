@@ -65,7 +65,7 @@ public class NewsAdapter extends BaseAdapter {
                     if (newsItem.getPhoto() != null)
                         photo.setImageBitmap(Bitmap.createScaledBitmap(newsItem.getPhoto(), 400, 450, false));
                     else {
-                        photo.setImageBitmap(Bitmap.createScaledBitmap(BitmapFactory.decodeFile("/res/drawable/no_image_available.png"), 300, 300, false));
+                        photo.setImageBitmap(Bitmap.createScaledBitmap(BitmapFactory.decodeFile("/res/drawable/no_image_available.png"), 400, 450, false));
                     }
                     if (newsItem.getDescription() != null)
                         description.setText(newsItem.getDescription());
