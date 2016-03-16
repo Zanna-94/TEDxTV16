@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -18,16 +19,17 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.example.group.tedxtv16.db.ItemDAO;
+import com.example.group.tedxtv16.db.InsertListIntoDBAsyncTask;
+import com.example.group.tedxtv16.db.LoadFromDatabaseAsyncTask;
 import com.example.group.tedxtv16.fragment.*;
 import com.example.group.tedxtv16.item.Item;
-import com.example.group.tedxtv16.item.ItemType;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -46,11 +48,16 @@ public class MainActivity extends AppCompatActivity {
     private static ArrayList<Item> news;
     private static ArrayList<Item> team;
     private static ArrayList<Item> about;
+
+    private LoadFromDatabaseAsyncTask loadItemsThread;
+    private InsertListIntoDBAsyncTask saveItemsThread;
+
     /**
      * Current Instance of MainActivity that is passed to AsyncTask to inform  when it finishes.
      * {@link AsyncTaskListView#onPostExecute(Void)}
      */
     public static Activity activity;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,11 +65,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         activity = this;
-
-        news = new ArrayList<>();
-        speakers = new ArrayList<>();
-        team = new ArrayList<>();
-        about = new ArrayList<>();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
@@ -85,30 +87,14 @@ public class MainActivity extends AppCompatActivity {
 
         //else branch never get because the application is in portrait mode
         //check connection
-        if (savedInstanceState == null) if (!isNetworkAvailable()) {
-            ItemDAO itemDAO = new ItemDAO(this);
-
-            speakers = (ArrayList<Item>) itemDAO.getAllItems(ItemType.SPEAKER);
-            news = (ArrayList<Item>) itemDAO.getAllItems(ItemType.NEWS);
-            team = (ArrayList<Item>) itemDAO.getAllItems(ItemType.TEAM);
-            about = (ArrayList<Item>) itemDAO.getAllItems(ItemType.ABOUT);
-            createFragment();
-
-        } else {
+        if (savedInstanceState == null) {
 
             //show progress dialog
             waitingDialog();
 
-            // start asyncTask to download datas from the web site
-            AsyncTaskListView mytask = new AsyncTaskListView(this);
-            mytask.setSpeakers(speakers);
-            mytask.setNews(news);
-            mytask.setTeam(team);
-            mytask.setAbout(about);
 
-            mytask.execute();
-        }
-        else {
+            fillListItems();
+        } else {
             news = savedInstanceState.getParcelableArrayList("NEWS");
             speakers = savedInstanceState.getParcelableArrayList("SPEAKER");
             team = savedInstanceState.getParcelableArrayList("TEAM");
@@ -161,14 +147,50 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
     }
 
+    public void fillListItems() {
+
+        news = new ArrayList<>();
+        speakers = new ArrayList<>();
+        team = new ArrayList<>();
+        about = new ArrayList<>();
+
+        if (!isNetworkAvailable()) {
+
+            if(loadItemsThread!=null)
+                if(loadItemsThread.getStatus() == AsyncTask.Status.PENDING &&
+                        loadItemsThread.getStatus() == AsyncTask.Status.RUNNING ){
+                    Log.v("debug","load db thread already running");
+                    return;
+                }
+
+            Log.v("debug","load db thread started");
+            loadItemsThread = new LoadFromDatabaseAsyncTask(this);
+            loadItemsThread.setNewsItemList(news);
+            loadItemsThread.setAboutItemList(about);
+            loadItemsThread.setSpeakerItemList(speakers);
+            loadItemsThread.setTeamItemList(team);
+
+            loadItemsThread.execute();
+
+        } else {
+
+            // start asyncTask to download datas from the web site
+            AsyncTaskListView mytask = new AsyncTaskListView(this);
+            mytask.setSpeakers(speakers);
+            mytask.setNews(news);
+            mytask.setTeam(team);
+            mytask.setAbout(about);
+
+            Log.v("debug", "parsing html");
+            mytask.execute();
+        }
+    }
+
     /**
      * Call {@link #setupViewPager(ViewPager)} and set TabLayout after that {@link AsyncTaskListView}
      * has finished and {@link AsyncTaskListView#onPostExecute(Void)} is called
      */
     public void createFragment() {
-
-        if (waitingDialog != null)
-            waitingDialog.dismiss();
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);
@@ -176,6 +198,22 @@ public class MainActivity extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setTabTextColors(Color.parseColor("#e62b1e"), Color.parseColor("#e62b1e"));
         tabLayout.setupWithViewPager(viewPager);
+
+        if (waitingDialog != null)
+            waitingDialog.dismiss();
+    }
+
+    public void saveItems() {
+
+        if (saveItemsThread != null)
+            if (saveItemsThread.getStatus() != AsyncTask.Status.FINISHED) {
+                Log.v("debug","save db thread already running");
+                return;
+            }
+
+        Log.v("debug","save db thread started");
+        saveItemsThread = new InsertListIntoDBAsyncTask(activity);
+        saveItemsThread.execute(speakers, team, news, about);
     }
 
     /**
@@ -257,4 +295,5 @@ public class MainActivity extends AppCompatActivity {
     public static ArrayList<Item> getAbout() {
         return about;
     }
+
 }

@@ -3,6 +3,7 @@ package com.example.group.tedxtv16.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,8 @@ public class TeamFragment extends ListFragment {
 
     private ArrayList<Item> team;
 
+    private SwipeRefreshLayout mySwipeRefreshLayout;
+
     public TeamFragment() {
         // Required empty public constructor
     }
@@ -39,6 +42,9 @@ public class TeamFragment extends ListFragment {
 
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_team, container, false);
+
+        mySwipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swiperefresh);
+
         TextView content = (TextView) v.findViewById(R.id.textView);
         content.setVisibility(View.INVISIBLE);
 
@@ -52,6 +58,17 @@ public class TeamFragment extends ListFragment {
             TeamAdapter teamAdapter = new TeamAdapter(getActivity(), team);
             myListView.setAdapter(teamAdapter);
         }
+
+        mySwipeRefreshLayout.setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        // This method performs the actual data-refresh operation.
+                        // The method calls setRefreshing(false) when it's finished.
+                        ((MainActivity) getActivity()).fillListItems();
+                    }
+                }
+        );
 
         return v;
     }

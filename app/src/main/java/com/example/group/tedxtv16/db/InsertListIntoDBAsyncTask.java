@@ -25,11 +25,11 @@ public class InsertListIntoDBAsyncTask extends AsyncTask<List<Item>,Void,Void>{
         List<Item> aboutList = lists[3];
 
         ItemDAO itemDAO = new ItemDAO(context);
+        itemDAO.clearAllTables();
         itemDAO.overWriteItemList(speakerList);
         itemDAO.overWriteItemList(teamList);
         itemDAO.overWriteItemList(newsList);
         itemDAO.overWriteItemList(aboutList);
-
 
         return null;
     }

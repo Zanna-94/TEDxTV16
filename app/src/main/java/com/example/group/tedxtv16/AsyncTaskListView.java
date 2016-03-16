@@ -89,12 +89,7 @@ public class AsyncTaskListView extends AsyncTask<Object, Void, Void> {
         super.onPostExecute(aVoid);
         activity.createFragment();
 
-        ItemDAO dao = new ItemDAO(activity);
-        dao.clearAllTables();
-        dao.overWriteItemList(news);
-        dao.overWriteItemList(speakers);
-        dao.overWriteItemList(team);
-        dao.overWriteItemList(about);
+        activity.saveItems();
     }
 
     private void configureListView(String link, String[] ids) {
@@ -112,8 +107,6 @@ public class AsyncTaskListView extends AsyncTask<Object, Void, Void> {
 
                 for (Element article : articles) {
                     Log.v(TAG, "ARTICLE");
-                    Log.v(TAG, "Selected article: " + article.toString());
-
                     Element name = article.select(ids[1]).first();
 
                     Element image = article.select(ids[2]).first();
@@ -135,7 +128,7 @@ public class AsyncTaskListView extends AsyncTask<Object, Void, Void> {
                     Log.v(TAG, "Image created!");
 
                     String articleDescription = description.text().substring(0, description.text().length()-3) + "...";
-                    Log.v(TAG, articleDescription);
+                    Log.v(TAG, "description assigned");
 
 
                     switch (link) {

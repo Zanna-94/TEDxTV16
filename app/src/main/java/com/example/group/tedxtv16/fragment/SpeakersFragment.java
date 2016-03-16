@@ -3,6 +3,7 @@ package com.example.group.tedxtv16.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,8 @@ public class SpeakersFragment extends ListFragment {
 
     private ArrayList<Item> speakers;
 
+    private SwipeRefreshLayout mySwipeRefreshLayout;
+
     public SpeakersFragment() {
         // Required empty public constructor
     }
@@ -35,6 +38,8 @@ public class SpeakersFragment extends ListFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_speakers, container, false);
+
+        mySwipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swiperefresh);
 
         TextView content = (TextView) v.findViewById(R.id.textView);
         content.setVisibility(View.INVISIBLE);
@@ -49,6 +54,16 @@ public class SpeakersFragment extends ListFragment {
             myListView.setAdapter(speakAdapter);
         }
 
+        mySwipeRefreshLayout.setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        // This method performs the actual data-refresh operation.
+                        // The method calls setRefreshing(false) when it's finished.
+                        ((MainActivity) getActivity()).fillListItems();
+                    }
+                }
+        );
 
         return v;
 
