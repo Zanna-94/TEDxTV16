@@ -39,16 +39,16 @@ public class ContactUsFragment extends Fragment {
         etBody = (EditText) v.findViewById(R.id.etBody);
 
 
-        btnSend = (FloatingActionButton) v.findViewById(R.id.fabSend);
+        //btnSend = (FloatingActionButton) v.findViewById(R.id.fabSend);
 
-        btnSend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (etBody.getText().equals("")) {
-                    send();
-                }
-            }
-        });
+        //btnSend.setOnClickListener(new View.OnClickListener() {
+        //    @Override
+        //    public void onClick(View v) {
+        //        if (etBody.getText().equals("")) {
+        //            send();
+        //        }
+        //    }
+        //});
 
         return v;
     }

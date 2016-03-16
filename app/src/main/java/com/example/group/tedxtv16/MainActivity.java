@@ -20,8 +20,10 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,6 +60,14 @@ public class MainActivity extends AppCompatActivity {
      */
     public static Activity activity;
 
+
+    private int[] tabIcons = {
+            R.drawable.ic_info_black_24dp,
+            R.drawable.ic_announcement_black_24dp,
+            R.drawable.ic_speaker_notes_black_24dp,
+            R.drawable.ic_people_black_24dp,
+            R.drawable.ic_contact_mail_black_24dp
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,10 +122,10 @@ public class MainActivity extends AppCompatActivity {
      */
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putParcelableArrayList("NEWS", news);
-        outState.putParcelableArrayList("TEAM", team);
-        outState.putParcelableArrayList("SPEAKER", speakers);
         outState.putParcelableArrayList("ABOUT", about);
+        outState.putParcelableArrayList("NEWS", news);
+        outState.putParcelableArrayList("SPEAKER", speakers);
+        outState.putParcelableArrayList("TEAM", team);
 
         super.onSaveInstanceState(outState);
     }
@@ -138,11 +148,11 @@ public class MainActivity extends AppCompatActivity {
      */
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter.addFragment(new AboutFragment(), "ABOUT");
         adapter.addFragment(new NewsFragment(), "NEWS");
         adapter.addFragment(new SpeakersFragment(), "SPEAKERS");
         adapter.addFragment(new TeamFragment(), "TEAM");
         adapter.addFragment(new ContactUsFragment(), "CONTACT US");
-        adapter.addFragment(new AboutFragment(), "ABOUT");
 
         viewPager.setAdapter(adapter);
     }
@@ -199,6 +209,8 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setTabTextColors(Color.parseColor("#e62b1e"), Color.parseColor("#e62b1e"));
         tabLayout.setupWithViewPager(viewPager);
 
+        setupTabIcons(tabLayout);
+
         if (waitingDialog != null)
             waitingDialog.dismiss();
     }
@@ -211,7 +223,7 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
 
-        Log.v("debug","save db thread started");
+        Log.v("debug", "save db thread started");
         saveItemsThread = new InsertListIntoDBAsyncTask(activity);
         saveItemsThread.execute(speakers, team, news, about);
     }
@@ -278,6 +290,15 @@ public class MainActivity extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             return mFragmentTitleList.get(position);
         }
+    }
+
+    private void setupTabIcons(TabLayout tabLayout) {
+        tabLayout.getTabAt(0).setIcon(tabIcons[0]);
+        tabLayout.getTabAt(1).setIcon(tabIcons[1]);
+        tabLayout.getTabAt(2).setIcon(tabIcons[2]);
+        tabLayout.getTabAt(3).setIcon(tabIcons[3]);
+        tabLayout.getTabAt(4).setIcon(tabIcons[4]);
+
     }
 
     public static ArrayList<Item> getTeam() {

@@ -49,39 +49,64 @@
                 android:layout_weight="1"
                 android:hint="@string/Object"
                 android:textColorHint="#000000"
+                android:textColor="#000000"
                 android:background="@drawable/edit_text_style"
                 android:layout_gravity="center"/>
-
-            <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/imageButton"
-                android:src="@drawable/ic_send_black_24dp"
-                android:background="#FFFFFF"
-                android:layout_gravity="center"
-                android:padding="3dp"/>
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/mleContactUs"
-            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="0.3"
-            android:padding="5dp">
-
-
-            <EditText
+            android:orientation="vertical">
+            <LinearLayout
+                android:id="@+id/mleContactUs"
+                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/etBody"
-                android:textAlignment="gravity"
-                android:gravity="top"
-                android:hint="@string/Body"
-                android:textColorHint="#000000"
-                android:background="@drawable/edit_text_style"
-                android:padding="5dp"/>
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="5dp"
+                android:layout_weight="0.1">
+
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/etBody"
+                    android:textAlignment="gravity"
+                    android:gravity="top"
+                    android:hint="@string/Body"
+                    android:textColorHint="#000000"
+                    android:textColor="#000000"
+                    android:background="@drawable/edit_text_style"
+                    android:padding="5dp"/>
+                </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/bottomLayout"
+                android:weightSum="1">
+
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/logo_dark"
+                    android:adjustViewBounds="true"
+                    android:padding="10dp"
+                    android:maxWidth="400dp"
+                    android:maxHeight="70dp"/>
+
+                <ImageButton
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/imageButton"
+                    android:src="@drawable/ic_send_white_24dp"
+                    android:background="#E62B1E"
+                    android:layout_gravity="center"
+                    android:adjustViewBounds="true" />
+            </LinearLayout>
         </LinearLayout>
 
     </LinearLayout>
@@ -93,6 +118,6 @@
         android:layout_margin="16dp"
         android:clickable="true"
         android:src="@drawable/ic_send_white_24dp"
-        app:layout_anchor="@id/mleContactUs"
+        app:layout_anchor="@id/bottomLayout"
         app:layout_anchorGravity="bottom|right|end"/>-->
 </android.support.design.widget.CoordinatorLayout>
