@@ -1,7 +1,10 @@
 <resources>
-    <string name="app_name" translatable="false">TEDxTV16</string>
+    <string name="app_name">TEDxTorVergataU</string>
     <string name="action_settings" translatable="false">Settings</string>
     <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
     <string name="noContent">Nessun contenuto da mostrare</string>
-    <string name="notAvailable">Non disponibile</string>
+    <string name="notAvailable">Not available</string>
+    <string name="sendUsAMail">Send us an email for any information or suggestions!</string>
+    <string name="Object">Object</string>
+    <string name="Body">Body</string>
 </resources>

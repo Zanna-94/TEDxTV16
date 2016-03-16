@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="info.androidhive.materialtabs.fragments.ContactUsFragment">
-
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -18,65 +17,82 @@
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.3">
+            android:layout_height="wrap_content">
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Inviaci una mail per qualsiasi informazione o suggerimento!"
+                android:text="@string/sendUsAMail"
                 android:id="@+id/tvEmail"
                 android:textColor="#000000"
                 android:textStyle="bold"
                 android:textSize="25dp"
-                android:textAlignment="center"
-                android:gravity="center_vertical|center_horizontal" />
+                android:textAlignment="gravity"
+                android:gravity="top|center"
+                android:paddingTop="10dp"/>
         </LinearLayout>
 
         <LinearLayout
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.3">
+            android:paddingTop="10dp"
+            android:paddingLeft="5dp"
+            android:paddingBottom="5dp"
+            android:paddingRight="5dp">
 
-            <TextView
+            <EditText
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="la mail verrà inviata all'indirizzo: "
-                android:id="@+id/textView2"
-                android:layout_weight="0.3"
+                android:layout_height="wrap_content"
+                android:id="@+id/editText"
+                android:layout_weight="1"
+                android:hint="@string/Object"
+                android:textColorHint="#000000"
+                android:background="@drawable/edit_text_style"
+                android:layout_gravity="center"/>
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageButton"
+                android:src="@drawable/ic_send_black_24dp"
+                android:background="#FFFFFF"
                 android:layout_gravity="center"
-                android:gravity="center_vertical|center_horizontal" />
+                android:padding="3dp"/>
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/mleContactUs"
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:layout_weight="0.3">
+            android:layout_weight="0.3"
+            android:padding="5dp">
 
-            <com.example.group.tedxtv16.MailMessage
+
+            <EditText
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:inputType="textMultiLine"
-                android:lines="5"
                 android:id="@+id/etBody"
                 android:textAlignment="gravity"
-                android:gravity="top" />
+                android:gravity="top"
+                android:hint="@string/Body"
+                android:textColorHint="#000000"
+                android:background="@drawable/edit_text_style"
+                android:padding="5dp"/>
         </LinearLayout>
 
     </LinearLayout>
 
-    <android.support.design.widget.FloatingActionButton
+    <!--<android.support.design.widget.FloatingActionButton
         android:id="@+id/fabSend"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:clickable="true"
         android:src="@drawable/ic_send_white_24dp"
-        app:layout_anchor="@id/viewA"
-        app:layout_anchorGravity="bottom|right|end"/>
+        app:layout_anchor="@id/mleContactUs"
+        app:layout_anchorGravity="bottom|right|end"/>-->
 </android.support.design.widget.CoordinatorLayout>
