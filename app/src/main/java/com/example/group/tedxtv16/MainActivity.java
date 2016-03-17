@@ -20,10 +20,8 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
      * {@link #createFragment()}
      */
     private ProgressDialog waitingDialog;
+
+    private ViewPagerAdapter adapter;
 
     /**
      * Static because they are passed to AsyncTask that set them with download datas.
@@ -100,11 +100,11 @@ public class MainActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
 
             //show progress dialog
-            waitingDialog();
-
-
+            createFragment();
             fillListItems();
+
         } else {
+
             news = savedInstanceState.getParcelableArrayList("NEWS");
             speakers = savedInstanceState.getParcelableArrayList("SPEAKER");
             team = savedInstanceState.getParcelableArrayList("TEAM");
@@ -130,34 +130,9 @@ public class MainActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
     }
 
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
-
-    /**
-     * Create Fragment and set Adapter for viewPager
-     *
-     * @param viewPager: to be set
-     */
-    private void setupViewPager(ViewPager viewPager) {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new AboutFragment(), "ABOUT");
-        adapter.addFragment(new NewsFragment(), "NEWS");
-        adapter.addFragment(new SpeakersFragment(), "SPEAKERS");
-        adapter.addFragment(new TeamFragment(), "TEAM");
-        adapter.addFragment(new ContactUsFragment(), "CONTACT US");
-
-        viewPager.setAdapter(adapter);
-    }
-
     public void fillListItems() {
+
+        waitingDialog();
 
         news = new ArrayList<>();
         speakers = new ArrayList<>();
@@ -166,14 +141,14 @@ public class MainActivity extends AppCompatActivity {
 
         if (!isNetworkAvailable()) {
 
-            if(loadItemsThread!=null)
-                if(loadItemsThread.getStatus() == AsyncTask.Status.PENDING &&
-                        loadItemsThread.getStatus() == AsyncTask.Status.RUNNING ){
-                    Log.v("debug","load db thread already running");
+            if (loadItemsThread != null)
+                if (loadItemsThread.getStatus() == AsyncTask.Status.PENDING &&
+                        loadItemsThread.getStatus() == AsyncTask.Status.RUNNING) {
+                    Log.v("debug", "load db thread already running");
                     return;
                 }
 
-            Log.v("debug","load db thread started");
+            Log.v("debug", "load db thread started");
             loadItemsThread = new LoadFromDatabaseAsyncTask(this);
             loadItemsThread.setNewsItemList(news);
             loadItemsThread.setAboutItemList(about);
@@ -215,11 +190,27 @@ public class MainActivity extends AppCompatActivity {
             waitingDialog.dismiss();
     }
 
+    /**
+     * Create Fragment and set Adapter for viewPager
+     *
+     * @param viewPager: to be set
+     */
+    private void setupViewPager(ViewPager viewPager) {
+        adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter.addFragment(new AboutFragment(), "ABOUT");
+        adapter.addFragment(new NewsFragment(), "NEWS");
+        adapter.addFragment(new SpeakersFragment(), "SPEAKERS");
+        adapter.addFragment(new TeamFragment(), "TEAM");
+        adapter.addFragment(new ContactUsFragment(), "CONTACT US");
+
+        viewPager.setAdapter(adapter);
+    }
+
     public void saveItems() {
 
         if (saveItemsThread != null)
             if (saveItemsThread.getStatus() != AsyncTask.Status.FINISHED) {
-                Log.v("debug","save db thread already running");
+                Log.v("debug", "save db thread already running");
                 return;
             }
 
@@ -233,7 +224,7 @@ public class MainActivity extends AppCompatActivity {
      *
      * @return true if the device if connected to internet
      */
-    private boolean isNetworkAvailable() {
+    public boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
@@ -290,6 +281,13 @@ public class MainActivity extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             return mFragmentTitleList.get(position);
         }
+
+        @Override
+        public int getItemPosition(Object item) {
+            super.getItemPosition(item);
+
+            return POSITION_NONE;
+        }
     }
 
     private void setupTabIcons(TabLayout tabLayout) {
@@ -315,6 +313,20 @@ public class MainActivity extends AppCompatActivity {
 
     public static ArrayList<Item> getAbout() {
         return about;
+    }
+
+    public void refreshFragment() {
+        Log.v("update", "fragment.update");
+        ((AboutFragment) adapter.getItem(0)).update();
+        ((NewsFragment) adapter.getItem(1)).update();
+        ((SpeakersFragment) adapter.getItem(2)).update();
+        ((TeamFragment) adapter.getItem(3)).update();
+
+        adapter.notifyDataSetChanged();
+
+        if (waitingDialog != null)
+            waitingDialog.dismiss();
+
     }
 
 }

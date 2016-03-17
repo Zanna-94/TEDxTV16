@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,10 +23,10 @@ import java.util.ArrayList;
 public class TeamFragment extends ListFragment {
 
     private ListView myListView;
+    private SwipeRefreshLayout mySwipeRefreshLayout;
+    private TeamAdapter teamAdapter;
 
     private ArrayList<Item> team;
-
-    private SwipeRefreshLayout mySwipeRefreshLayout;
 
     public TeamFragment() {
         // Required empty public constructor
@@ -43,29 +44,34 @@ public class TeamFragment extends ListFragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_team, container, false);
 
+        myListView = (ListView) v.findViewById(android.R.id.list);
         mySwipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swiperefresh);
-
         TextView content = (TextView) v.findViewById(R.id.textView);
         content.setVisibility(View.INVISIBLE);
 
         team = MainActivity.getTeam();
 
-        if (team.size() == 0) {
-            content.setVisibility(View.VISIBLE);
+        if (team != null) {
+            if (team.size() == 0) {
+                content.setVisibility(View.VISIBLE);
+            }
         } else {
-
-            myListView = (ListView) v.findViewById(android.R.id.list);
-            TeamAdapter teamAdapter = new TeamAdapter(getActivity(), team);
-            myListView.setAdapter(teamAdapter);
+            content.setVisibility(View.VISIBLE);
         }
+
+        teamAdapter = new TeamAdapter(getActivity(), team);
+        myListView.setAdapter(teamAdapter);
 
         mySwipeRefreshLayout.setOnRefreshListener(
                 new SwipeRefreshLayout.OnRefreshListener() {
                     @Override
                     public void onRefresh() {
-                        // This method performs the actual data-refresh operation.
-                        // The method calls setRefreshing(false) when it's finished.
-                        ((MainActivity) getActivity()).fillListItems();
+
+                        mySwipeRefreshLayout.setRefreshing(false);
+
+                        if (((MainActivity) getActivity()).isNetworkAvailable()) {
+                            ((MainActivity) getActivity()).fillListItems();
+                        }
                     }
                 }
         );
@@ -85,6 +91,12 @@ public class TeamFragment extends ListFragment {
         articleIntent.putExtra("articleLink", team.get(position).getUrl());
         startActivity(articleIntent);
 
+    }
+
+    public void update() {
+        Log.v("update", "ListView notify");
+        if (teamAdapter != null)
+            teamAdapter.notifyDataSetChanged();
     }
 
 }

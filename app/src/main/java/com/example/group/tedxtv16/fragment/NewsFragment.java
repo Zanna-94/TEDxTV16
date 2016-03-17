@@ -2,7 +2,6 @@ package com.example.group.tedxtv16.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
@@ -21,13 +20,13 @@ import com.example.group.tedxtv16.listViewAdapter.NewsAdapter;
 import java.util.ArrayList;
 
 
-public class NewsFragment extends ListFragment  {
+public class NewsFragment extends ListFragment {
 
     private ListView myListView;
+    private NewsAdapter newsAdapter;
+    private SwipeRefreshLayout mySwipeRefreshLayout;
 
     private ArrayList<Item> news;
-
-    private SwipeRefreshLayout mySwipeRefreshLayout;
 
     public NewsFragment() {
         // Required empty public constructor
@@ -43,39 +42,44 @@ public class NewsFragment extends ListFragment  {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        Log.v("update", "entered in onCreateView");
+
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_news, container, false);
-
+        myListView = (ListView) v.findViewById(android.R.id.list);
         mySwipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swiperefresh);
-
-
         TextView content = (TextView) v.findViewById(R.id.textView);
-        content.setVisibility(View.INVISIBLE);
 
         news = MainActivity.getNews();
 
-        if (news.size() == 0) {
-            content.setVisibility(View.VISIBLE);
-        } else {
+        content.setVisibility(View.INVISIBLE);
 
-            myListView = (ListView) v.findViewById(android.R.id.list);
-            NewsAdapter newsAdapter = new NewsAdapter(getActivity(), news);
-            myListView.setAdapter(newsAdapter);
+        if (news != null) {
+            if (news.size() == 0) {
+                content.setVisibility(View.VISIBLE);
+            }
+        } else {
+            content.setVisibility(View.VISIBLE);
         }
+
+        newsAdapter = new NewsAdapter(getActivity(), news);
+        myListView.setAdapter(newsAdapter);
 
         mySwipeRefreshLayout.setOnRefreshListener(
                 new SwipeRefreshLayout.OnRefreshListener() {
                     @Override
                     public void onRefresh() {
-                        // This method performs the actual data-refresh operation.
-                        // The method calls setRefreshing(false) when it's finished.
-                        ((MainActivity) getActivity()).fillListItems();
+                        mySwipeRefreshLayout.setRefreshing(false);
+
+                        if (((MainActivity) getActivity()).isNetworkAvailable()) {
+                            ((MainActivity) getActivity()).fillListItems();
+                        }
                     }
                 }
         );
 
         return v;
-   }
+    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -85,11 +89,17 @@ public class NewsFragment extends ListFragment  {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
 
-        Log.v("TAG", "entered onItemClick of ListView in position: "+position);
+        Log.v("TAG", "entered onItemClick of ListView in position: " + position);
         Intent articleIntent = new Intent(getActivity(), ArticleActivity.class);
         articleIntent.putExtra("articleLink", news.get(position).getUrl());
         startActivity(articleIntent);
 
+    }
+
+    public void update() {
+        Log.v("update", "ListView notify");
+        if (newsAdapter != null)
+            newsAdapter.notifyDataSetChanged();
     }
 
 }

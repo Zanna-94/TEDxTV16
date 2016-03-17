@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,17 +22,19 @@ import java.util.ArrayList;
 public class SpeakersFragment extends ListFragment {
 
     private ListView myListView;
+    private SpeakersAdapter speakAdapter;
+    private SwipeRefreshLayout mySwipeRefreshLayout;
 
     private ArrayList<Item> speakers;
-
-    private SwipeRefreshLayout mySwipeRefreshLayout;
 
     public SpeakersFragment() {
         // Required empty public constructor
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {super.onCreate(savedInstanceState);}
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -40,27 +43,33 @@ public class SpeakersFragment extends ListFragment {
         View v = inflater.inflate(R.layout.fragment_speakers, container, false);
 
         mySwipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swiperefresh);
-
+        myListView = (ListView) v.findViewById(android.R.id.list);
         TextView content = (TextView) v.findViewById(R.id.textView);
         content.setVisibility(View.INVISIBLE);
 
         speakers = MainActivity.getSpeakers();
 
-        if (speakers.size() == 0) {
-            content.setVisibility(View.VISIBLE);
+        if (speakers != null) {
+            if (speakers.size() == 0) {
+                content.setVisibility(View.VISIBLE);
+            }
         } else {
-            myListView = (ListView) v.findViewById(android.R.id.list);
-            SpeakersAdapter speakAdapter = new SpeakersAdapter(getActivity(), speakers);
-            myListView.setAdapter(speakAdapter);
+            content.setVisibility(View.VISIBLE);
         }
+
+        speakAdapter = new SpeakersAdapter(getActivity(), speakers);
+        myListView.setAdapter(speakAdapter);
 
         mySwipeRefreshLayout.setOnRefreshListener(
                 new SwipeRefreshLayout.OnRefreshListener() {
                     @Override
                     public void onRefresh() {
-                        // This method performs the actual data-refresh operation.
-                        // The method calls setRefreshing(false) when it's finished.
-                        ((MainActivity) getActivity()).fillListItems();
+
+                        mySwipeRefreshLayout.setRefreshing(false);
+
+                        if (((MainActivity) getActivity()).isNetworkAvailable()) {
+                            ((MainActivity) getActivity()).fillListItems();
+                        }
                     }
                 }
         );
@@ -81,5 +90,10 @@ public class SpeakersFragment extends ListFragment {
         startActivity(articleIntent);
     }
 
+    public void update() {
+        Log.v("update", "ListView notify");
+        if (speakAdapter != null)
+            speakAdapter.notifyDataSetChanged();
+    }
 
 }

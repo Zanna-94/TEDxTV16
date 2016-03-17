@@ -5,7 +5,6 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.example.group.tedxtv16.db.ItemDAO;
 import com.example.group.tedxtv16.item.AboutItem;
 import com.example.group.tedxtv16.item.Item;
 import com.example.group.tedxtv16.item.NewsItem;
@@ -87,8 +86,9 @@ public class AsyncTaskListView extends AsyncTask<Object, Void, Void> {
     @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
-        activity.createFragment();
 
+        Log.v("update", "MainActivity refreshFragment");
+        activity.refreshFragment();
         activity.saveItems();
     }
 

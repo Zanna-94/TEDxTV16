@@ -23,10 +23,10 @@ import java.util.ArrayList;
 public class AboutFragment extends ListFragment {
 
     private ListView myListView;
-
     private ArrayList<Item> aboutItems;
-
     private SwipeRefreshLayout mySwipeRefreshLayout;
+
+    private AboutAdapter aboutAdapter;
 
     public AboutFragment() {
         // Required empty public constructor
@@ -43,30 +43,34 @@ public class AboutFragment extends ListFragment {
 
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_about, container, false);
-
         mySwipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swiperefresh);
-
+        myListView = (ListView) v.findViewById(android.R.id.list);
         TextView content = (TextView) v.findViewById(R.id.textView);
-        content.setVisibility(View.INVISIBLE);
 
         aboutItems = MainActivity.getAbout();
 
-        if (aboutItems.size() == 0) {
-            content.setVisibility(View.VISIBLE);
-        } else {
+        content.setVisibility(View.INVISIBLE);
 
-            myListView = (ListView) v.findViewById(android.R.id.list);
-            AboutAdapter aboutAdapter = new AboutAdapter(getActivity(), aboutItems);
-            myListView.setAdapter(aboutAdapter);
+        if (aboutItems != null) {
+            if (aboutItems.size() == 0)
+                content.setVisibility(View.VISIBLE);
+        } else {
+            content.setVisibility(View.VISIBLE);
         }
+
+        aboutAdapter = new AboutAdapter(getActivity(), aboutItems);
+        myListView.setAdapter(aboutAdapter);
 
         mySwipeRefreshLayout.setOnRefreshListener(
                 new SwipeRefreshLayout.OnRefreshListener() {
                     @Override
                     public void onRefresh() {
-                        // This method performs the actual data-refresh operation.
-                        // The method calls setRefreshing(false) when it's finished.
-                        ((MainActivity) getActivity()).fillListItems();
+
+                        mySwipeRefreshLayout.setRefreshing(false);
+
+                        if (((MainActivity) getActivity()).isNetworkAvailable()) {
+                            ((MainActivity) getActivity()).fillListItems();
+                        }
 
                     }
                 }
@@ -87,6 +91,11 @@ public class AboutFragment extends ListFragment {
         Intent articleIntent = new Intent(getActivity(), ArticleActivity.class);
         articleIntent.putExtra("articleLink", aboutItems.get(position).getUrl());
         startActivity(articleIntent);
+    }
 
+    public void update() {
+        Log.v("update", "ListView notify");
+        if (aboutAdapter != null)
+            aboutAdapter.notifyDataSetChanged();
     }
 }

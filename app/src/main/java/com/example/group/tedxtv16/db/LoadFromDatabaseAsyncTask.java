@@ -38,7 +38,8 @@ public class LoadFromDatabaseAsyncTask extends AsyncTask<Void,Void,Void> {
     @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
-        activity.createFragment();
+
+        activity.refreshFragment();
 
     }
 
