@@ -67,8 +67,13 @@ public class ArticleActivity extends AppCompatActivity {
         }
 
         setSupportActionBar(toolbar);
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_action_arrow_back_red_24px));
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         url = getIntent().getStringExtra("articleLink");
 
