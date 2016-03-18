@@ -67,7 +67,13 @@ public class ArticleActivity extends AppCompatActivity {
         }
 
         setSupportActionBar(toolbar);
-        toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_action_arrow_back_red_24px));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_action_arrow_back_red_24px, null));
+        }
+        else{
+            toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_action_arrow_back_red_24px));
+
+        }
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
