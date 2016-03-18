@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
@@ -42,6 +43,9 @@ public class ContactUsFragment extends Fragment {
         etSubject = (EditText) v.findViewById(R.id.etSubject);
 
         etBody = (EditText) v.findViewById(R.id.etBody);
+
+        etSubject.setImeOptions(EditorInfo.IME_ACTION_NEXT);
+        etBody.setImeOptions(EditorInfo.IME_ACTION_SEND);
 
 
         btnSend = (ImageButton) v.findViewById(R.id.ibtnSend);
