@@ -301,27 +301,27 @@ public class MainActivity extends AppCompatActivity {
 
         TextView tabAbout = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
         tabAbout.setText("ABOUT");
-        tabAbout.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_info_black_24dp, 0, 0, 0);
+        tabAbout.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_info_red_24px, 0, 0, 0);
         tabLayout.getTabAt(0).setCustomView(tabAbout);
 
         TextView tabNews = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
         tabNews.setText("NEWS");
-        tabNews.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_announcement_black_24dp, 0, 0, 0);
+        tabNews.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_ic_announcement_red_24px, 0, 0, 0);
         tabLayout.getTabAt(1).setCustomView(tabNews);
 
         TextView tabSpeakers = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
         tabSpeakers.setText("SPEAKERS");
-        tabSpeakers.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_speaker_notes_black_24dp, 0, 0, 0);
+        tabSpeakers.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_speaker_notes_red_24px, 0, 0, 0);
         tabLayout.getTabAt(2).setCustomView(tabSpeakers);
 
         TextView tabTeam = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
         tabTeam.setText("TEAM");
-        tabTeam.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_people_black_24dp, 0, 0, 0);
+        tabTeam.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_ic_people_red_24px, 0, 0, 0);
         tabLayout.getTabAt(3).setCustomView(tabTeam);
 
         TextView tabContactUs = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
         tabContactUs.setText("CONTACT US");
-        tabContactUs.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_contact_mail_black_24dp, 0, 0, 0);
+        tabContactUs.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_contact_mail_red_24px, 0, 0, 0);
         tabLayout.getTabAt(4).setCustomView(tabContactUs);
 
     }

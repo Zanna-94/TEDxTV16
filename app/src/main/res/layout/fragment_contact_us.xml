@@ -45,13 +45,14 @@
             <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/editText"
+                android:id="@+id/etSubject"
                 android:layout_weight="1"
                 android:hint="@string/Object"
                 android:textColorHint="#000000"
                 android:textColor="#000000"
                 android:background="@drawable/edit_text_style"
-                android:layout_gravity="center"/>
+                android:layout_gravity="center"
+                android:padding="5dp"/>
         </LinearLayout>
 
         <LinearLayout
@@ -86,7 +87,9 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:id="@+id/bottomLayout"
-                android:weightSum="1">
+                android:weightSum="1"
+                android:paddingBottom="5dp"
+                android:paddingRight="3dp">
 
 
                 <ImageView
@@ -101,11 +104,12 @@
                 <ImageButton
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:id="@+id/imageButton"
+                    android:id="@+id/ibtnSend"
                     android:src="@drawable/ic_send_white_24dp"
-                    android:background="#E62B1E"
+                    android:background="@drawable/button_style"
                     android:layout_gravity="center"
-                    android:adjustViewBounds="true" />
+                    android:adjustViewBounds="true"
+                    android:clickable="true" />
             </LinearLayout>
         </LinearLayout>
 
