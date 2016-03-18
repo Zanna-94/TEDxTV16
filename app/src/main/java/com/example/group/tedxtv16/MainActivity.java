@@ -20,8 +20,10 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -291,11 +293,36 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupTabIcons(TabLayout tabLayout) {
-        tabLayout.getTabAt(0).setIcon(tabIcons[0]);
-        tabLayout.getTabAt(1).setIcon(tabIcons[1]);
-        tabLayout.getTabAt(2).setIcon(tabIcons[2]);
-        tabLayout.getTabAt(3).setIcon(tabIcons[3]);
-        tabLayout.getTabAt(4).setIcon(tabIcons[4]);
+        //tabLayout.getTabAt(0).setIcon(tabIcons[0]);
+        //tabLayout.getTabAt(1).setIcon(tabIcons[1]);
+        //tabLayout.getTabAt(2).setIcon(tabIcons[2]);
+        //tabLayout.getTabAt(3).setIcon(tabIcons[3]);
+        //tabLayout.getTabAt(4).setIcon(tabIcons[4]);
+
+        TextView tabAbout = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
+        tabAbout.setText("ABOUT");
+        tabAbout.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_info_black_24dp, 0, 0, 0);
+        tabLayout.getTabAt(0).setCustomView(tabAbout);
+
+        TextView tabNews = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
+        tabNews.setText("NEWS");
+        tabNews.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_announcement_black_24dp, 0, 0, 0);
+        tabLayout.getTabAt(1).setCustomView(tabNews);
+
+        TextView tabSpeakers = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
+        tabSpeakers.setText("SPEAKERS");
+        tabSpeakers.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_speaker_notes_black_24dp, 0, 0, 0);
+        tabLayout.getTabAt(2).setCustomView(tabSpeakers);
+
+        TextView tabTeam = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
+        tabTeam.setText("TEAM");
+        tabTeam.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_people_black_24dp, 0, 0, 0);
+        tabLayout.getTabAt(3).setCustomView(tabTeam);
+
+        TextView tabContactUs = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
+        tabContactUs.setText("CONTACT US");
+        tabContactUs.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_contact_mail_black_24dp, 0, 0, 0);
+        tabLayout.getTabAt(4).setCustomView(tabContactUs);
 
     }
 
