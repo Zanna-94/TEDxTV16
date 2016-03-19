@@ -6,4 +6,7 @@
     <string name="sendUsAMail">Inviaci una mail per qualsiasi informazione o suggerimento!</string>
     <string name="Object">Oggetto</string>
     <string name="Body">Corpo</string>
+    <string name="font_fontFamily_medium"></string>
+    <string name="emailWarningSubject">Scrivi l\'oggetto qui!</string>
+    <string name="emailWarningBody">Scrivi l\'email qui!</string>
 </resources>

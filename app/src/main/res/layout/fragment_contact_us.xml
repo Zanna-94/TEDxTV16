@@ -49,7 +49,6 @@
                 android:layout_weight="1"
                 android:hint="@string/Object"
                 android:inputType="textEmailSubject"
-                android:textColorHint="#000000"
                 android:textColor="#000000"
                 android:background="@drawable/edit_text_style"
                 android:layout_gravity="center"
@@ -78,7 +77,6 @@
                     android:gravity="top"
                     android:hint="@string/Body"
                     android:inputType="textImeMultiLine"
-                    android:textColorHint="#000000"
                     android:textColor="#000000"
                     android:background="@drawable/edit_text_style"
                     android:padding="5dp"/>

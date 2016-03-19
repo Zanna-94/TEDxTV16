@@ -57,11 +57,11 @@ public class ContactUsFragment extends Fragment {
                     send();
                 } else {
                     if (etSubject.getText().toString().equals("")) {
-                        etSubject.setHint("Write a subject here!");
+                        etSubject.setHint(getText(R.string.emailWarningSubject));
                         etSubject.setHintTextColor(Color.RED);
                     }
                     if (etBody.getText().toString().equals("")) {
-                        etBody.setHint("Write an email here!");
+                        etBody.setHint(getText(R.string.emailWarningBody));
                         etBody.setHintTextColor(Color.RED);
                     }
                 }
