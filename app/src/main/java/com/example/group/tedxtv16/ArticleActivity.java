@@ -69,8 +69,7 @@ public class ArticleActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_action_arrow_back_red_24px, null));
-        }
-        else{
+        } else {
             toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_action_arrow_back_red_24px));
 
         }
@@ -171,33 +170,61 @@ public class ArticleActivity extends AppCompatActivity {
 
             } catch (IOException e) {
                 e.printStackTrace();
+                return null;
+
             }
 
-            return null;
         }
 
         @Override
         protected void onPostExecute(String html) {
             super.onPostExecute(html);
 
-            //adding html code to the webpage's content to center the text and the images,
-            // set margin and the padding of the page.
-            String formattedHtlm =
-                    "<html><head><style type='text/css'>html,body {margin: 0;padding: 0;width: 100%;height: 100%;}html {display: table;}body {display: table-cell;vertical-align: middle;text-align: center;}</style>" +
-                            "</head><body><p>" + html + "</p></body></html>";
+            if (html != null) {
 
-            webview.loadDataWithBaseURL("http://www.tedxtorvergatau.com", formattedHtlm,
-                    "text/html", "utf-8", null);
+                //adding html code to the webpage's content to center the text and the images,
+                // set margin and the padding of the page.
+                String formattedHtlm =
+                        "<html><head><style type='text/css'>html,body {margin: 0;padding: 0;width: 100%;height: 100%;}html {display: table;}body {display: table-cell;vertical-align: middle;text-align: center;}</style>" +
+                                "</head><body><p>" + html + "</p></body></html>";
 
-            waitingDialog.dismiss();
+                webview.loadDataWithBaseURL("http://www.tedxtorvergatau.com", formattedHtlm,
+                        "text/html", "utf-8", null);
 
-            SharedPreferences sharedPreferences = getSharedPreferences("preferenze",
-                    Activity.MODE_PRIVATE);
+                SharedPreferences sharedPreferences = getSharedPreferences("preferenze",
+                        Activity.MODE_PRIVATE);
 
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString(url, formattedHtlm);
-            editor.apply();
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString(url, formattedHtlm);
+                editor.apply();
+
+            } else {
+
+                SharedPreferences sharedPreferences = getSharedPreferences("preferenze",
+                        Activity.MODE_PRIVATE);
+
+                String article = sharedPreferences.getString(url, null);
+
+                if (article != null && !article.equals("")) {
+                    webview.loadDataWithBaseURL("http://www.tedxtorvergatau.com", article,
+                            "text/html", "utf-8", null);
+
+                } else {
+                    TextView textView = (TextView) findViewById(R.id.textView);
+                    textView.setText(getResources().getText(R.string.noContent));
+                    textView.setVisibility(View.VISIBLE);
+                }
+
+
+            }
+
+            if (waitingDialog != null)
+                waitingDialog.dismiss();
+
         }
 
     }
+
+
 }
+

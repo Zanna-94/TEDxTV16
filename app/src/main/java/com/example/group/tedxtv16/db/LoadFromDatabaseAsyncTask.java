@@ -2,6 +2,8 @@ package com.example.group.tedxtv16.db;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.example.group.tedxtv16.MainActivity;
 import com.example.group.tedxtv16.item.Item;
@@ -26,6 +28,11 @@ public class LoadFromDatabaseAsyncTask extends AsyncTask<Void,Void,Void> {
     @Override
     protected Void doInBackground(Void... voids) {
 
+        newsItemList.clear();
+        speakerItemList.clear();
+        teamItemList.clear();
+        aboutItemList.clear();
+
         ItemDAO itemDAO = new ItemDAO(activity);
         speakerItemList.addAll(itemDAO.getAllItems(ItemType.SPEAKER));
         newsItemList.addAll(itemDAO.getAllItems(ItemType.NEWS));
@@ -40,7 +47,6 @@ public class LoadFromDatabaseAsyncTask extends AsyncTask<Void,Void,Void> {
         super.onPostExecute(aVoid);
 
         activity.refreshFragment();
-
     }
 
     public void setSpeakerItemList(List<Item> speakerItemList) {

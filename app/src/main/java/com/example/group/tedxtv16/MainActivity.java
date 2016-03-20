@@ -20,10 +20,12 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
 
     private LoadFromDatabaseAsyncTask loadItemsThread;
     private InsertListIntoDBAsyncTask saveItemsThread;
+    private AsyncTaskListView mytask;
 
     /**
      * Current Instance of MainActivity that is passed to AsyncTask to inform  when it finishes.
@@ -132,6 +135,7 @@ public class MainActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
     }
 
+
     public void fillListItems() {
 
         waitingDialog();
@@ -144,11 +148,14 @@ public class MainActivity extends AppCompatActivity {
         if (!isNetworkAvailable()) {
 
             if (loadItemsThread != null)
-                if (loadItemsThread.getStatus() == AsyncTask.Status.PENDING &&
+                if (loadItemsThread.getStatus() == AsyncTask.Status.PENDING ||
                         loadItemsThread.getStatus() == AsyncTask.Status.RUNNING) {
                     Log.v("debug", "load db thread already running");
                     return;
                 }
+
+            Toast.makeText(MainActivity.this, "Le informazioni potrebbero non essere aggiornate. Controlla la tua connessione!",
+                    Toast.LENGTH_SHORT).show();
 
             Log.v("debug", "load db thread started");
             loadItemsThread = new LoadFromDatabaseAsyncTask(this);
@@ -162,7 +169,7 @@ public class MainActivity extends AppCompatActivity {
         } else {
 
             // start asyncTask to download datas from the web site
-            AsyncTaskListView mytask = new AsyncTaskListView(this);
+            mytask = new AsyncTaskListView(this);
             mytask.setSpeakers(speakers);
             mytask.setNews(news);
             mytask.setTeam(team);
@@ -245,8 +252,29 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
+
+                        waitingDialog.dismiss();
                         finish();
+//
+//                        if (mytask != null)
+//                            if (mytask.getStatus() != AsyncTask.Status.FINISHED)
+//                                mytask.cancel(true);
+//
+//                        if (loadItemsThread != null)
+//                            if (loadItemsThread.getStatus() != AsyncTask.Status.FINISHED)
+//                                return;
+//
+//                        if(waitingDialog==null)
+//                            waitingDialog();
+//
+//                        loadItemsThread = new LoadFromDatabaseAsyncTask((MainActivity) activity);
+//                        loadItemsThread.setNewsItemList(news);
+//                        loadItemsThread.setAboutItemList(about);
+//                        loadItemsThread.setSpeakerItemList(speakers);
+//                        loadItemsThread.setTeamItemList(team);
+//
+//                        Log.v("update", "datas from db");
+//                        loadItemsThread.execute();
                     }
                 });
 
@@ -349,11 +377,19 @@ public class MainActivity extends AppCompatActivity {
         ((SpeakersFragment) adapter.getItem(2)).update();
         ((TeamFragment) adapter.getItem(3)).update();
 
-        adapter.notifyDataSetChanged();
+        try {
+
+            if (!news.isEmpty() || !about.isEmpty() || !team.isEmpty() || !about.isEmpty())
+                adapter.notifyDataSetChanged();
+
+        } catch (IllegalStateException e) {
+            Log.v("update", "Illegal State exception in refresh fragments");
+            e.printStackTrace();
+            return;
+        }
 
         if (waitingDialog != null)
             waitingDialog.dismiss();
 
     }
-
 }

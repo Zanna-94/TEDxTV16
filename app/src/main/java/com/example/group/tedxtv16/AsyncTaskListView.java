@@ -4,9 +4,12 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.example.group.tedxtv16.db.ItemDAO;
 import com.example.group.tedxtv16.item.AboutItem;
 import com.example.group.tedxtv16.item.Item;
+import com.example.group.tedxtv16.item.ItemType;
 import com.example.group.tedxtv16.item.NewsItem;
 import com.example.group.tedxtv16.item.SpeakerItem;
 import com.example.group.tedxtv16.item.TeamItem;
@@ -19,6 +22,7 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -45,15 +49,15 @@ public class AsyncTaskListView extends AsyncTask<Object, Void, Void> {
     private final String ABOUTURL_ENG = "http://www.tedxtorvergatau.com/index.php/en/about";
 
 
-    private final String[] NEWS_IDS = {"#ted__item", "#ted__itemTitle", "#ted__itemIntroImage" , "#ted__itemSummary"};
-    private final String[] SPEAKER_IDS = {};
-    private final String[] TEAM_IDS = {};
-    private final String[] ABOUT_IDS = {"#ted__item", "#ted__itemTitle", "#ted__itemIntroImage" , "#ted__itemSummary" };
+    private final String[] NEWS_IDS = {"#ted__item", "#ted__itemTitle", "#ted__itemIntroImage", "#ted__itemSummary"};
+    private final String[] SPEAKER_IDS = {"#ted__item", "#ted__itemTitle", "#ted__itemIntroImage", "#ted__itemSummary"};
+    private final String[] TEAM_IDS = {"#ted__item", "#ted__itemTitle", "#ted__itemIntroImage", "#ted__itemSummary"};
+    private final String[] ABOUT_IDS = {"#ted__item", "#ted__itemTitle", "#ted__itemIntroImage", "#ted__itemSummary"};
 
-    private ArrayList<Item> speakers;
-    private ArrayList<Item> news;
-    private ArrayList<Item> team;
-    private ArrayList<Item> about;
+    private ArrayList speakers;
+    private ArrayList news;
+    private ArrayList team;
+    private ArrayList about;
 
     private MainActivity activity;
 
@@ -68,19 +72,44 @@ public class AsyncTaskListView extends AsyncTask<Object, Void, Void> {
 
         language = Locale.getDefault().getLanguage();
 
-        if (language.equals("it")) {
-            configureListView(NEWSURL_ITA, NEWS_IDS);
-            configureListView(SPEAKERURL_ITA, SPEAKER_IDS);
-            configureListView(TEAMURL_ITA, TEAM_IDS);
-            configureListView(ABOUTURL_ITA, ABOUT_IDS);
-        } else {
-            configureListView(NEWSURL_ENG, NEWS_IDS);
-            configureListView(SPEAKERURL_ENG, SPEAKER_IDS);
-            configureListView(TEAMURL_ENG, TEAM_IDS);
-            configureListView(ABOUTURL_ENG, ABOUT_IDS);
+        try {
+
+            if (language.equals("it")) {
+                configureListView(NEWSURL_ITA, NEWS_IDS);
+                configureListView(SPEAKERURL_ITA, SPEAKER_IDS);
+                configureListView(TEAMURL_ITA, TEAM_IDS);
+                configureListView(ABOUTURL_ITA, ABOUT_IDS);
+            } else {
+                configureListView(NEWSURL_ENG, NEWS_IDS);
+                configureListView(SPEAKERURL_ENG, SPEAKER_IDS);
+                configureListView(TEAMURL_ENG, TEAM_IDS);
+                configureListView(ABOUTURL_ENG, ABOUT_IDS);
+            }
+
+        } catch (SocketTimeoutException | java.net.UnknownHostException t) {
+
+            Log.v("update", "Connection exception");
+
+            ItemDAO dao = new ItemDAO(activity);
+
+            news.clear();
+            news = (ArrayList) dao.getAllItems(ItemType.NEWS);
+
+            speakers.clear();
+            speakers = (ArrayList) dao.getAllItems(ItemType.SPEAKER);
+
+            team.clear();
+            team = (ArrayList) dao.getAllItems(ItemType.TEAM);
+
+            about.clear();
+            about = (ArrayList) dao.getAllItems(ItemType.ABOUT);
+
+        } catch (IOException e){
+            e.printStackTrace();
         }
 
         return null;
+
     }
 
     @Override
@@ -89,13 +118,16 @@ public class AsyncTaskListView extends AsyncTask<Object, Void, Void> {
 
         Log.v("update", "MainActivity refreshFragment");
         activity.refreshFragment();
-        activity.saveItems();
+
+        //if all ArrayListItems are empty is useless save in db
+        if (!news.isEmpty() || !speakers.isEmpty() || !team.isEmpty() || !about.isEmpty())
+            activity.saveItems();
     }
 
-    private void configureListView(String link, String[] ids) {
-        try {
+    private void configureListView(String link, String[] ids) throws IOException {
+
             Log.v(TAG, "Connecting to [" + link + "]");
-            Document doc = Jsoup.connect(link).get();
+            Document doc = Jsoup.connect(link).timeout(2000).get();
 
             Log.v(TAG, "Connected to [" + link + "]");
 
@@ -127,7 +159,7 @@ public class AsyncTaskListView extends AsyncTask<Object, Void, Void> {
                     Bitmap articleBitmap = getBitmapFromURL("http://www.tedxtorvergatau.com" + articleImageLink);
                     Log.v(TAG, "Image created!");
 
-                    String articleDescription = description.text().substring(0, description.text().length()-3) + "...";
+                    String articleDescription = description.text().substring(0, description.text().length() - 3) + "...";
                     Log.v(TAG, "description assigned");
 
 
@@ -140,9 +172,9 @@ public class AsyncTaskListView extends AsyncTask<Object, Void, Void> {
                             break;
                         case SPEAKERURL_ITA:
                         case SPEAKERURL_ENG:
-                        Item speakerItem = new SpeakerItem(SpeakerItem.maxID + 1, articleName, articleBitmap, articleDescription, articleLink);
-                        SpeakerItem.incrementMaxID();
-                        speakers.add(speakerItem);
+                            Item speakerItem = new SpeakerItem(SpeakerItem.maxID + 1, articleName, articleBitmap, articleDescription, articleLink);
+                            SpeakerItem.incrementMaxID();
+                            speakers.add(speakerItem);
                             break;
                         case TEAMURL_ITA:
                         case TEAMURL_ENG:
@@ -159,11 +191,6 @@ public class AsyncTaskListView extends AsyncTask<Object, Void, Void> {
                     }
                 }
             }
-
-        } catch (Throwable t) {
-            t.printStackTrace();
-        }
-
     }
 
     public static Bitmap getBitmapFromURL(String src) {
