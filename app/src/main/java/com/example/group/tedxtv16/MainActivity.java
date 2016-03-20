@@ -20,7 +20,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -57,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
 
     private LoadFromDatabaseAsyncTask loadItemsThread;
     private InsertListIntoDBAsyncTask saveItemsThread;
-    private AsyncTaskListView mytask;
 
     /**
      * Current Instance of MainActivity that is passed to AsyncTask to inform  when it finishes.
@@ -65,14 +63,6 @@ public class MainActivity extends AppCompatActivity {
      */
     public static Activity activity;
 
-
-    private int[] tabIcons = {
-            R.drawable.ic_info_black_24dp,
-            R.drawable.ic_announcement_black_24dp,
-            R.drawable.ic_speaker_notes_black_24dp,
-            R.drawable.ic_people_black_24dp,
-            R.drawable.ic_contact_mail_black_24dp
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -154,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 }
 
-            Toast.makeText(MainActivity.this, "Le informazioni potrebbero non essere aggiornate. Controlla la tua connessione!",
+            Toast.makeText(MainActivity.this, getText(R.string.NoConnection),
                     Toast.LENGTH_SHORT).show();
 
             Log.v("debug", "load db thread started");
@@ -169,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
         } else {
 
             // start asyncTask to download datas from the web site
-            mytask = new AsyncTaskListView(this);
+            AsyncTaskListView mytask = new AsyncTaskListView(this);
             mytask.setSpeakers(speakers);
             mytask.setNews(news);
             mytask.setTeam(team);

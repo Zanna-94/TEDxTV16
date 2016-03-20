@@ -1,16 +1,12 @@
 package com.example.group.tedxtv16.db;
 
-import android.content.Context;
+
 import android.os.AsyncTask;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.example.group.tedxtv16.MainActivity;
 import com.example.group.tedxtv16.item.Item;
 import com.example.group.tedxtv16.item.ItemType;
-import com.example.group.tedxtv16.item.SpeakerItem;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class LoadFromDatabaseAsyncTask extends AsyncTask<Void,Void,Void> {

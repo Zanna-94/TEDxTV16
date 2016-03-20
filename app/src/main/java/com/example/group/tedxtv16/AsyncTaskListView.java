@@ -4,7 +4,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.example.group.tedxtv16.db.ItemDAO;
 import com.example.group.tedxtv16.item.AboutItem;
@@ -54,10 +53,10 @@ public class AsyncTaskListView extends AsyncTask<Object, Void, Void> {
     private final String[] TEAM_IDS = {"#ted__item", "#ted__itemTitle", "#ted__itemIntroImage", "#ted__itemSummary"};
     private final String[] ABOUT_IDS = {"#ted__item", "#ted__itemTitle", "#ted__itemIntroImage", "#ted__itemSummary"};
 
-    private ArrayList speakers;
-    private ArrayList news;
-    private ArrayList team;
-    private ArrayList about;
+    private ArrayList<Item> speakers;
+    private ArrayList<Item> news;
+    private ArrayList<Item> team;
+    private ArrayList<Item> about;
 
     private MainActivity activity;
 
@@ -93,16 +92,16 @@ public class AsyncTaskListView extends AsyncTask<Object, Void, Void> {
             ItemDAO dao = new ItemDAO(activity);
 
             news.clear();
-            news = (ArrayList) dao.getAllItems(ItemType.NEWS);
+            news = (ArrayList<Item>) dao.getAllItems(ItemType.NEWS);
 
             speakers.clear();
-            speakers = (ArrayList) dao.getAllItems(ItemType.SPEAKER);
+            speakers = (ArrayList<Item>) dao.getAllItems(ItemType.SPEAKER);
 
             team.clear();
-            team = (ArrayList) dao.getAllItems(ItemType.TEAM);
+            team = (ArrayList<Item>) dao.getAllItems(ItemType.TEAM);
 
             about.clear();
-            about = (ArrayList) dao.getAllItems(ItemType.ABOUT);
+            about = (ArrayList<Item>) dao.getAllItems(ItemType.ABOUT);
 
         } catch (IOException e){
             e.printStackTrace();
@@ -127,7 +126,7 @@ public class AsyncTaskListView extends AsyncTask<Object, Void, Void> {
     private void configureListView(String link, String[] ids) throws IOException {
 
             Log.v(TAG, "Connecting to [" + link + "]");
-            Document doc = Jsoup.connect(link).timeout(2000).get();
+            Document doc = Jsoup.connect(link).get();
 
             Log.v(TAG, "Connected to [" + link + "]");
 
@@ -200,9 +199,8 @@ public class AsyncTaskListView extends AsyncTask<Object, Void, Void> {
             connection.setDoInput(true);
             connection.connect();
             InputStream input = connection.getInputStream();
-            Bitmap myBitmap = BitmapFactory.decodeStream(input);
 
-            return myBitmap;
+            return BitmapFactory.decodeStream(input);
         } catch (IOException e) {
             e.printStackTrace();
             return null;
