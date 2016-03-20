@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/tab"
-        android:textColor="#e62b1e"
-        android:textSize="@dimen/tab_label"
-        android:fontFamily="@string/font_fontFamily_medium"
+
+    <TextView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/tabText"
+    android:textColor="#e62b1e"
+    android:textSize="@dimen/tab_label"
+    android:fontFamily="@string/font_fontFamily_medium"
     android:foregroundGravity="center_vertical"
     android:gravity="center_vertical" />
+
