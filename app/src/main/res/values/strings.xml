@@ -10,4 +10,5 @@
     <string name="emailWarningBody">Write the email\'s body here!</string>
     <string name="emailWarningSubject">Write the subject here!</string>
     <string name="NoConnection">Data may be not updated. Check your connection!</string>
+    <string name="contact_us">Contact Us!</string>
 </resources>

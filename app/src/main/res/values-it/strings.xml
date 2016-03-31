@@ -10,4 +10,5 @@
     <string name="emailWarningSubject">Scrivi l\'oggetto qui!</string>
     <string name="emailWarningBody">Scrivi l\'email qui!</string>
     <string name="NoConnection">Le informazioni potrebbero non essere aggiornate. Controlla la tua connessione!</string>
+    <string name="contact_us">Contattaci!</string>
 </resources>

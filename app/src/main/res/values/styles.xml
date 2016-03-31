@@ -14,6 +14,7 @@
         <item name="windowNoTitle">true</item>
         <item name="android:textColorPrimary">@color/primary_text_material_light</item>
         <item name="android:actionBarTabTextStyle">@style/tabtextcolor</item>
+        <item name="android:colorForeground">@color/foreground_material_light</item>
     </style>
 
     <style name="tabtextcolor">
