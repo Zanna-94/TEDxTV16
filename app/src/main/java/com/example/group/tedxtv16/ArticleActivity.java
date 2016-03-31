@@ -90,7 +90,7 @@ public class ArticleActivity extends AppCompatActivity {
         webview.getSettings().setBuiltInZoomControls(true);
         webview.getSettings().setBuiltInZoomControls(true);
 
-        //Test autoresizing is available only from api 19
+        //Text autoresizing is available only from api 19
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             webview.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING);
         }

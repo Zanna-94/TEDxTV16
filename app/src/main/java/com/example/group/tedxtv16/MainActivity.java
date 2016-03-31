@@ -202,7 +202,6 @@ public class MainActivity extends AppCompatActivity {
         adapter.addFragment(new NewsFragment(), "NEWS");
         adapter.addFragment(new SpeakersFragment(), "SPEAKERS");
         adapter.addFragment(new TeamFragment(), "TEAM");
-        adapter.addFragment(new ContactUsFragment(), "CONTACT US");
 
         viewPager.setAdapter(adapter);
     }
@@ -319,31 +318,21 @@ public class MainActivity extends AppCompatActivity {
         //tabLayout.getTabAt(3).setIcon(tabIcons[3]);
         //tabLayout.getTabAt(4).setIcon(tabIcons[4]);
 
-        TextView tabAbout = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
-        tabAbout.setText("ABOUT");
-        tabAbout.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_info_red_24px, 0, 0, 0);
+        ImageView tabAbout = (ImageView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
+        tabAbout.setImageResource(R.drawable.ic_action_info_red_24px);
         tabLayout.getTabAt(0).setCustomView(tabAbout);
 
-        TextView tabNews = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
-        tabNews.setText("NEWS");
-        tabNews.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_ic_announcement_red_24px, 0, 0, 0);
+        ImageView tabNews = (ImageView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
+        tabNews.setImageResource(R.drawable.ic_action_ic_announcement_red_24px);
         tabLayout.getTabAt(1).setCustomView(tabNews);
 
-        TextView tabSpeakers = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
-        tabSpeakers.setText("SPEAKERS");
-        tabSpeakers.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_speaker_notes_red_24px, 0, 0, 0);
-        tabLayout.getTabAt(2).setCustomView(tabSpeakers);
+        ImageView tabSpeaker = (ImageView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
+        tabSpeaker.setImageResource(R.drawable.ic_action_speaker_notes_red_24px);
+        tabLayout.getTabAt(2).setCustomView(tabSpeaker);
 
-        TextView tabTeam = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
-        tabTeam.setText("TEAM");
-        tabTeam.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_ic_people_red_24px, 0, 0, 0);
+        ImageView tabTeam = (ImageView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
+        tabTeam.setImageResource(R.drawable.ic_action_ic_people_red_24px);
         tabLayout.getTabAt(3).setCustomView(tabTeam);
-
-        TextView tabContactUs = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
-        tabContactUs.setText("CONTACT US");
-        tabContactUs.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_contact_mail_red_24px, 0, 0, 0);
-        tabLayout.getTabAt(4).setCustomView(tabContactUs);
-
     }
 
     public static ArrayList<Item> getTeam() {
