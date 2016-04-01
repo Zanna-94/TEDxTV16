@@ -4,7 +4,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Log;
-
 import com.example.group.tedxtv16.db.ItemDAO;
 import com.example.group.tedxtv16.item.AboutItem;
 import com.example.group.tedxtv16.item.Item;
@@ -36,27 +35,24 @@ public class AsyncTaskListView extends AsyncTask<Object, Void, Void> {
 
     final String TAG = "JSwa";
 
-    private final String NEWSURL_ITA = "http://www.tedxtorvergatau.com/index.php/it/news";
-    private final String TEAMURL_ITA = "http://www.tedxtorvergatau.com/index.php/it/team";
-    private final String SPEAKERURL_ITA = "http://www.tedxtorvergatau.com/index.php/it/speakers";
-    private final String ABOUTURL_ITA = "http://www.tedxtorvergatau.com/index.php/it/about";
+    private final String NEWSURL_ITA = "http://www.tedxtorvergatau.com/index.php/it/new-releases";
+    private final String BASEURL_ITA = "http://www.tedxtorvergatau.com/index.php/it";
 
+    private final String NEWSURL_ENG = "http://www.tedxtorvergatau.com/index.php/en/new-releases";
+    private final String BASEURL_ENG = "http://www.tedxtorvergatau.com/index.php/en";
 
-    private final String NEWSURL_ENG = "http://www.tedxtorvergatau.com/index.php/en/news";
-    private final String TEAMURL_ENG = "http://www.tedxtorvergatau.com/index.php/en/team";
-    private final String SPEAKERURL_ENG = "http://www.tedxtorvergatau.com/index.php/en/speakers";
-    private final String ABOUTURL_ENG = "http://www.tedxtorvergatau.com/index.php/en/about";
-
-
-    private final String[] NEWS_IDS = {"#ted__item", "#ted__itemTitle", "#ted__itemIntroImage", "#ted__itemSummary"};
-    private final String[] SPEAKER_IDS = {"#ted__item", "#ted__itemTitle", "#ted__itemIntroImage", "#ted__itemSummary"};
-    private final String[] TEAM_IDS = {"#ted__item", "#ted__itemTitle", "#ted__itemIntroImage", "#ted__itemSummary"};
-    private final String[] ABOUT_IDS = {"#ted__item", "#ted__itemTitle", "#ted__itemIntroImage", "#ted__itemSummary"};
+    private final String[] NEWS_IDS = {};
+    private final String[] SPEAKER_IDS = {};
+    private final String[] TEAM_IDS = {};
+    private final String[] ABOUT_IDS = {};
 
     private ArrayList<Item> speakers;
     private ArrayList<Item> news;
     private ArrayList<Item> team;
     private ArrayList<Item> about;
+
+    private Document docNews;
+    private Document docBase;
 
     private MainActivity activity;
 
@@ -74,15 +70,15 @@ public class AsyncTaskListView extends AsyncTask<Object, Void, Void> {
         try {
 
             if (language.equals("it")) {
-                configureListView(NEWSURL_ITA, NEWS_IDS);
-                configureListView(SPEAKERURL_ITA, SPEAKER_IDS);
-                configureListView(TEAMURL_ITA, TEAM_IDS);
-                configureListView(ABOUTURL_ITA, ABOUT_IDS);
+                configureListNews(NEWSURL_ITA, NEWS_IDS);
+//                configureListView(BASEURL_ITA, SPEAKER_IDS);
+                configureListTeam(BASEURL_ITA, TEAM_IDS);
+                configureListAbout(BASEURL_ITA, ABOUT_IDS);
             } else {
-                configureListView(NEWSURL_ENG, NEWS_IDS);
-                configureListView(SPEAKERURL_ENG, SPEAKER_IDS);
-                configureListView(TEAMURL_ENG, TEAM_IDS);
-                configureListView(ABOUTURL_ENG, ABOUT_IDS);
+                configureListNews(NEWSURL_ENG, NEWS_IDS);
+//                configureListView(BASEURL_ENG, SPEAKER_IDS);
+                configureListTeam(BASEURL_ENG, TEAM_IDS);
+                configureListAbout(BASEURL_ENG, ABOUT_IDS);
             }
 
         } catch (SocketTimeoutException | java.net.UnknownHostException t) {
@@ -103,12 +99,179 @@ public class AsyncTaskListView extends AsyncTask<Object, Void, Void> {
             about.clear();
             about = (ArrayList<Item>) dao.getAllItems(ItemType.ABOUT);
 
-        } catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
         return null;
 
+    }
+
+    public void configureListNews(String link, String[] ids) throws IOException {
+
+        if (docNews == null) {
+            Log.v(TAG, "Connecting to [" + link + "]");
+            docNews = Jsoup.connect(link).get();
+        }
+
+        Log.v(TAG, "Connected to [" + link + "]");
+
+        Element section = docNews.body().select(".section").first();
+
+        Elements row = section.select("#mat__cards");
+
+        Elements cards = row.select("#mat__card");
+
+        for (Element card : cards) {
+
+            Element image = card.select(".card-image").first();
+            String articleLink = "http://www.tedxtorvergatau.com" + image.select("a").attr("href");
+
+            String imageUrl = "http://www.tedxtorvergatau.com" + image.select("img").first().attr("src");
+            Bitmap bitmap = getBitmapFromURL(imageUrl);
+
+            Element content = card.select(".card-content").first();
+            String description = content.text();
+
+            Element action = card.select(".card-action").first();
+            String title = action.text();
+
+            Item newsItem = new NewsItem(NewsItem.maxID + 1, title, bitmap, description, articleLink);
+            NewsItem.incrementMaxID();
+            news.add(newsItem);
+
+        }
+    }
+
+    public void configureListAbout(String link, String[] ids) throws IOException {
+
+        if (docBase == null) {
+            Log.v(TAG, "Connecting to [" + link + "]");
+            docBase = Jsoup.connect(link).get();
+        }
+
+        Element homeContent = docBase.body().select("#home-content").first();
+
+        Elements row = homeContent.select("#mat__cards");
+
+        Elements cards = row.select("#mat__card");
+
+        for (Element card : cards) {
+
+            Element image = card.select(".card-image").first();
+            String articleLink = "http://www.tedxtorvergatau.com" + image.select("a").attr("href");
+
+            String imageUrl = "http://www.tedxtorvergatau.com" + image.select("img").first().attr("src");
+            Bitmap bitmap = getBitmapFromURL(imageUrl);
+
+            Element content = card.select(".card-content").first();
+            String description = content.text();
+
+            Element action = card.select(".card-action").first();
+            String title = action.text();
+
+            Item aboutItem = new AboutItem(AboutItem.maxID + 1, title, bitmap, description, articleLink);
+            AboutItem.incrementMaxID();
+            about.add(aboutItem);
+        }
+
+    }
+
+    public void configureListTeam(String link, String[] ids) throws IOException {
+
+        Log.v(TAG, "Connecting to [" + link + "]");
+        if (docBase == null) {
+            Log.v(TAG, "retrieve from downloaded html");
+            docBase = Jsoup.connect(link).get();
+        }
+
+        Element teamContent = docBase.body().select("#team-content").first();
+
+        Elements row = teamContent.select("#mat__cards");
+
+        Elements cards = row.select("a");
+
+        for (Element card : cards) {
+
+            String articleLink = "http://www.tedxtorvergatau.com" + card.attr("href");
+
+            Element circlImage = card.select("#mat__card").first();
+            String imageUrl = "http://www.tedxtorvergatau.com" + card.select("img").first().attr("src");
+            Bitmap bitmap = getBitmapFromURL(imageUrl);
+
+            Element content = card.select(".card-content.circle-content").first();
+
+            Element titleContent = content.select(".header.circle-title").first();
+
+            String title = titleContent.text();
+
+            Item teamItem = new TeamItem(TeamItem.maxID + 1, title, bitmap, "", articleLink);
+            SpeakerItem.incrementMaxID();
+            team.add(teamItem);
+        }
+
+    }
+
+    public static Bitmap getBitmapFromURL(String src) {
+        try {
+            URL url = new URL(src);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setDoInput(true);
+            connection.connect();
+            InputStream input = connection.getInputStream();
+
+            // download only metadata to know image size
+            // decodeStream will return null
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inJustDecodeBounds = true;
+            BitmapFactory.decodeStream(input, null, options);
+
+            // disconnect because inputstream can be used only one time
+            // so we can recreate the inputStream
+            connection.disconnect();
+
+            connection = (HttpURLConnection) url.openConnection();
+            connection.setDoInput(true);
+            connection.connect();
+            input = connection.getInputStream();
+
+            // calculate the resize factor and set it in options
+            options.inSampleSize = calculateInSampleSize(options, 400, 400);
+
+            // now decodeStream won't return null but the bitmap
+            options.inJustDecodeBounds = false;
+
+            Bitmap map = BitmapFactory.decodeStream(input, null, options);
+
+            return map;
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static int calculateInSampleSize(
+            BitmapFactory.Options options, int reqWidth, int reqHeight) {
+        // Raw height and width of image
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        int inSampleSize = 1;
+
+        if (height > reqHeight || width > reqWidth) {
+
+            final int halfHeight = height / 2;
+            final int halfWidth = width / 2;
+
+            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
+            // height and width larger than the requested height and width.
+            while ((halfHeight / inSampleSize) > reqHeight
+                    && (halfWidth / inSampleSize) > reqWidth) {
+                inSampleSize *= 2;
+            }
+        }
+
+        return inSampleSize;
     }
 
     @Override
@@ -123,89 +286,6 @@ public class AsyncTaskListView extends AsyncTask<Object, Void, Void> {
             activity.saveItems();
     }
 
-    private void configureListView(String link, String[] ids) throws IOException {
-
-            Log.v(TAG, "Connecting to [" + link + "]");
-            Document doc = Jsoup.connect(link).get();
-
-            Log.v(TAG, "Connected to [" + link + "]");
-
-            Log.v(TAG, "Selecting articles...");
-            Elements articles = doc.select(ids[0]);
-            //Log.v(TAG, "Selected articles: " + articles.toString());
-
-            if (articles.size() != 0) {
-
-                for (Element article : articles) {
-                    Log.v(TAG, "ARTICLE");
-                    Element name = article.select(ids[1]).first();
-
-                    Element image = article.select(ids[2]).first();
-
-                    Element description = article.select(ids[3]).first();
-
-                    //return name of card
-                    String articleName = name.text();
-                    Log.v(TAG, "Article name: " + articleName);
-
-                    String articleLink = "http://www.tedxtorvergatau.com" + name.attr("href");
-                    Log.v(TAG, "Article link: " + articleLink);
-
-                    String articleImageLink = image.attr("src");
-                    Log.v(TAG, "Article image link: " + articleImageLink);
-
-                    Log.v(TAG, "Creating bitmap...");
-                    Bitmap articleBitmap = getBitmapFromURL("http://www.tedxtorvergatau.com" + articleImageLink);
-                    Log.v(TAG, "Image created!");
-
-                    String articleDescription = description.text().substring(0, description.text().length() - 3) + "...";
-                    Log.v(TAG, "description assigned");
-
-
-                    switch (link) {
-                        case NEWSURL_ITA:
-                        case NEWSURL_ENG:
-                            Item newsItem = new NewsItem(NewsItem.maxID + 1, articleName, articleBitmap, articleDescription, articleLink);
-                            NewsItem.incrementMaxID();
-                            news.add(newsItem);
-                            break;
-                        case SPEAKERURL_ITA:
-                        case SPEAKERURL_ENG:
-                            Item speakerItem = new SpeakerItem(SpeakerItem.maxID + 1, articleName, articleBitmap, articleDescription, articleLink);
-                            SpeakerItem.incrementMaxID();
-                            speakers.add(speakerItem);
-                            break;
-                        case TEAMURL_ITA:
-                        case TEAMURL_ENG:
-                            Item teamItem = new TeamItem(TeamItem.maxID + 1, articleName, articleBitmap, articleDescription, articleLink);
-                            SpeakerItem.incrementMaxID();
-                            team.add(teamItem);
-                            break;
-                        case ABOUTURL_ITA:
-                        case ABOUTURL_ENG:
-                            Item aboutItem = new AboutItem(AboutItem.maxID + 1, articleName, articleBitmap, articleDescription, articleLink);
-                            AboutItem.incrementMaxID();
-                            about.add(aboutItem);
-                            break;
-                    }
-                }
-            }
-    }
-
-    public static Bitmap getBitmapFromURL(String src) {
-        try {
-            URL url = new URL(src);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setDoInput(true);
-            connection.connect();
-            InputStream input = connection.getInputStream();
-
-            return BitmapFactory.decodeStream(input);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
 
     public void setSpeakers(ArrayList<Item> speakers) {
         this.speakers = speakers;
