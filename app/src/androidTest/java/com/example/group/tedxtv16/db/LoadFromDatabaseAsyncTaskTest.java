@@ -15,7 +15,7 @@ public class LoadFromDatabaseAsyncTaskTest extends InstrumentationTestCase {
     public void testDoInBackground() throws Exception {
         Context context = this.getInstrumentation().getTargetContext().getApplicationContext();
 
-        LoadFromDatabaseAsyncTask asyncTask = new LoadFromDatabaseAsyncTask(context);
+//        LoadFromDatabaseAsyncTask asyncTask = new LoadFromDatabaseAsyncTask(context);
     }
 
 }
