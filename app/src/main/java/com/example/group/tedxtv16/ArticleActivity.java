@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -24,6 +25,7 @@ import android.widget.TextView;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
@@ -44,14 +46,13 @@ public class ArticleActivity extends AppCompatActivity {
 
     private ProgressDialog waitingDialog;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_article);
 
+        /* set toolbar */
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-
 
         Drawable logo = ContextCompat.getDrawable(this, R.drawable.logo_dark);
         toolbar.setLogo(logo);
@@ -65,13 +66,13 @@ public class ArticleActivity extends AppCompatActivity {
                     }
                 }
         }
-
         setSupportActionBar(toolbar);
+
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_action_arrow_back_red_24px, null));
         } else {
             toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_action_arrow_back_red_24px));
-
         }
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,15 +81,20 @@ public class ArticleActivity extends AppCompatActivity {
             }
         });
 
+
+        /* obtain link of the article from intent */
         url = getIntent().getStringExtra("articleLink");
 
         webview = (WebView) findViewById(R.id.webView);
 
-        //Setting the WebView to show in the right esy the web site content.
+        //Setting the WebView to show in the right way the web site content.
         webview.getSettings().setLoadWithOverviewMode(true);
         webview.getSettings().setUseWideViewPort(true);
         webview.getSettings().setBuiltInZoomControls(true);
         webview.getSettings().setBuiltInZoomControls(true);
+
+        Resources res = getResources();
+        webview.getSettings().setDefaultFontSize((int) res.getDimension(R.dimen.txtSize));
 
         //Text autoresizing is available only from api 19
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -163,8 +169,14 @@ public class ArticleActivity extends AppCompatActivity {
             try {
                 Document doc = Jsoup.connect(url).get();
 
-                Elements body = doc.body().select(".site__content");
-                String html = body.html();
+                Element content = doc.body().select("#content").first();
+                Element section = content.select("div.section").first();
+
+                Element container = section.select(".container").first();
+
+                String html = format(container);
+
+                System.out.println(html);
 
                 return html;
 
@@ -176,26 +188,45 @@ public class ArticleActivity extends AppCompatActivity {
 
         }
 
+        protected String format(Element code) {
+
+            // resize image
+            Elements img = code.getElementsByTag("img");
+            if (img.size() != 0) {
+                for (Element e_Img : img) {
+                    //if(e_Img.)
+                    e_Img.attr("style", "max-width:100%");
+                }
+            }
+
+            String html = code.html();
+
+            //adding html code to the webpage's content to center the text and the images,
+            // set margin and the padding of the page.
+            String formattedHtlm =
+                    "<html><head><style type='text/css'>html,body {width: 100%;height: 100%;}html {display: table;}body {display: table-cell;vertical-align: middle;}</style>" +
+                            "</head><body><p>" + html + "</p></body></html>";
+
+            // delete unusefull breaking line
+            formattedHtlm = formattedHtlm.replace("<p>&nbsp;</p>", "");
+
+            return formattedHtlm;
+        }
+
         @Override
         protected void onPostExecute(String html) {
             super.onPostExecute(html);
 
             if (html != null) {
 
-                //adding html code to the webpage's content to center the text and the images,
-                // set margin and the padding of the page.
-                String formattedHtlm =
-                        "<html><head><style type='text/css'>html,body {margin: 0;padding: 0;width: 100%;height: 100%;}html {display: table;}body {display: table-cell;vertical-align: middle;text-align: center;}</style>" +
-                                "</head><body><p>" + html + "</p></body></html>";
-
-                webview.loadDataWithBaseURL("http://www.tedxtorvergatau.com", formattedHtlm,
+                webview.loadDataWithBaseURL("http://www.tedxtorvergatau.com", html,
                         "text/html", "utf-8", null);
 
                 SharedPreferences sharedPreferences = getSharedPreferences("preferenze",
                         Activity.MODE_PRIVATE);
 
                 SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString(url, formattedHtlm);
+                editor.putString(url, html);
                 editor.apply();
 
             } else {
@@ -214,7 +245,6 @@ public class ArticleActivity extends AppCompatActivity {
                     textView.setText(getResources().getText(R.string.noContent));
                     textView.setVisibility(View.VISIBLE);
                 }
-
 
             }
 
