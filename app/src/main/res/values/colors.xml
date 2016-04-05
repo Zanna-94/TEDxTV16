@@ -18,7 +18,7 @@
     <color name="black">#000000</color>
     <color name="transparent">#e62b1e</color>
     <color name="primary_text_default_material_dark">#e62b1e</color>
-    <color name="foreground_material_light">#ffffff</color>
+    <color name="foreground_material_light">#000000</color>
     <color name="primary_dark_material_dark_1">#ffffff</color>
     <color name="background_material_dark_1">#fdfafa</color>
     <color name="background_material_dark_2">#f3ebeb</color>

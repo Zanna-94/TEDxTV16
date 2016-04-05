@@ -41,15 +41,11 @@ public class AsyncTaskListView extends AsyncTask<Object, Void, Void> {
     private final String NEWSURL_ENG = "http://www.tedxtorvergatau.com/index.php/en/new-releases";
     private final String BASEURL_ENG = "http://www.tedxtorvergatau.com/index.php/en";
 
-    private final String[] NEWS_IDS = {};
-    private final String[] SPEAKER_IDS = {};
-    private final String[] TEAM_IDS = {};
-    private final String[] ABOUT_IDS = {};
-
     private ArrayList<Item> speakers;
     private ArrayList<Item> news;
     private ArrayList<Item> team;
     private ArrayList<Item> about;
+    private ArrayList<Item> sponsors;
 
     private Document docNews;
     private Document docBase;
@@ -70,15 +66,17 @@ public class AsyncTaskListView extends AsyncTask<Object, Void, Void> {
         try {
 
             if (language.equals("it")) {
-                configureListNews(NEWSURL_ITA, NEWS_IDS);
-//                configureListView(BASEURL_ITA, SPEAKER_IDS);
-                configureListTeam(BASEURL_ITA, TEAM_IDS);
-                configureListAbout(BASEURL_ITA, ABOUT_IDS);
+                configureListNews(NEWSURL_ITA);
+//                configureListView(BASEURL_ITA);
+                configureListTeam(BASEURL_ITA);
+                configureListAbout(BASEURL_ITA);
+                //configureListSponsors(BASEURL_ITA, SPONSORS_IDS);
             } else {
-                configureListNews(NEWSURL_ENG, NEWS_IDS);
-//                configureListView(BASEURL_ENG, SPEAKER_IDS);
-                configureListTeam(BASEURL_ENG, TEAM_IDS);
-                configureListAbout(BASEURL_ENG, ABOUT_IDS);
+                configureListNews(NEWSURL_ENG);
+//                configureListView(BASEURL_ENG);
+                configureListTeam(BASEURL_ENG);
+                configureListAbout(BASEURL_ENG);
+                //configureListSponsors(BASEURL_ENG, SPONSORS_IDS);
             }
 
         } catch (SocketTimeoutException | java.net.UnknownHostException t) {
@@ -107,7 +105,7 @@ public class AsyncTaskListView extends AsyncTask<Object, Void, Void> {
 
     }
 
-    public void configureListNews(String link, String[] ids) throws IOException {
+    public void configureListNews(String link) throws IOException {
 
         if (docNews == null) {
             Log.v(TAG, "Connecting to [" + link + "]");
@@ -143,7 +141,7 @@ public class AsyncTaskListView extends AsyncTask<Object, Void, Void> {
         }
     }
 
-    public void configureListAbout(String link, String[] ids) throws IOException {
+    public void configureListAbout(String link) throws IOException {
 
         if (docBase == null) {
             Log.v(TAG, "Connecting to [" + link + "]");
@@ -177,7 +175,41 @@ public class AsyncTaskListView extends AsyncTask<Object, Void, Void> {
 
     }
 
-    public void configureListTeam(String link, String[] ids) throws IOException {
+    //public void configureListSponsors(String link, String[] ids) throws IOException {
+
+      //  if (docBase == null) {
+      //      Log.v(TAG, "Connecting to [" + link + "]");
+      //      docBase = Jsoup.connect(link).get();
+      //  }
+
+      // Element sponsorContent = docBase.body().select("#sponsor-content").first();
+
+      //  Elements row = sponsorContent.select("#mat__cards");
+
+      //  Elements cards = row.select(".");
+
+      //  for (Element card : cards) {
+
+      //      Element image = card.select(".card-image").first();
+      //      String articleLink = "http://www.tedxtorvergatau.com" + image.select("a").attr("href");
+
+      //      String imageUrl = "http://www.tedxtorvergatau.com" + image.select("img").first().attr("src");
+      //      Bitmap bitmap = getBitmapFromURL(imageUrl);
+
+      //      Element content = card.select(".card-content").first();
+      //      String description = content.text();
+
+      //      Element action = card.select(".card-action").first();
+      //      String title = action.text();
+
+      //      Item aboutItem = new AboutItem(AboutItem.maxID + 1, title, bitmap, description, articleLink);
+      //      AboutItem.incrementMaxID();
+      //      about.add(aboutItem);
+      //  }
+
+    //}
+
+    public void configureListTeam(String link) throws IOException {
 
         Log.v(TAG, "Connecting to [" + link + "]");
         if (docBase == null) {

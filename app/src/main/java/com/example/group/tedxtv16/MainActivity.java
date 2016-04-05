@@ -60,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
     private static ArrayList<Item> news;
     private static ArrayList<Item> team;
     private static ArrayList<Item> about;
+    private static ArrayList<Item> sponsors;
 
     private LoadFromDatabaseAsyncTask loadItemsThread;
     private InsertListIntoDBAsyncTask saveItemsThread;
@@ -141,6 +142,7 @@ public class MainActivity extends AppCompatActivity {
         speakers = new ArrayList<>();
         team = new ArrayList<>();
         about = new ArrayList<>();
+        sponsors = new ArrayList<>();
 
         if (!isNetworkAvailable()) {
 
@@ -171,6 +173,7 @@ public class MainActivity extends AppCompatActivity {
             mytask.setNews(news);
             mytask.setTeam(team);
             mytask.setAbout(about);
+           // mytask.setSponsor(sponsors);
 
             Log.v("debug", "parsing html");
             mytask.execute();
@@ -203,6 +206,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void setupViewPager(ViewPager viewPager) {
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        //adapter.addFragment(new SponsorFragment(), "SPONSORS");
         adapter.addFragment(new AboutFragment(), "ABOUT");
         adapter.addFragment(new NewsFragment(), "NEWS");
         adapter.addFragment(new SpeakersFragment(), "SPEAKERS");
@@ -323,6 +327,10 @@ public class MainActivity extends AppCompatActivity {
         //tabLayout.getTabAt(3).setIcon(tabIcons[3]);
         //tabLayout.getTabAt(4).setIcon(tabIcons[4]);
 
+        //ImageView tabSponsor = (ImageView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
+        //tabSponsor.setImageResource(R.drawable.ic_action_arrow_back_red_24px);
+        //tabLayout.getTabAt(0).setCustomView(tabSponsor);
+
         ImageView tabAbout = (ImageView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
         tabAbout.setImageResource(R.drawable.ic_action_info_red_24px);
         tabLayout.getTabAt(0).setCustomView(tabAbout);
@@ -355,6 +363,8 @@ public class MainActivity extends AppCompatActivity {
     public static ArrayList<Item> getAbout() {
         return about;
     }
+
+    public static ArrayList<Item> getSponsors(){return sponsors;}
 
     public void refreshFragment() {
         Log.v("update", "fragment.update");
