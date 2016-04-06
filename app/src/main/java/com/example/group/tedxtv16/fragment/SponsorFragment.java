@@ -1,20 +1,18 @@
 package com.example.group.tedxtv16.fragment;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
+import android.webkit.WebView;
 import android.widget.TextView;
 
 import com.example.group.tedxtv16.MainActivity;
 import com.example.group.tedxtv16.R;
-import com.example.group.tedxtv16.item.Item;
-import com.example.group.tedxtv16.listViewAdapter.AboutAdapter;
 
-import java.util.ArrayList;
 
 /**
  * Created by simone_mancini on 02/04/16.
@@ -23,7 +21,9 @@ public class SponsorFragment extends Fragment {
 
     private SwipeRefreshLayout mySwipeRefreshLayout;
 
-    private ArrayList<Item> sponsorItems;
+    private WebView webview;
+
+    private String html;
 
     public SponsorFragment() {
         // Required empty public constructor
@@ -42,16 +42,17 @@ public class SponsorFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_sponsor, container, false);
         mySwipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swiperefresh);
         TextView content = (TextView) v.findViewById(R.id.textView);
+        webview = (WebView) v.findViewById(R.id.webView);
 
-        content.setVisibility(View.INVISIBLE);
+        html = MainActivity.getSponsors();
 
-        if (sponsorItems != null) {
-            if (sponsorItems.size() == 0)
-                content.setVisibility(View.VISIBLE);
+        if (html != null) {
+            content.setVisibility(View.VISIBLE);
+            webview.loadDataWithBaseURL("http://www.tedxtorvergatau.com", html,
+                    "text/html", "utf-8", null);
         } else {
             content.setVisibility(View.VISIBLE);
         }
-
 
         mySwipeRefreshLayout.setOnRefreshListener(
                 new SwipeRefreshLayout.OnRefreshListener() {
@@ -61,9 +62,8 @@ public class SponsorFragment extends Fragment {
                         mySwipeRefreshLayout.setRefreshing(false);
 
                         if (((MainActivity) getActivity()).isNetworkAvailable()) {
-                            ((MainActivity) getActivity()).fillListItems();
+                            //TODO refresh webview
                         }
-
                     }
                 }
         );
@@ -75,4 +75,11 @@ public class SponsorFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
     }
+
+    public void update() {
+        if (webview != null)
+            webview.loadDataWithBaseURL("http://www.tedxtorvergatau.com", html,
+                    "text/html", "utf-8", null);
+    }
+
 }

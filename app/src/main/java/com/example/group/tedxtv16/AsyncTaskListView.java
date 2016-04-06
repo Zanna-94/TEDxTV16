@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Log;
+
 import com.example.group.tedxtv16.db.ItemDAO;
 import com.example.group.tedxtv16.item.AboutItem;
 import com.example.group.tedxtv16.item.Item;
@@ -45,7 +46,7 @@ public class AsyncTaskListView extends AsyncTask<Object, Void, Void> {
     private ArrayList<Item> news;
     private ArrayList<Item> team;
     private ArrayList<Item> about;
-    private ArrayList<Item> sponsors;
+    private String sponsorsHtml;
 
     private Document docNews;
     private Document docBase;
@@ -70,13 +71,13 @@ public class AsyncTaskListView extends AsyncTask<Object, Void, Void> {
 //                configureListView(BASEURL_ITA);
                 configureListTeam(BASEURL_ITA);
                 configureListAbout(BASEURL_ITA);
-                //configureListSponsors(BASEURL_ITA, SPONSORS_IDS);
+                configureSponsors(BASEURL_ITA);
             } else {
                 configureListNews(NEWSURL_ENG);
 //                configureListView(BASEURL_ENG);
                 configureListTeam(BASEURL_ENG);
                 configureListAbout(BASEURL_ENG);
-                //configureListSponsors(BASEURL_ENG, SPONSORS_IDS);
+                configureSponsors(BASEURL_ENG);
             }
 
         } catch (SocketTimeoutException | java.net.UnknownHostException t) {
@@ -102,6 +103,38 @@ public class AsyncTaskListView extends AsyncTask<Object, Void, Void> {
         }
 
         return null;
+
+    }
+
+    public void configureSponsors(String link) throws IOException {
+
+        if (docNews == null) {
+            Log.v(TAG, "Connecting to [" + link + "]");
+            docNews = Jsoup.connect(link).get();
+        }
+
+        Element content = docBase.body().select("#content").first();
+
+        Element sponsorContent = content.select("#sponsor-content").first();
+
+        Elements cards = sponsorContent.select("#mat__cards");
+
+        Elements ul = cards.select("ul.collapsible.popout");
+
+        Elements li = ul.select("li");
+
+        Elements images = li.select("div.collapsible-body.center.container");
+
+        sponsorsHtml =
+                "<html>" +
+                        "<head>" +
+                        "<style type='text/css'>body{margin:auto auto;text-align:center;} </style>" +
+                        "</head>" +
+                        "<body>"
+                        + images.html() +
+                        "</body>" +
+                        "</html>";
+
 
     }
 
@@ -177,35 +210,35 @@ public class AsyncTaskListView extends AsyncTask<Object, Void, Void> {
 
     //public void configureListSponsors(String link, String[] ids) throws IOException {
 
-      //  if (docBase == null) {
-      //      Log.v(TAG, "Connecting to [" + link + "]");
-      //      docBase = Jsoup.connect(link).get();
-      //  }
+    //  if (docBase == null) {
+    //      Log.v(TAG, "Connecting to [" + link + "]");
+    //      docBase = Jsoup.connect(link).get();
+    //  }
 
-      // Element sponsorContent = docBase.body().select("#sponsor-content").first();
+    // Element sponsorContent = docBase.body().select("#sponsor-content").first();
 
-      //  Elements row = sponsorContent.select("#mat__cards");
+    //  Elements row = sponsorContent.select("#mat__cards");
 
-      //  Elements cards = row.select(".");
+    //  Elements cards = row.select(".");
 
-      //  for (Element card : cards) {
+    //  for (Element card : cards) {
 
-      //      Element image = card.select(".card-image").first();
-      //      String articleLink = "http://www.tedxtorvergatau.com" + image.select("a").attr("href");
+    //      Element image = card.select(".card-image").first();
+    //      String articleLink = "http://www.tedxtorvergatau.com" + image.select("a").attr("href");
 
-      //      String imageUrl = "http://www.tedxtorvergatau.com" + image.select("img").first().attr("src");
-      //      Bitmap bitmap = getBitmapFromURL(imageUrl);
+    //      String imageUrl = "http://www.tedxtorvergatau.com" + image.select("img").first().attr("src");
+    //      Bitmap bitmap = getBitmapFromURL(imageUrl);
 
-      //      Element content = card.select(".card-content").first();
-      //      String description = content.text();
+    //      Element content = card.select(".card-content").first();
+    //      String description = content.text();
 
-      //      Element action = card.select(".card-action").first();
-      //      String title = action.text();
+    //      Element action = card.select(".card-action").first();
+    //      String title = action.text();
 
-      //      Item aboutItem = new AboutItem(AboutItem.maxID + 1, title, bitmap, description, articleLink);
-      //      AboutItem.incrementMaxID();
-      //      about.add(aboutItem);
-      //  }
+    //      Item aboutItem = new AboutItem(AboutItem.maxID + 1, title, bitmap, description, articleLink);
+    //      AboutItem.incrementMaxID();
+    //      about.add(aboutItem);
+    //  }
 
     //}
 
@@ -310,6 +343,8 @@ public class AsyncTaskListView extends AsyncTask<Object, Void, Void> {
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
 
+        MainActivity.setSponsor(sponsorsHtml);
+
         Log.v("update", "MainActivity refreshFragment");
         activity.refreshFragment();
 
@@ -334,4 +369,9 @@ public class AsyncTaskListView extends AsyncTask<Object, Void, Void> {
     public void setAbout(ArrayList<Item> about) {
         this.about = about;
     }
+
+    public void setSponsor(String sponsorsHtml) {
+        this.sponsorsHtml = sponsorsHtml;
+    }
+
 }

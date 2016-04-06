@@ -21,7 +21,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -29,8 +28,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -60,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
     private static ArrayList<Item> news;
     private static ArrayList<Item> team;
     private static ArrayList<Item> about;
-    private static ArrayList<Item> sponsors;
+    private static String sponsors;
 
     private LoadFromDatabaseAsyncTask loadItemsThread;
     private InsertListIntoDBAsyncTask saveItemsThread;
@@ -142,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
         speakers = new ArrayList<>();
         team = new ArrayList<>();
         about = new ArrayList<>();
-        sponsors = new ArrayList<>();
+        sponsors = new String();
 
         if (!isNetworkAvailable()) {
 
@@ -173,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
             mytask.setNews(news);
             mytask.setTeam(team);
             mytask.setAbout(about);
-           // mytask.setSponsor(sponsors);
+            mytask.setSponsor(sponsors);
 
             Log.v("debug", "parsing html");
             mytask.execute();
@@ -206,11 +203,11 @@ public class MainActivity extends AppCompatActivity {
      */
     private void setupViewPager(ViewPager viewPager) {
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        //adapter.addFragment(new SponsorFragment(), "SPONSORS");
         adapter.addFragment(new AboutFragment(), "ABOUT");
         adapter.addFragment(new NewsFragment(), "NEWS");
         adapter.addFragment(new SpeakersFragment(), "SPEAKERS");
         adapter.addFragment(new TeamFragment(), "TEAM");
+        adapter.addFragment(new SponsorFragment(), "SPONSORS");
 
         viewPager.setAdapter(adapter);
     }
@@ -364,7 +361,13 @@ public class MainActivity extends AppCompatActivity {
         return about;
     }
 
-    public static ArrayList<Item> getSponsors(){return sponsors;}
+    public static String getSponsors() {
+        return sponsors;
+    }
+
+    public static void setSponsor(String html) {
+        sponsors = html;
+    }
 
     public void refreshFragment() {
         Log.v("update", "fragment.update");
@@ -372,6 +375,7 @@ public class MainActivity extends AppCompatActivity {
         ((NewsFragment) adapter.getItem(1)).update();
         ((SpeakersFragment) adapter.getItem(2)).update();
         ((TeamFragment) adapter.getItem(3)).update();
+        ((SponsorFragment) adapter.getItem(4)).update();
 
         try {
 
@@ -398,8 +402,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id=item.getItemId();
-        switch(id) {
+        int id = item.getItemId();
+        switch (id) {
             case R.id.action_settings:
                 Intent intent = new Intent(Intent.ACTION_SENDTO); // it's not ACTION_SEND
                 intent.setType("text/plain");
