@@ -324,25 +324,25 @@ public class MainActivity extends AppCompatActivity {
         //tabLayout.getTabAt(3).setIcon(tabIcons[3]);
         //tabLayout.getTabAt(4).setIcon(tabIcons[4]);
 
-        //ImageView tabSponsor = (ImageView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
-        //tabSponsor.setImageResource(R.drawable.ic_action_arrow_back_red_24px);
-        //tabLayout.getTabAt(0).setCustomView(tabSponsor);
-
         ImageView tabAbout = (ImageView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
-        tabAbout.setImageResource(R.drawable.ic_action_info_red_24px);
+        tabAbout.setImageResource(R.drawable.ic_about_24dp);
         tabLayout.getTabAt(0).setCustomView(tabAbout);
 
         ImageView tabNews = (ImageView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
-        tabNews.setImageResource(R.drawable.ic_action_ic_announcement_red_24px);
+        tabNews.setImageResource(R.drawable.ic_news_24dp);
         tabLayout.getTabAt(1).setCustomView(tabNews);
 
         ImageView tabSpeaker = (ImageView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
-        tabSpeaker.setImageResource(R.drawable.ic_action_speaker_notes_red_24px);
+        tabSpeaker.setImageResource(R.drawable.ic_speaker_24dp);
         tabLayout.getTabAt(2).setCustomView(tabSpeaker);
 
         ImageView tabTeam = (ImageView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
-        tabTeam.setImageResource(R.drawable.ic_action_ic_people_red_24px);
+        tabTeam.setImageResource(R.drawable.ic_team_24dp);
         tabLayout.getTabAt(3).setCustomView(tabTeam);
+
+        ImageView tabSponsor = (ImageView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
+        tabSponsor.setImageResource(R.drawable.ic_sponsor_24dp);
+        tabLayout.getTabAt(4).setCustomView(tabSponsor);
     }
 
     public static ArrayList<Item> getTeam() {

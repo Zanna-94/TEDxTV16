@@ -46,5 +46,5 @@
         android:layout_centerHorizontal="true"
         android:scrollbars = "vertical"
         android:gravity="center_vertical|center_horizontal"
-        android:layout_below="@+id/view" />
+        android:layout_below="@+id/view"/>
 </RelativeLayout>
