@@ -22,6 +22,8 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.ActionMode;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -274,7 +276,6 @@ public class MainActivity extends AppCompatActivity {
 //                        loadItemsThread.execute();
                     }
                 });
-
         waitingDialog.show();
     }
 
@@ -318,11 +319,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupTabIcons(TabLayout tabLayout) {
-        //tabLayout.getTabAt(0).setIcon(tabIcons[0]);
-        //tabLayout.getTabAt(1).setIcon(tabIcons[1]);
-        //tabLayout.getTabAt(2).setIcon(tabIcons[2]);
-        //tabLayout.getTabAt(3).setIcon(tabIcons[3]);
-        //tabLayout.getTabAt(4).setIcon(tabIcons[4]);
 
         ImageView tabAbout = (ImageView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
         tabAbout.setImageResource(R.drawable.ic_about_24dp);
