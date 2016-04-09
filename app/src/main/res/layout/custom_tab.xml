@@ -6,5 +6,6 @@
     android:layout_height="wrap_content"
     android:id="@+id/tabImage"
     android:foregroundGravity="center_vertical"
+    android:tint="#e62b1e"
     android:gravity="center_vertical" />
 

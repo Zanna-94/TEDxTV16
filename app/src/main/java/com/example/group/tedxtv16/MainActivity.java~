@@ -256,8 +256,11 @@ public class MainActivity extends AppCompatActivity {
                         finish();
                     }
                 });
+<<<<<<< HEAD
 
         waitingDialog.setCancelable(false);
+=======
+>>>>>>> origin/master
         waitingDialog.show();
     }
 
