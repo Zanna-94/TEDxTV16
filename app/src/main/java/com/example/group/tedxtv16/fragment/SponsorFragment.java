@@ -62,7 +62,7 @@ public class SponsorFragment extends Fragment {
                         mySwipeRefreshLayout.setRefreshing(false);
 
                         if (((MainActivity) getActivity()).isNetworkAvailable()) {
-                            //TODO refresh webview
+                            ((MainActivity) getActivity()).fillListItems();
                         }
                     }
                 }

@@ -10,7 +10,6 @@ import com.example.group.tedxtv16.item.AboutItem;
 import com.example.group.tedxtv16.item.Item;
 import com.example.group.tedxtv16.item.ItemType;
 import com.example.group.tedxtv16.item.NewsItem;
-import com.example.group.tedxtv16.item.SpeakerItem;
 import com.example.group.tedxtv16.item.TeamItem;
 
 import org.jsoup.Jsoup;
@@ -37,7 +36,7 @@ public class AsyncTaskListView extends AsyncTask<Object, Void, Void> {
     final String TAG = "JSwa";
 
     private final String NEWSURL_ITA = "http://www.tedxtorvergatau.com/index.php/it/new-releases";
-    private final String BASEURL_ITA = "http://www.tedxtorvergatau.com/index.php/it";
+    private final String BASEURL_ITA = "http://www.tedxtorvergatau.com/index.php/it/";
 
     private final String NEWSURL_ENG = "http://www.tedxtorvergatau.com/index.php/en/new-releases";
     private final String BASEURL_ENG = "http://www.tedxtorvergatau.com/index.php/en";
@@ -108,171 +107,165 @@ public class AsyncTaskListView extends AsyncTask<Object, Void, Void> {
 
     public void configureSponsors(String link) throws IOException {
 
-        if (docNews == null) {
-            Log.v(TAG, "Connecting to [" + link + "]");
-            docNews = Jsoup.connect(link).get();
+        try {
+
+            if (docNews == null) {
+                Log.v(TAG, "Connecting to [" + link + "]");
+                docNews = Jsoup.connect(link).get();
+            }
+
+            Element content = docBase.body().select("#content").first();
+
+            Element sponsorContent = content.select("#sponsor-content").first();
+
+            Elements cards = sponsorContent.select("#mat__cards");
+
+            Elements ul = cards.select("ul.collapsible.popout");
+
+            Elements li = ul.select("li");
+
+            Elements images = li.select("div.collapsible-body.center.container");
+
+            sponsorsHtml =
+                    "<html>" +
+                            "<head>" +
+                            "<style type='text/css'>body{margin:auto auto;text-align:center;} </style>" +
+                            "</head>" +
+                            "<body>"
+                            + images.html() +
+                            "</body>" +
+                            "</html>";
+
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            sponsorsHtml = null;
         }
-
-        Element content = docBase.body().select("#content").first();
-
-        Element sponsorContent = content.select("#sponsor-content").first();
-
-        Elements cards = sponsorContent.select("#mat__cards");
-
-        Elements ul = cards.select("ul.collapsible.popout");
-
-        Elements li = ul.select("li");
-
-        Elements images = li.select("div.collapsible-body.center.container");
-
-        sponsorsHtml =
-                "<html>" +
-                        "<head>" +
-                        "<style type='text/css'>body{margin:auto auto;text-align:center;} </style>" +
-                        "</head>" +
-                        "<body>"
-                        + images.html() +
-                        "</body>" +
-                        "</html>";
-
-
     }
 
     public void configureListNews(String link) throws IOException {
 
-        if (docNews == null) {
-            Log.v(TAG, "Connecting to [" + link + "]");
-            docNews = Jsoup.connect(link).get();
-        }
+        try {
 
-        Log.v(TAG, "Connected to [" + link + "]");
+            if (docNews == null) {
+                Log.v(TAG, "Connecting to [" + link + "]");
+                docNews = Jsoup.connect(link).get();
+            }
 
-        Element section = docNews.body().select(".section").first();
+            Log.v(TAG, "Connected to [" + link + "]");
 
-        Elements row = section.select("#mat__cards");
+            Element section = docNews.body().select(".section").first();
 
-        Elements cards = row.select("#mat__card");
+            Elements row = section.select("#mat__cards");
 
-        for (Element card : cards) {
+            Elements cards = row.select("#mat__card");
 
-            Element image = card.select(".card-image").first();
-            String articleLink = "http://www.tedxtorvergatau.com" + image.select("a").attr("href");
+            for (Element card : cards) {
 
-            String imageUrl = "http://www.tedxtorvergatau.com" + image.select("img").first().attr("src");
-            Bitmap bitmap = getBitmapFromURL(imageUrl);
+                Element image = card.select(".card-image").first();
+                String articleLink = "http://www.tedxtorvergatau.com" + image.select("a").attr("href");
 
-            Element content = card.select(".card-content").first();
-            String description = content.text();
+                String imageUrl = "http://www.tedxtorvergatau.com" + image.select("img").first().attr("src");
+                Bitmap bitmap = getBitmapFromURL(imageUrl);
 
-            Element action = card.select(".card-action").first();
-            String title = action.text();
+                Element content = card.select(".card-content").first();
+                String description = content.text();
 
-            Item newsItem = new NewsItem(NewsItem.maxID + 1, title, bitmap, description, articleLink);
-            NewsItem.incrementMaxID();
-            news.add(newsItem);
+                Element action = card.select(".card-action").first();
+                String title = action.text();
 
+                Item newsItem = new NewsItem(NewsItem.maxID + 1, title, bitmap, description, articleLink);
+                NewsItem.incrementMaxID();
+                news.add(newsItem);
+            }
+
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            news = null;
         }
     }
 
     public void configureListAbout(String link) throws IOException {
 
-        if (docBase == null) {
-            Log.v(TAG, "Connecting to [" + link + "]");
-            docBase = Jsoup.connect(link).get();
-        }
+        try {
 
-        Element homeContent = docBase.body().select("#home-content").first();
+            if (docBase == null) {
+                Log.v(TAG, "Connecting to [" + link + "]");
+                docBase = Jsoup.connect(link).get();
+            }
 
-        Elements row = homeContent.select("#mat__cards");
+            Element homeContent = docBase.body().select("#home-content").first();
 
-        Elements cards = row.select("#mat__card");
+            Elements row = homeContent.select("#mat__cards");
 
-        for (Element card : cards) {
+            Elements cards = row.select("#mat__card");
 
-            Element image = card.select(".card-image").first();
-            String articleLink = "http://www.tedxtorvergatau.com" + image.select("a").attr("href");
+            for (Element card : cards) {
 
-            String imageUrl = "http://www.tedxtorvergatau.com" + image.select("img").first().attr("src");
-            Bitmap bitmap = getBitmapFromURL(imageUrl);
+                Element image = card.select(".card-image").first();
+                String articleLink = "http://www.tedxtorvergatau.com" + image.select("a").attr("href");
 
-            Element content = card.select(".card-content").first();
-            String description = content.text();
+                String imageUrl = "http://www.tedxtorvergatau.com" + image.select("img").first().attr("src");
+                Bitmap bitmap = getBitmapFromURL(imageUrl);
 
-            Element action = card.select(".card-action").first();
-            String title = action.text();
+                Element content = card.select(".card-content").first();
+                String description = content.text();
 
-            Item aboutItem = new AboutItem(AboutItem.maxID + 1, title, bitmap, description, articleLink);
-            AboutItem.incrementMaxID();
-            about.add(aboutItem);
+                Element action = card.select(".card-action").first();
+                String title = action.text();
+
+                Item aboutItem = new AboutItem(AboutItem.maxID + 1, title, bitmap, description, articleLink);
+                AboutItem.incrementMaxID();
+                about.add(aboutItem);
+            }
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            about = null;
         }
 
     }
 
-    //public void configureListSponsors(String link, String[] ids) throws IOException {
-
-    //  if (docBase == null) {
-    //      Log.v(TAG, "Connecting to [" + link + "]");
-    //      docBase = Jsoup.connect(link).get();
-    //  }
-
-    // Element sponsorContent = docBase.body().select("#sponsor-content").first();
-
-    //  Elements row = sponsorContent.select("#mat__cards");
-
-    //  Elements cards = row.select(".");
-
-    //  for (Element card : cards) {
-
-    //      Element image = card.select(".card-image").first();
-    //      String articleLink = "http://www.tedxtorvergatau.com" + image.select("a").attr("href");
-
-    //      String imageUrl = "http://www.tedxtorvergatau.com" + image.select("img").first().attr("src");
-    //      Bitmap bitmap = getBitmapFromURL(imageUrl);
-
-    //      Element content = card.select(".card-content").first();
-    //      String description = content.text();
-
-    //      Element action = card.select(".card-action").first();
-    //      String title = action.text();
-
-    //      Item aboutItem = new AboutItem(AboutItem.maxID + 1, title, bitmap, description, articleLink);
-    //      AboutItem.incrementMaxID();
-    //      about.add(aboutItem);
-    //  }
-
-    //}
-
     public void configureListTeam(String link) throws IOException {
 
-        Log.v(TAG, "Connecting to [" + link + "]");
-        if (docBase == null) {
-            Log.v(TAG, "retrieve from downloaded html");
-            docBase = Jsoup.connect(link).get();
-        }
+        try {
 
-        Element teamContent = docBase.body().select("#team-content").first();
+            Log.v(TAG, "Connecting to [" + link + "]");
+            if (docBase == null) {
+                Log.v(TAG, "retrieve from downloaded html");
+                docBase = Jsoup.connect(link).get();
+            }
 
-        Elements row = teamContent.select("#mat__cards");
+            Element body = docBase.body();
 
-        Elements cards = row.select("a");
+            Element content = body.select("#content").first();
 
-        for (Element card : cards) {
+            Element teamContent = content.select("#team-content").first();
 
-            String articleLink = "http://www.tedxtorvergatau.com" + card.attr("href");
+            Elements row = teamContent.select("#mat__cards");
 
-            Element circlImage = card.select("#mat__card").first();
-            String imageUrl = "http://www.tedxtorvergatau.com" + card.select("img").first().attr("src");
-            Bitmap bitmap = getBitmapFromURL(imageUrl);
+            Elements cards = row.select("a");
 
-            Element content = card.select(".card-content.circle-content").first();
+            for (Element card : cards) {
 
-            Element titleContent = content.select(".header.circle-title").first();
+                String articleLink = "http://www.tedxtorvergatau.com" + card.attr("href");
 
-            String title = titleContent.text();
+                Element circlImage = card.select("#mat__card").first();
+                String imageUrl = "http://www.tedxtorvergatau.com" + card.select("img").first().attr("src");
+                Bitmap bitmap = getBitmapFromURL(imageUrl);
 
-            Item teamItem = new TeamItem(TeamItem.maxID + 1, title, bitmap, "", articleLink);
-            SpeakerItem.incrementMaxID();
-            team.add(teamItem);
+                Element circleContent = card.select(".card-content.circle-content").first();
+
+                Element titleContent = circleContent.select(".header.circle-title").first();
+
+                String title = titleContent.text();
+
+                Item teamItem = new TeamItem(TeamItem.maxID + 1, title, bitmap, "", articleLink);
+                TeamItem.incrementMaxID();
+                team.add(teamItem);
+            }
+
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            team = null;
         }
 
     }
@@ -349,8 +342,9 @@ public class AsyncTaskListView extends AsyncTask<Object, Void, Void> {
         activity.refreshFragment();
 
         //if all ArrayListItems are empty is useless save in db
-        if (!news.isEmpty() || !speakers.isEmpty() || !team.isEmpty() || !about.isEmpty())
-            activity.saveItems();
+        if (news != null && speakers != null && team != null && about != null)
+            if (!news.isEmpty() || !speakers.isEmpty() || !team.isEmpty() || !about.isEmpty())
+                activity.saveItems();
     }
 
 

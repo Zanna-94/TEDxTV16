@@ -252,29 +252,10 @@ public class MainActivity extends AppCompatActivity {
 
                         waitingDialog.dismiss();
                         finish();
-//
-//                        if (mytask != null)
-//                            if (mytask.getStatus() != AsyncTask.Status.FINISHED)
-//                                mytask.cancel(true);
-//
-//                        if (loadItemsThread != null)
-//                            if (loadItemsThread.getStatus() != AsyncTask.Status.FINISHED)
-//                                return;
-//
-//                        if(waitingDialog==null)
-//                            waitingDialog();
-//
-//                        loadItemsThread = new LoadFromDatabaseAsyncTask((MainActivity) activity);
-//                        loadItemsThread.setNewsItemList(news);
-//                        loadItemsThread.setAboutItemList(about);
-//                        loadItemsThread.setSpeakerItemList(speakers);
-//                        loadItemsThread.setTeamItemList(team);
-//
-//                        Log.v("update", "datas from db");
-//                        loadItemsThread.execute();
                     }
                 });
 
+        waitingDialog.setCancelable(false);
         waitingDialog.show();
     }
 
