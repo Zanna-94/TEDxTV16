@@ -170,9 +170,8 @@ public class ArticleActivity extends AppCompatActivity {
                 Document doc = Jsoup.connect(url).get();
 
                 Element content = doc.body().select("#content").first();
-                Element section = content.select("div.section").first();
 
-                Element container = section.select(".container").first();
+                Element container = content.select(".container").first();
 
                 String html = format(container);
 
