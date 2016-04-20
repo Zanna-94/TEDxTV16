@@ -10,6 +10,7 @@ import com.example.group.tedxtv16.item.AboutItem;
 import com.example.group.tedxtv16.item.Item;
 import com.example.group.tedxtv16.item.ItemType;
 import com.example.group.tedxtv16.item.NewsItem;
+import com.example.group.tedxtv16.item.SpeakerItem;
 import com.example.group.tedxtv16.item.TeamItem;
 
 import org.jsoup.Jsoup;
@@ -67,13 +68,13 @@ public class AsyncTaskListView extends AsyncTask<Object, Void, Void> {
 
             if (language.equals("it")) {
                 configureListNews(NEWSURL_ITA);
-//                configureListView(BASEURL_ITA);
+                configureListSpeaker(BASEURL_ITA);
                 configureListTeam(BASEURL_ITA);
                 configureListAbout(BASEURL_ITA);
                 configureSponsors(BASEURL_ITA);
             } else {
                 configureListNews(NEWSURL_ENG);
-//                configureListView(BASEURL_ENG);
+                configureListSpeaker(BASEURL_ENG);
                 configureListTeam(BASEURL_ENG);
                 configureListAbout(BASEURL_ENG);
                 configureSponsors(BASEURL_ENG);
@@ -240,27 +241,72 @@ public class AsyncTaskListView extends AsyncTask<Object, Void, Void> {
 
             Element teamContent = content.select("#team-content").first();
 
-            Elements row = teamContent.select("#mat__cards");
+            Element matCards = teamContent.select("#mat__cards").first();
 
-            Elements cards = row.select("a");
+            Elements as = matCards.select("a");
 
-            for (Element card : cards) {
+            for (Element a : as) {
 
-                String articleLink = "http://www.tedxtorvergatau.com" + card.attr("href");
+                String articleLink = "http://www.tedxtorvergatau.com" + a.attr("href");
 
-                Element circlImage = card.select("#mat__card").first();
-                String imageUrl = "http://www.tedxtorvergatau.com" + card.select("img").first().attr("src");
-                Bitmap bitmap = getBitmapFromURL(imageUrl);
+                Element matCard = a.select("#mat__card").first();
+                String imgUrl = "http://www.tedxtorvergatau.com" + matCard.select("img").attr("src");
+                Bitmap bitmap = getBitmapFromURL(imgUrl);
 
-                Element circleContent = card.select(".card-content.circle-content").first();
-
-                Element titleContent = circleContent.select(".header.circle-title").first();
-
-                String title = titleContent.text();
+                String title = a.select(".header.circle-title").text();
 
                 Item teamItem = new TeamItem(TeamItem.maxID + 1, title, bitmap, "", articleLink);
                 TeamItem.incrementMaxID();
                 team.add(teamItem);
+
+            }
+
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            team = null;
+        }
+
+    }
+
+    public void configureListSpeaker(String link) throws IOException {
+
+        try {
+
+            Log.v(TAG, "Connecting to [" + link + "]");
+            if (docBase == null) {
+                Log.v(TAG, "retrieve from downloaded html");
+                docBase = Jsoup.connect(link).get();
+            }
+
+            Element body = docBase.body();
+
+            Element content = body.select("#content").first();
+
+            Element speakersContent = content.select("#speakers-content").first();
+
+            Element matCards = speakersContent.select("#mat__cards").first();
+
+            Elements matCard = matCards.select("#mat__card");
+
+            for (Element card : matCard) {
+
+                Element a = card.select("a").first();
+
+                String articleLink = "http://www.tedxtorvergatau.com" + a.attr("href");
+
+                System.out.println(articleLink);
+
+                String imgUrl = "http://www.tedxtorvergatau.com" + a.select("img").attr("src");
+                Bitmap bitmap = getBitmapFromURL(imgUrl);
+
+                String description = card.select(".card-content").text();
+
+                String title = card.select(".card-action").text();
+
+                Item speaker = new SpeakerItem(SpeakerItem.maxID + 1, title, bitmap, description, articleLink);
+                SpeakerItem.incrementMaxID();
+                speakers.add(speaker);
+
             }
 
         } catch (NullPointerException e) {

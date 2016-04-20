@@ -87,6 +87,7 @@ public class SpeakersFragment extends ListFragment {
     public void onListItemClick(ListView l, View v, int position, long id) {
         Intent articleIntent = new Intent(getActivity(), ArticleActivity.class);
         articleIntent.putExtra("articleLink", speakers.get(position).getUrl());
+        articleIntent.putExtra("whoIam", "Speaker");
         startActivity(articleIntent);
     }
 

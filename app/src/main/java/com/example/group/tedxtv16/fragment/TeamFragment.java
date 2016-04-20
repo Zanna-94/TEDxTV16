@@ -89,6 +89,7 @@ public class TeamFragment extends ListFragment {
 
         Intent articleIntent = new Intent(getActivity(), ArticleActivity.class);
         articleIntent.putExtra("articleLink", team.get(position).getUrl());
+        articleIntent.putExtra("whoIam", "Team");
         startActivity(articleIntent);
 
     }

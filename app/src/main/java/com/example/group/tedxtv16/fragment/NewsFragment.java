@@ -92,6 +92,7 @@ public class NewsFragment extends ListFragment {
         Log.v("TAG", "entered onItemClick of ListView in position: " + position);
         Intent articleIntent = new Intent(getActivity(), ArticleActivity.class);
         articleIntent.putExtra("articleLink", news.get(position).getUrl());
+        articleIntent.putExtra("whoIam", "News");
         startActivity(articleIntent);
 
     }

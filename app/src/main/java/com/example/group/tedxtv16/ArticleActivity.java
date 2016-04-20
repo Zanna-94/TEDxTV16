@@ -124,7 +124,8 @@ public class ArticleActivity extends AppCompatActivity {
 
         } else {
             AsyncTaskArticle myAsyncTask = new AsyncTaskArticle();
-            myAsyncTask.execute();
+            String whoIam = getIntent().getStringExtra("whoIam");
+            myAsyncTask.execute(whoIam);
         }
 
     }
@@ -166,14 +167,27 @@ public class ArticleActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
+
+            switch (params[0]) {
+                case "Speaker":
+                    return upSpeaker();
+                default:
+                    return upload();
+            }
+        }
+
+        private String upload() {
             try {
+
                 Document doc = Jsoup.connect(url).get();
+
+                Element head = doc.head();
 
                 Element content = doc.body().select("#content").first();
 
                 Element container = content.select(".container").first();
 
-                String html = format(container);
+                String html = format(container, head);
 
                 System.out.println(html);
 
@@ -182,29 +196,52 @@ public class ArticleActivity extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
                 return null;
-
             }
-
         }
 
-        protected String format(Element code) {
+        private String upSpeaker() {
+            try {
+                Document doc = Jsoup.connect(url).get();
 
-            // resize image
-            Elements img = code.getElementsByTag("img");
-            if (img.size() != 0) {
-                for (Element e_Img : img) {
-                    //if(e_Img.)
-                    e_Img.attr("style", "max-width:100%");
-                }
+                Element head = doc.head();
+
+                Element section = doc.body().select("div.section").first();
+
+                Element row = section.select("div.row").first();
+
+                String html = format(row, head);
+
+                System.out.println(html);
+
+                return html;
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
             }
+        }
+
+        protected String format(Element code, Element head) {
+
+//            // resize image
+//            Elements img = code.getElementsByTag("img");
+//            if (img.size() != 0) {
+//                for (Element e_Img : img) {
+//                    //if(e_Img.)
+//                    e_Img.attr("style", "max-width:100%");
+//                }
+//            }
 
             String html = code.html();
+
+//            String formattedHtlm =
+//                    "<html>"+head+"<style type='text/css'>html,body {width: 100%;height: 100%;}html {display: table;}body {display: table-cell;vertical-align: middle;}</style>" +
+//                            "</head><body><p>" + html + "</p></body></html>";
 
             //adding html code to the webpage's content to center the text and the images,
             // set margin and the padding of the page.
             String formattedHtlm =
-                    "<html><head><style type='text/css'>html,body {width: 100%;height: 100%;}html {display: table;}body {display: table-cell;vertical-align: middle;}</style>" +
-                            "</head><body><p>" + html + "</p></body></html>";
+                    "<html><head>" + head + "</head><body" + html + "</body></html>";
 
             // delete unusefull breaking line
             formattedHtlm = formattedHtlm.replace("<p>&nbsp;</p>", "");

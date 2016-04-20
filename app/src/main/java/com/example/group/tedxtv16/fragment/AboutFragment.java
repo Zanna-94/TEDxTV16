@@ -90,6 +90,7 @@ public class AboutFragment extends ListFragment {
         Log.v("TAG", "entered onItemClick of ListView in position: " + position);
         Intent articleIntent = new Intent(getActivity(), ArticleActivity.class);
         articleIntent.putExtra("articleLink", aboutItems.get(position).getUrl());
+        articleIntent.putExtra("whoIam", "About");
         startActivity(articleIntent);
     }
 
