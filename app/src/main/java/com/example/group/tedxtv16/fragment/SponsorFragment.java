@@ -46,12 +46,14 @@ public class SponsorFragment extends Fragment {
 
         html = MainActivity.getSponsors();
 
-        if (html != null) {
-            content.setVisibility(View.VISIBLE);
+        if (html != null && ((MainActivity) getActivity()).isNetworkAvailable()) {
+            content.setVisibility(View.INVISIBLE);
+            webview.setVisibility(View.VISIBLE);
             webview.loadDataWithBaseURL("http://www.tedxtorvergatau.com", html,
                     "text/html", "utf-8", null);
         } else {
             content.setVisibility(View.VISIBLE);
+            webview.setVisibility(View.INVISIBLE);
         }
 
         mySwipeRefreshLayout.setOnRefreshListener(

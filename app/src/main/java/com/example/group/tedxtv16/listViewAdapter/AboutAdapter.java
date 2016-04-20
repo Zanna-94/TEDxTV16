@@ -20,10 +20,13 @@ public class AboutAdapter extends BaseAdapter {
     private ArrayList list;
     private static LayoutInflater inflater = null;
 
+    private Context context;
+
     //Constructor.
     public AboutAdapter(Context context, ArrayList list) {
         this.list = list;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.context = context;
     }
 
     @Override
@@ -65,7 +68,8 @@ public class AboutAdapter extends BaseAdapter {
                     if (aboutItem.getPhoto() != null)
                         photo.setImageBitmap(Bitmap.createScaledBitmap(aboutItem.getPhoto(), 400, 450, false));
                     else {
-                        photo.setImageBitmap(Bitmap.createScaledBitmap(BitmapFactory.decodeFile("/res/drawable/no_image_available.png"), 400, 450, false));
+                        photo.setImageBitmap(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.no_image_available, null),
+                                400, 450, false));
                     }
                     if (aboutItem.getDescription() != null)
                         description.setText(aboutItem.getDescription());

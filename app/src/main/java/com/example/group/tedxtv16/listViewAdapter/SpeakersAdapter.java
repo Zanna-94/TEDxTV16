@@ -24,10 +24,13 @@ public class SpeakersAdapter extends BaseAdapter {
     private ArrayList list;
     private static LayoutInflater inflater = null;
 
+    private Context context;
+
     //Constructor.
     public SpeakersAdapter(Context context, ArrayList list) {
         this.list = list;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.context = context;
     }
 
     @Override
@@ -69,7 +72,8 @@ public class SpeakersAdapter extends BaseAdapter {
                     if (speakerItem.getPhoto() != null)
                         photo.setImageBitmap(Bitmap.createScaledBitmap(speakerItem.getPhoto(), 400, 450, false));
                 } else {
-                    photo.setImageBitmap(Bitmap.createScaledBitmap(BitmapFactory.decodeFile("/res/drawable/no_image_available.png"), 400, 450, false));
+                    photo.setImageBitmap(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.no_image_available, null),
+                            400, 450, false));
                 }
                 if (speakerItem.getDescription() != null)
                     description.setText(speakerItem.getDescription());

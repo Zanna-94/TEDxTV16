@@ -20,15 +20,18 @@ public class NewsAdapter extends BaseAdapter {
     private ArrayList list;
     private static LayoutInflater inflater = null;
 
+    private Context context;
+
     //Constructor.
     public NewsAdapter(Context context, ArrayList list) {
         this.list = list;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.context = context;
     }
 
     @Override
     public int getCount() {
-        if(list!=null) {
+        if (list != null) {
             return list.size();
         }
 
@@ -69,7 +72,8 @@ public class NewsAdapter extends BaseAdapter {
                     if (newsItem.getPhoto() != null)
                         photo.setImageBitmap(Bitmap.createScaledBitmap(newsItem.getPhoto(), 400, 450, false));
                     else {
-                        photo.setImageBitmap(Bitmap.createScaledBitmap(BitmapFactory.decodeFile("/res/drawable/no_image_available.png"), 400, 450, false));
+                        photo.setImageBitmap(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.no_image_available, null),
+                                400, 450, false));
                     }
                     if (newsItem.getDescription() != null)
                         description.setText(newsItem.getDescription());

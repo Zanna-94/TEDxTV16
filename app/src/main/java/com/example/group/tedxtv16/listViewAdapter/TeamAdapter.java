@@ -1,6 +1,7 @@
 package com.example.group.tedxtv16.listViewAdapter;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import com.example.group.tedxtv16.R;
 import com.example.group.tedxtv16.item.Item;
 
+import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -23,10 +25,13 @@ public class TeamAdapter extends BaseAdapter {
     private ArrayList list;
     private static LayoutInflater inflater = null;
 
+    private Context context;
+
     //Constructor.
     public TeamAdapter(Context context, ArrayList list) {
         this.list = list;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.context = context;
     }
 
     @Override
@@ -69,7 +74,8 @@ public class TeamAdapter extends BaseAdapter {
                         photo.setImageBitmap(Bitmap.createScaledBitmap(teamItem.getPhoto(), 400, 450, false));
 
                     } else {
-                        photo.setImageBitmap(Bitmap.createScaledBitmap(BitmapFactory.decodeFile("/res/drawable/no_image_available.png"), 400, 450, false));
+                        photo.setImageBitmap(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.no_image_available, null),
+                                400, 450, false));
                     }
                     if (teamItem.getDescription() != null)
                         description.setText(teamItem.getDescription());
