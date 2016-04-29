@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.group.tedxtv16.ArticleActivity"
+    tools:context="com.tedxtorvergatau.tedxtv16.tedxtv16.ArticleActivity"
     xmlns:local="http://schemas.android.com/tools">
 
     <android.support.design.widget.AppBarLayout

@@ -1,16 +1,10 @@
-package com.example.group.tedxtv16.db;
+package com.tedxtorvergatau.tedxtv16.tedxtv16.db;
 
-import android.app.Instrumentation;
-import android.content.ContentValues;
 import android.content.Context;
 import android.test.InstrumentationTestCase;
 import android.test.suitebuilder.annotation.SmallTest;
 
-import com.example.group.tedxtv16.MainActivity;
-import com.example.group.tedxtv16.item.Item;
-import com.example.group.tedxtv16.item.ItemType;
-
-import junit.framework.TestCase;
+import com.tedxtorvergatau.tedxtv16.tedxtv16.item.ItemType;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;

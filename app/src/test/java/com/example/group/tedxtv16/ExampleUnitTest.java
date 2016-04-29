@@ -1,4 +1,4 @@
-package com.example.group.tedxtv16;
+package com.tedxtorvergatau.tedxtv16.tedxtv16;
 
 import org.junit.Test;
 
