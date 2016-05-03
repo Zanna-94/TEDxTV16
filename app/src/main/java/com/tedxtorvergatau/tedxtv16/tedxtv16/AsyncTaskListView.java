@@ -343,7 +343,7 @@ public class AsyncTaskListView extends AsyncTask<Object, Void, Void> {
             input = connection.getInputStream();
 
             // calculate the resize factor and set it in options
-            options.inSampleSize = calculateInSampleSize(options, 400, 400);
+            options.inSampleSize = calculateInSampleSize(options, 300, 300);
 
             // now decodeStream won't return null but the bitmap
             options.inJustDecodeBounds = false;

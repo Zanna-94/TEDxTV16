@@ -91,13 +91,17 @@ public class ItemDAO {
             ContentValues contentValues = new ContentValues();
             String tableName = getTableName(itemType);
             for (Item item : itemList) {
-                photo = item.getPhoto();
-                contentValues.put(NAME_COLUMN, item.getName());
-                contentValues.put(DESCRIPTION_COLUMN, item.getDescription());
-                contentValues.put(PHOTO_COLUMN, encodeBitmapToBase64(photo, 100));
-                contentValues.put(URL_COLUMN, item.getUrl());
+                if (item != null) {
+                    if (item.getPhoto() != null && item.getDescription() != null && item.getName() != null) {
+                        photo = item.getPhoto();
+                        contentValues.put(NAME_COLUMN, item.getName());
+                        contentValues.put(DESCRIPTION_COLUMN, item.getDescription());
+                        contentValues.put(PHOTO_COLUMN, encodeBitmapToBase64(photo, 100));
+                        contentValues.put(URL_COLUMN, item.getUrl());
 
-                database.insert(tableName, null, contentValues);
+                        database.insert(tableName, null, contentValues);
+                    }
+                }
             }
 
             database.close();
@@ -236,17 +240,25 @@ public class ItemDAO {
 
     private static byte[] compressBitmap(Bitmap bitmap, int compress) {
 
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, compress, stream);
-        byte[] byteArray = stream.toByteArray();
-
         try {
-            stream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
-        return byteArray;
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, compress, stream);
+            byte[] byteArray = stream.toByteArray();
+
+            try {
+                stream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return byteArray;
+
+        } catch (java.lang.NullPointerException e) {
+
+            e.printStackTrace();
+            return null;
+        }
     }
 
     /**
