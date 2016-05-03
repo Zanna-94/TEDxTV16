@@ -46,7 +46,7 @@
             android:textSize="20sp"
             android:textStyle="bold"
             android:ellipsize="end"
-            android:maxLines="2"
+            android:maxLines="1"
             android:paddingTop="10dp"/>
 
         <TextView

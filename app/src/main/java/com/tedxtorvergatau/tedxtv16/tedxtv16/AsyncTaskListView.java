@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.tedxtorvergatau.tedxtv16.tedxtv16.db.ItemDAO;
 import com.tedxtorvergatau.tedxtv16.tedxtv16.item.AboutItem;
@@ -40,7 +41,9 @@ public class AsyncTaskListView extends AsyncTask<Object, Void, Void> {
     private final String BASEURL_ITA = "http://www.tedxtorvergatau.com/index.php/it/";
 
     private final String NEWSURL_ENG = "http://www.tedxtorvergatau.com/index.php/en/new-releases";
-    private final String BASEURL_ENG = "http://www.tedxtorvergatau.com/index.php/en";
+    private final String BASEURL_ENG = "http://www.tedxtorvergatau.com/index.php/en/";
+
+    private boolean fromDB = false;
 
     private ArrayList<Item> speakers;
     private ArrayList<Item> news;
@@ -97,6 +100,8 @@ public class AsyncTaskListView extends AsyncTask<Object, Void, Void> {
 
             about.clear();
             about = (ArrayList<Item>) dao.getAllItems(ItemType.ABOUT);
+
+            fromDB = true;
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -294,8 +299,6 @@ public class AsyncTaskListView extends AsyncTask<Object, Void, Void> {
 
                 String articleLink = "http://www.tedxtorvergatau.com" + a.attr("href");
 
-                System.out.println(articleLink);
-
                 String imgUrl = "http://www.tedxtorvergatau.com" + a.select("img").attr("src");
                 Bitmap bitmap = getBitmapFromURL(imgUrl);
 
@@ -381,6 +384,11 @@ public class AsyncTaskListView extends AsyncTask<Object, Void, Void> {
     @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
+
+        if (fromDB)
+            Toast.makeText(activity, activity.getText(R.string.NoConnection),
+                    Toast.LENGTH_SHORT).show();
+
 
         MainActivity.setSponsor(sponsorsHtml);
 
