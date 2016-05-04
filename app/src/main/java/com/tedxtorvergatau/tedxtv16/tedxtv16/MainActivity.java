@@ -273,7 +273,6 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
 
                         waitingDialog.dismiss();
-                        finish();
                     }
                 });
 
