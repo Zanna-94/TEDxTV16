@@ -68,6 +68,7 @@ public class SpeakersFragment extends ListFragment {
                         mySwipeRefreshLayout.setRefreshing(false);
 
                         if (((MainActivity) getActivity()).isNetworkAvailable()) {
+                            ((MainActivity) getActivity()).waitingDialog();
                             ((MainActivity) getActivity()).fillListItems();
                         }
                     }

@@ -22,6 +22,7 @@
         app:riv_border_color="#333333"
         app:riv_mutate_background="true"
         app:riv_tile_mode="clamp"
+        android:gravity="center"
         />
 
     <LinearLayout
@@ -45,7 +46,8 @@
             android:textStyle="bold"
             android:ellipsize="end"
             android:maxLines="2"
-            android:paddingTop="10dp"/>
+            android:paddingTop="10dp"
+            android:gravity="center"/>
 
         <TextView
             android:id="@+id/tvNewsDescription"
@@ -58,7 +60,8 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:ellipsize="end"
             android:maxLines="2"
-            android:paddingTop="5dp"/>
+            android:paddingTop="5dp"
+            android:gravity="center"/>
     </LinearLayout>
 
 </LinearLayout>

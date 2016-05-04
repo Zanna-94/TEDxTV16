@@ -69,10 +69,10 @@ public class SpeakersAdapter extends BaseAdapter {
                         speaker.setText(view.getResources().getString(R.string.notAvailable));
                     }
                     if (speakerItem.getPhoto() != null)
-                        photo.setImageBitmap(Bitmap.createScaledBitmap(speakerItem.getPhoto(), 225, 225, false));
+                        photo.setImageBitmap(Bitmap.createScaledBitmap(speakerItem.getPhoto(), 250, 250, false));
                 } else {
                     photo.setImageBitmap(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.no_image_available, null),
-                            225, 225, false));
+                            250, 250, false));
                 }
                 if (speakerItem.getDescription() != null)
                     description.setText(speakerItem.getDescription());

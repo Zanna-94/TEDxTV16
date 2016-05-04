@@ -4,6 +4,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.tedxtorvergatau.tedxtv16.tedxtv16.db.ItemDAO;
@@ -57,6 +59,9 @@ public class AsyncTaskListView extends AsyncTask<Object, Void, Void> {
     private MainActivity activity;
 
     String language;
+
+    private FrameLayout mainFrame;
+    private FrameLayout loadFrame;
 
     public AsyncTaskListView(MainActivity activity) {
         this.activity = activity;
@@ -395,10 +400,14 @@ public class AsyncTaskListView extends AsyncTask<Object, Void, Void> {
         Log.v("update", "MainActivity refreshFragment");
         activity.refreshFragment();
 
+        loadFrame.setVisibility(View.INVISIBLE);
+        mainFrame.setVisibility(View.VISIBLE);
+
         //if all ArrayListItems are empty is useless save in db
         if (news != null && speakers != null && team != null && about != null)
             if (!news.isEmpty() || !speakers.isEmpty() || !team.isEmpty() || !about.isEmpty())
                 activity.saveItems();
+
     }
 
 
@@ -422,4 +431,11 @@ public class AsyncTaskListView extends AsyncTask<Object, Void, Void> {
         this.sponsorsHtml = sponsorsHtml;
     }
 
+    public void setLoadFrame(FrameLayout loadFrame) {
+        this.loadFrame = loadFrame;
+    }
+
+    public void setMainFrame(FrameLayout mainFrame) {
+        this.mainFrame = mainFrame;
+    }
 }

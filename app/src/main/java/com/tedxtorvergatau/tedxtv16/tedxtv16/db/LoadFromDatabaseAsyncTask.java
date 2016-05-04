@@ -2,6 +2,8 @@ package com.tedxtorvergatau.tedxtv16.tedxtv16.db;
 
 
 import android.os.AsyncTask;
+import android.view.View;
+import android.widget.FrameLayout;
 
 import com.tedxtorvergatau.tedxtv16.tedxtv16.MainActivity;
 import com.tedxtorvergatau.tedxtv16.tedxtv16.item.Item;
@@ -16,6 +18,9 @@ public class LoadFromDatabaseAsyncTask extends AsyncTask<Void,Void,Void> {
     private List<Item> teamItemList;
     private List<Item> aboutItemList;
     private MainActivity activity;
+
+    private FrameLayout mainFrame;
+    private FrameLayout loadFrame;
 
     public LoadFromDatabaseAsyncTask(MainActivity activity) {
         this.activity = activity;
@@ -43,6 +48,9 @@ public class LoadFromDatabaseAsyncTask extends AsyncTask<Void,Void,Void> {
         super.onPostExecute(aVoid);
 
         activity.refreshFragment();
+
+        mainFrame.setVisibility(View.VISIBLE);
+        loadFrame.setVisibility(View.INVISIBLE);
     }
 
     public void setSpeakerItemList(List<Item> speakerItemList) {
@@ -59,5 +67,13 @@ public class LoadFromDatabaseAsyncTask extends AsyncTask<Void,Void,Void> {
 
     public void setAboutItemList(List<Item> aboutItemList) {
         this.aboutItemList = aboutItemList;
+    }
+
+    public void setMainFrame(FrameLayout mainFrame) {
+        this.mainFrame = mainFrame;
+    }
+
+    public void setLoadFrame(FrameLayout loadFrame) {
+        this.loadFrame = loadFrame;
     }
 }

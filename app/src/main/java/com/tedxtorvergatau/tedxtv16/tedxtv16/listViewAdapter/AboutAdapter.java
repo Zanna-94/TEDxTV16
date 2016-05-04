@@ -66,10 +66,10 @@ public class AboutAdapter extends BaseAdapter {
                         aboutText.setText(view.getResources().getString(R.string.notAvailable));
                     }
                     if (aboutItem.getPhoto() != null)
-                        photo.setImageBitmap(Bitmap.createScaledBitmap(aboutItem.getPhoto(), 225, 225, false));
+                        photo.setImageBitmap(Bitmap.createScaledBitmap(aboutItem.getPhoto(), 250, 250, false));
                     else {
                         photo.setImageBitmap(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.no_image_available, null),
-                                225, 225, false));
+                                250, 250, false));
                     }
                     if (aboutItem.getDescription() != null)
                         description.setText(aboutItem.getDescription());

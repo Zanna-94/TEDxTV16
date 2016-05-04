@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
@@ -16,6 +17,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
@@ -27,6 +29,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -62,6 +66,9 @@ public class MainActivity extends AppCompatActivity {
     private LoadFromDatabaseAsyncTask loadItemsThread;
     private InsertListIntoDBAsyncTask saveItemsThread;
 
+    private FrameLayout mainFrame;
+    private FrameLayout loadFrame;
+
     /**
      * Current Instance of MainActivity that is passed to AsyncTask to inform  when it finishes.
      * {@link AsyncTaskListView#onPostExecute(Void)}
@@ -75,6 +82,18 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         activity = this;
+
+        // set visibility of frame Layout
+        mainFrame = (FrameLayout) findViewById(R.id.MainFrame);
+        loadFrame = (FrameLayout) findViewById(R.id.LoadFrame);
+        mainFrame.setVisibility(View.INVISIBLE);
+        loadFrame.setVisibility(View.VISIBLE);
+
+        // set background for LoadFrame through imageView
+        ImageView backgroud = (ImageView) findViewById(R.id.backgraound);
+        backgroud.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.start_image));
+        ImageView title =  (ImageView) findViewById(R.id.loadTitle);
+        title.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.logo_dark));
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
@@ -115,6 +134,8 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
+
     /**
      * Never user because application is always in portrait mode
      *
@@ -133,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void fillListItems() {
 
-        waitingDialog();
+//        waitingDialog();
 
         news = new ArrayList<>();
         speakers = new ArrayList<>();
@@ -159,6 +180,8 @@ public class MainActivity extends AppCompatActivity {
             loadItemsThread.setAboutItemList(about);
             loadItemsThread.setSpeakerItemList(speakers);
             loadItemsThread.setTeamItemList(team);
+            loadItemsThread.setMainFrame(mainFrame);
+            loadItemsThread.setLoadFrame(loadFrame);
 
             loadItemsThread.execute();
 
@@ -171,8 +194,9 @@ public class MainActivity extends AppCompatActivity {
             mytask.setTeam(team);
             mytask.setAbout(about);
             mytask.setSponsor(sponsors);
+            mytask.setLoadFrame(loadFrame);
+            mytask.setMainFrame(mainFrame);
 
-            Log.v("debug", "parsing html");
             mytask.execute();
         }
     }
@@ -192,8 +216,6 @@ public class MainActivity extends AppCompatActivity {
 
         setupTabIcons(tabLayout);
 
-        if (waitingDialog != null)
-            waitingDialog.dismiss();
     }
 
     /**
@@ -240,7 +262,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Create a dialog waiting connection to the web site. If it is deleted the application finishes.
      */
-    private void waitingDialog() {
+    public void waitingDialog() {
         waitingDialog = new ProgressDialog(this);
 
         waitingDialog.setMessage("Waiting to connect");

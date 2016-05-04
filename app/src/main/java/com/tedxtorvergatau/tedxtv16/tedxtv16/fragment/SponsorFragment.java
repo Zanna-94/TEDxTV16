@@ -63,6 +63,7 @@ public class SponsorFragment extends Fragment {
                         mySwipeRefreshLayout.setRefreshing(false);
 
                         if (((MainActivity) getActivity()).isNetworkAvailable()) {
+                            ((MainActivity) getActivity()).waitingDialog();
                             ((MainActivity) getActivity()).fillListItems();
                         }
                     }
